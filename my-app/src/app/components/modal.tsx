@@ -1,6 +1,8 @@
 "use client";
 
 import React, { PropsWithChildren, ReactNode } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faX } from '@fortawesome/free-solid-svg-icons'
 
 interface ModalProps {
     isShow: boolean;
@@ -17,9 +19,11 @@ const Modal: React.FC<ModalProps> = ({ isShow, children, onDismiss }: ModalProps
                     <div className="pol-modal-overlay" onClick={() => onDismiss()}></div>
                     <div className="pol-modal">
                         <div className="pol-modal-header">
-                            <button className="pol-button ml-auto pol-btn-x" onClick={() => onDismiss()}>X</button>
+                            <button className="pol-button ml-auto pol-btn-x pol-text-dark" onClick={() => onDismiss()}><FontAwesomeIcon icon={faX}/></button>
                         </div>
-                        {children}
+                        <div className="pol-modal-content">
+                            {children}
+                        </div>
                     </div>
                 </div>
             }

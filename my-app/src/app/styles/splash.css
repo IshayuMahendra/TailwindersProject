@@ -1,6 +1,7 @@
 .splash {
     display: flex;
-    background-color: #1E4147
+    background-color: #1E4147;
+    color: #AAC789;
 }
 
 .splash-left-corner {
@@ -12,7 +13,6 @@
 }
 
 .splash-content {
-    width: 500px;
     z-index: 3;
     position: relative;
     margin-left: auto;
@@ -23,18 +23,23 @@
 }
 
 .splash-img {
-    min-height: 400px;
+    position: fixed !important;
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
 
-.bg-overlay-green {
-    min-height: 400px;
-    left: 0;
-    z-index: 2;
-    background-color: #1E4147;
-    height: 100%;
-    width: 100%;
-    opacity: 0.75;
-    margin: 0;
+.splash::before {
+    content: "";
     display: block;
     position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #1E4147;
+    opacity: .7;
+    z-index: 2;
 }

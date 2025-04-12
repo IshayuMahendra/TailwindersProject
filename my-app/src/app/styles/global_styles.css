@@ -1,9 +1,15 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: 'Overpass Mono';
+    src: url('/fonts/OverpassMono-Regular.ttf');
+}
+
 html,body {
     margin: 0;
     height: 100%;
     width: 100%;
+    font-family: "Overpass Mono";
 }
 
 h1 {
@@ -53,30 +59,26 @@ h2 {
 
 .pol-modal-overlay {
     min-height: 400px;
-    left: 0;
     z-index: 100;
     background: rgba(0,0,0,0.75);
     height: 100%;
     width: 100%;
-    margin: 0;
     display: block;
     position: absolute;
 }
 
 .pol-modal {
+    color: #1E4147;
+    background: #AAC789;
     display: block;
     border-radius: 5px;
     z-index: 101;
-    min-width: 50px;
-    max-width: 35vw;
-    padding: 20px;
-    left: 0;
-    top: 0;
+    max-width: 650px;
+    padding: 15px;
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
     margin-bottom: auto;
-    background: #AAC789;
 }
 
 .pol-modal-header {
@@ -84,8 +86,22 @@ h2 {
     display: flex;
 }
 
+.pol-modal-content {
+    padding: 0px 30px;
+    padding-bottom: 20px;
+}
+
+.pol-text-dark {
+    color: #1E4147;
+}
+
 .pol-btn-x {
     padding: 5px;
     background: none;
-    color: black;
+    opacity: 0.5
+}
+
+.pol-btn-x:hover {
+    opacity: 1;
+    background: none;
 }
