@@ -1,7 +1,91 @@
-body {
-    background-color: black;
-    color: white;
-    justify-content: center;
+@import "tailwindcss";
+
+html,body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+h2 {
+    font-size: 35px;
+}
+
+.pol-button {
+    background-color: #1E4147;
+    text-decoration: none;
+    color: #AAC789;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border: 1px solid #AAC789;
+    transition: 0.2s;
+}
+
+.pol-button:hover {
+    cursor: pointer;
+    background-color: #306770;
+}
+
+.pol-button-circle {
     text-align: center;
+    padding: 0;
+    padding-top: 7.3px;
+    font-size: 23px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.pol-modal-wrapper {
+    z-index: 99;
+    position: absolute;
     display: flex;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.pol-modal-overlay {
+    min-height: 400px;
+    left: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.75);
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: block;
+    position: absolute;
+}
+
+.pol-modal {
+    display: block;
+    border-radius: 5px;
+    z-index: 101;
+    min-width: 50px;
+    max-width: 35vw;
+    padding: 20px;
+    left: 0;
+    top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    background: #AAC789;
+}
+
+.pol-modal-header {
+    width: 100%;
+    display: flex;
+}
+
+.pol-btn-x {
+    padding: 5px;
+    background: none;
+    color: black;
 }

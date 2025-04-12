@@ -1,20 +1,41 @@
-import React from 'react';
-import '@/app/styles/global_styles.css';
-import CustomButton from './components/button';
+"use client";
 
-const LandingPage: React.FC = () => {
+import React, { useState } from 'react';
+import Image from 'next/image';
+import '@/app/styles/global_styles.css';
+import '@/app/styles/splash.css';
+import CustomButton from './components/button';
+import Link from 'next/link';
+import Modal from './components/modal';
+const bg = "/img/splashBG.jpg";
+
+const SplashPage: React.FC = () => {
+    const [showModal, setShowModal] = useState(false);
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
-            <header className="bg-blue-600 w-full py-4">
-                <h1 className="text-white text-center text-3xl font-bold">Hello World</h1>
-            </header>
-            <main className="flex-grow flex flex-col justify-center items-center">
-                <CustomButton />
-            </main>
-            <footer className="bg-gray-800 w-full py-4">
-            </footer>
+        <div className="splash">
+            <div className="splash-left-corner">
+            <button className="pol-button pol-button-circle inline-block" onClick={() => {
+                setShowModal((prev) => !prev);
+            }}>?</button>
+            </div>
+            <div className="splash-content">
+                <h1>Pollster</h1>
+                <p>your vote.  your polls.  our impact.</p>
+                <div className="mt-4 block">
+                <Link className="pol-button inline-block" href="/login">Login</Link>
+                <Link className="pol-button ml-4 inline-block" href="/login">Sign Out</Link>
+                </div>
+            </div>
+            <div className="bg-overlay-green"></div>
+            <Image src={bg} className="splash-img" alt="test" fill objectFit='cover'/>
+            <Modal isShow={showModal} onDismiss={() => setShowModal(false)}>
+                <div className="text-center">
+                <h2>about us</h2>
+                <p className="mt-4">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                </div>
+            </Modal>
         </div>
     );
 };
 
-export default LandingPage;
+export default SplashPage;

@@ -1,0 +1,40 @@
+.splash {
+    display: flex;
+    background-color: #1E4147
+}
+
+.splash-left-corner {
+    position: fixed;
+    left: 0;
+    z-index: 3;
+    margin-left: 15px;
+    margin-top: 12px;
+}
+
+.splash-content {
+    width: 500px;
+    z-index: 3;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30vh;
+    text-align: center;
+    padding-bottom: 30vh;
+}
+
+.splash-img {
+    min-height: 400px;
+}
+
+.bg-overlay-green {
+    min-height: 400px;
+    left: 0;
+    z-index: 2;
+    background-color: #1E4147;
+    height: 100%;
+    width: 100%;
+    opacity: 0.75;
+    margin: 0;
+    display: block;
+    position: absolute;
+}
