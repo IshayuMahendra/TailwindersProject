@@ -13,7 +13,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ children, onDismiss, transitionSeconds }: ModalProps) => {
     const [modalOpacity, setmodalOpacity] = useState(0);
     useEffect(() => {
-        setTimeout(() => setmodalOpacity(1), 100);
+        setmodalOpacity(1);
     }, []);
 
     const beginDismiss = () => {
