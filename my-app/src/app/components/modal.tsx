@@ -16,15 +16,13 @@ const Modal: React.FC<ModalProps> = ({ isShow, children, onDismiss, transitionSe
     const [modalDisplay, setmodalDisplay] = useState(false);
     const [init, setInit] = useState(false);
     useEffect(() => {
-        if(init) {
             if(isShow == true) {
                 setmodalDisplay(true);
                 setTimeout(() => setmodalOpacity(1), 100);
-            } else {
+            } else if(init) {
                 setmodalOpacity(0);
                 setTimeout(() => setmodalDisplay(false), transitionSeconds*1000);
             }
-        }
         setInit(true);
     }, [isShow]);
 
