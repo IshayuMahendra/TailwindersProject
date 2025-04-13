@@ -7,6 +7,7 @@ import '@/app/styles/splash.css';
 import CustomButton from './components/button';
 import Link from 'next/link';
 import Modal from './components/modal';
+import Typer from './components/typer';
 const bg = "/img/splashBG.jpg";
 
 const SplashPage: React.FC = () => {
@@ -15,12 +16,12 @@ const SplashPage: React.FC = () => {
         <div className="splash">
             <div className="splash-left-corner">
                 <button className="pol-button pol-button-circle inline-block" onClick={() => {
-                    setShowModal((prev) => !prev);
+                    setShowModal((prev) => true);
                 }}>?</button>
             </div>
             <div className="splash-content">
                 <h1>Pollster</h1>
-                <p>your vote.  your polls.  our impact.</p>
+                <p><Typer typedString="your vote. your polls. your impact." msSpeed={40}></Typer></p>
                 <div className="mt-4 block">
                     <Link className="pol-button inline-block" href="/login">Login</Link>
                     <Link className="pol-button ml-4 inline-block" href="/login">Sign Up</Link>
