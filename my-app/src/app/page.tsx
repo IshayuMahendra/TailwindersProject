@@ -43,11 +43,11 @@ const SplashPage: React.FC = () => {
                         <h2>Login</h2>
                         <form className="mt-4">
                             <div className="mb-4">
-                                <label htmlFor="login-username" className="block text-sm font-medium">Username</label>
+                                <label className="block text-sm font-medium">Username</label>
                                 <input type="text" id="login-username" className="mt-1 p-2 w-full border rounded" required/>
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="login-password" className="block text-sm font-medium">Password</label>
+                                <label className="block text-sm font-medium">Password</label>
                                 <input type="password" id="login-password" className="mt-1 p-2 w-full border rounded" required/>
                             </div>
                             <button type="submit" className="pol-button">Submit</button>
@@ -61,15 +61,15 @@ const SplashPage: React.FC = () => {
                         <h2>Sign Up</h2>
                         <form className="mt-4">
                             <div className="mb-4">
-                                <label htmlFor="signup-name" className="block text-sm font-medium">Name</label>
+                                <label className="block text-sm font-medium">Name</label>
                                 <input type="text" id="signup-name" className="mt-1 p-2 w-full border rounded" required/>
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="signup-username" className="block text-sm font-medium">Username</label>
+                                <label className="block text-sm font-medium">Username</label>
                                 <input type="text" id="signup-username" className="mt-1 p-2 w-full border rounded" required/>
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="signup-password" className="block text-sm font-medium">Password</label>
+                                <label className="block text-sm font-medium">Password</label>
                                 <input type="password" id="signup-password" className="mt-1 p-2 w-full border rounded" required/>
                             </div>
                             <button type="submit" className="pol-button">Submit</button>
