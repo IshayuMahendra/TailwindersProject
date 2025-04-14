@@ -27,8 +27,6 @@ const SplashPage: React.FC = () => {
                 <div className="mt-4 block">
                     <button className="pol-button inline-block" onClick={() => setShowLoginModal(true)}>Login</button>
                     <button className="pol-button ml-4 inline-block" onClick={() => setShowSignupModal(true)}>Sign Up</button>
-                    <Link className="pol-button inline-block" href="/home">Login</Link>
-                    <Link className="pol-button ml-4 inline-block" href="/login">Sign Up</Link>
                 </div>
             </div>
             {showModal &&
@@ -43,7 +41,7 @@ const SplashPage: React.FC = () => {
                 <Modal onDismiss={() => setShowLoginModal(false)} transitionSeconds={0.3}>
                     <div className="text-center">
                         <h2>Login</h2>
-                        <form className="mt-4">
+                        <form className="mt-4" onSubmit={(e) => {e.preventDefault(); setShowLoginModal(false); window.location.href = '/home';}}>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium">Username</label>
                                 <input type="text" id="login-username" className="mt-1 p-2 w-full border rounded" required/>
