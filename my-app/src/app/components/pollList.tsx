@@ -2,9 +2,15 @@
 
 import React from "react";
 import Image from "next/image";
+import Modal from './modal';
+import { useState } from "react";
+import AddPollForm from "./addPollForm";
+
 
 /* Just some 3 sample polls like we had */
 const PollList: React.FC = () => {
+    const [showModal, setShowModal] = useState(false);
+
     const polls = [
         { title: "sample poll", imageUrl: "/img/image1.webp" },
         { title: "sample poll", imageUrl: "/img/image2.jpeg" },
@@ -37,9 +43,17 @@ const PollList: React.FC = () => {
             </div>
 
             {/* Add poll button for Raj */}
-            <button className="mt-6 bg-[#2e5f4e] hover:bg-[#3d7b64] text-white px-6 py-1 rounded self-end">
+            <button 
+                className="mt-6 bg-[#2e5f4e] hover:bg-[#3d7b64] text-white px-6 py-1 rounded self-end"
+                onClick={() => setShowModal(true)}
+            >
                 <h2>+</h2>
             </button>
+            {showModal && (
+                <Modal onDismiss={() => setShowModal(false)} transitionSeconds={0.3}>
+                    <AddPollForm />    
+                </Modal>
+            )}
         </div>
     );
 };
