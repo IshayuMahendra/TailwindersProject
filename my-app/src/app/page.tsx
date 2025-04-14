@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import '@/app/styles/global_styles.css';
 import '@/app/styles/splash.css';
@@ -8,14 +8,17 @@ import CustomButton from './components/button';
 import Link from 'next/link';
 import Modal from './components/modal';
 import Typer from './components/typer';
+import { useRouter } from 'next/navigation';
 const bg = "/img/splashBG.jpg";
 
 const SplashPage: React.FC = () => {
     const [showSignupModal, setShowSignupModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const router = useRouter();
+
     return (
-        <div className="splash">
+                    <div className="splash">
             <div className="splash-left-corner">
                 <button className="pol-button pol-button-circle inline-block" onClick={() => {
                     setShowModal((prev) => true);
@@ -41,7 +44,7 @@ const SplashPage: React.FC = () => {
                 <Modal onDismiss={() => setShowLoginModal(false)} transitionSeconds={0.3}>
                     <div className="text-center">
                         <h2>Login</h2>
-                        <form className="mt-4" onSubmit={(e) => {e.preventDefault(); setShowLoginModal(false); window.location.href = '/home';}}>
+                        <form className="mt-4" onSubmit={async (e) => {e.preventDefault(); setShowLoginModal(false); router.push("/home")}}>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium">Username</label>
                                 <input type="text" id="login-username" className="mt-1 p-2 w-full border rounded" required/>

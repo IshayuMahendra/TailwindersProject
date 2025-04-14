@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import '@/app/styles/global_styles.css';
 import '@/app/styles/home.css';
@@ -15,9 +16,18 @@ import PollList from '../components/pollList';
 const bg = "/img/splashBG.jpg";
 
 const HomePage: React.FC = () => {
+    const router = useRouter();
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+    useEffect(() => {
+        if(!isLoggedIn) {
+            router.push("/");
+        }
+    })
+
     return (
         <div className = "home min-h screen flex flex-col">
-            <NavBar />
+            <NavBar isAuthenticated={true}/>
             <div className = "flex">
                 <LeftSidebar/>
             <main className = "flex-1 p-6">
