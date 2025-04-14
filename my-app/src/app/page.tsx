@@ -23,7 +23,7 @@ const SplashPage: React.FC = () => {
                 <h1>Pollster</h1>
                 <p><Typer typedString="your vote. your polls. your impact." msSpeed={40}></Typer></p>
                 <div className="mt-4 block">
-                    <Link className="pol-button inline-block" href="/login">Login</Link>
+                    <Link className="pol-button inline-block" href="/home">Login</Link>
                     <Link className="pol-button ml-4 inline-block" href="/login">Sign Up</Link>
                 </div>
             </div>

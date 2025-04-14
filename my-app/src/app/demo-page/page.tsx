@@ -1,5 +1,6 @@
 import React from 'react';
 import '@/app/styles/global_styles.css';
+import NavBar from '../components/navbar';
 
 const MyPage: React.FC = () => {
     return (
