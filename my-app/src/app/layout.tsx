@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Tailwinders',
-  description: 'Hello World',
+  title: 'Pollster',
+  description: 'your vote. your polls. your impact.',
 }
 
 export default function RootLayout({
