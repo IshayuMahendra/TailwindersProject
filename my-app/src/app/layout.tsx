@@ -1,3 +1,5 @@
+import { LoggedInProvider } from "./provider/loggedInProvider"
+
 export const metadata = {
   title: 'Pollster',
   description: 'your vote. your polls. your impact.',
@@ -10,7 +12,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <LoggedInProvider>
+          {children}
+        </LoggedInProvider>
+        </body>
     </html>
   )
 }
