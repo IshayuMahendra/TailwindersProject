@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useIsLoggedIn } from '../provider/loggedInProvider';
 
 interface ProtectedRouteProps {
-    children?: ReactNode;
+    children: ReactNode;
 };
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }: ProtectedRouteProps) => {
@@ -20,7 +20,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }: ProtectedRo
 
     return (
         <>
-{isLoggedIn && {children}}
+{isLoggedIn && 
+<>{children}</>
+}
         </>
     );
 };
