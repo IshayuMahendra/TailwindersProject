@@ -13,11 +13,12 @@ import NavBar from '../components/navbar';
 import RightSidebar from '../components/RightBar';
 import LeftSidebar from '../components/LeftBar';
 import PollList from '../components/pollList';
+import { useIsLoggedIn } from '../provider/loggedInProvider';
 const bg = "/img/splashBG.jpg";
 
 const HomePage: React.FC = () => {
     const router = useRouter();
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const {isLoggedIn} = useIsLoggedIn();
 
     useEffect(() => {
         if(!isLoggedIn) {

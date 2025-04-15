@@ -9,12 +9,14 @@ import Link from 'next/link';
 import Modal from './components/modal';
 import Typer from './components/typer';
 import { useRouter } from 'next/navigation';
+import { useIsLoggedIn } from './provider/loggedInProvider';
 const bg = "/img/splashBG.jpg";
 
 const SplashPage: React.FC = () => {
     const [showSignupModal, setShowSignupModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const { isLoggedIn, setIsLoggedIn } = useIsLoggedIn();
     const router = useRouter();
 
     return (
@@ -44,7 +46,7 @@ const SplashPage: React.FC = () => {
                 <Modal onDismiss={() => setShowLoginModal(false)} transitionSeconds={0.3}>
                     <div className="text-center">
                         <h2>Login</h2>
-                        <form className="mt-4" onSubmit={async (e) => {e.preventDefault(); setShowLoginModal(false); router.push("/home")}}>
+                        <form className="mt-4" onSubmit={async (e) => {e.preventDefault(); setShowLoginModal(false); setIsLoggedIn(true); router.push("/home")}}>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium">Username</label>
                                 <input type="text" id="login-username" className="mt-1 p-2 w-full border rounded" required/>
