@@ -3,7 +3,11 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-const AddPollForm = () => {
+interface AddPollFormProps {
+  onClose?: () => void;
+}
+
+const AddPollForm: React.FC<AddPollFormProps> = ({ onClose }) => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
   const [error, setError] = useState("");
@@ -15,11 +19,12 @@ const AddPollForm = () => {
   };
 
   const handleAddOption = () => {
+    if (options.length >= 4) return;
     setOptions([...options, ""]);
   };
 
   const handleDeleteOption = (index: number) => {
-    if (options.length <= 2) return; // prevent dropping below 2
+    if (options.length <= 2) return;
     const updated = options.filter((_, i) => i !== index);
     setOptions(updated);
   };
@@ -34,13 +39,12 @@ const AddPollForm = () => {
     }
 
     const data = {
-      question,
+      title: question,
       options: cleanedOptions,
     };
 
     console.log("Poll Created:", data);
 
-    // Clear everything
     setQuestion("");
     setOptions(["", ""]);
     setError("");
@@ -51,6 +55,17 @@ const AddPollForm = () => {
       onSubmit={handleSubmit}
       className="bg-[#1E4147] w-full max-w-lg text-white p-6 rounded shadow-xl font-mono relative"
     >
+      <div className="absolute top-4 right-4 flex gap-3">
+        <button
+          onClick={onClose}
+          className="text-white text-xl hover:text-red-400"
+          title="Cancel and discard"
+          type="button"
+        >
+          <FontAwesomeIcon icon={faTrash} />
+        </button>
+      </div>
+
       <h2 className="text-2xl mb-6">Create/Edit Poll</h2>
 
       <input
@@ -89,13 +104,15 @@ const AddPollForm = () => {
       )}
 
       <div className="flex justify-between items-center mt-4">
-        <button
-          type="button"
-          onClick={handleAddOption}
-          className="text-white border border-white px-4 py-1 rounded hover:bg-white hover:text-[#1E4147]"
-        >
-          + Add Option
-        </button>
+        {options.length < 4 && (
+          <button
+            type="button"
+            onClick={handleAddOption}
+            className="text-white border border-white px-4 py-1 rounded hover:bg-white hover:text-[#1E4147]"
+          >
+            + Add Option
+          </button>
+        )}
 
         <button
           type="submit"
