@@ -58,7 +58,10 @@ const PollList: React.FC = () => {
             >
                 X
             </button>
-            <AddPollForm onClose={() => setShowModal(false)} />
+            <AddPollForm onNewPoll={(poll) => setPolls((prev) => [...prev, {
+              title: poll.title,
+              imageUrl: "/img/image1.webp"
+            }])}onClose={() => setShowModal(false)} />
           </div>
         </Modal>
       )}

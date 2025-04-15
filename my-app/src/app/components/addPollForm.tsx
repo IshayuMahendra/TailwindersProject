@@ -3,11 +3,17 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-interface AddPollFormProps {
-  onClose?: () => void;
+interface Poll {
+  title: string;
+  options: string[];
 }
 
-const AddPollForm: React.FC<AddPollFormProps> = ({ onClose }) => {
+interface AddPollFormProps {
+  onNewPoll: (data: Poll) => void;
+  onClose: () => void;
+}
+
+const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, onClose }) => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
   const [error, setError] = useState("");
@@ -38,16 +44,18 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onClose }) => {
       return;
     }
 
-    const data = {
+    const poll: Poll = {
       title: question,
       options: cleanedOptions,
     };
 
-    console.log("Poll Created:", data);
+    console.log("Poll Created:", poll);
 
     setQuestion("");
     setOptions(["", ""]);
     setError("");
+    onNewPoll(poll);
+    onClose();
   };
 
   return (
@@ -57,7 +65,6 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onClose }) => {
     >
       <div className="absolute top-4 right-4 flex gap-3">
         <button
-          onClick={onClose}
           className="text-white text-xl hover:text-red-400"
           title="Cancel and discard"
           type="button"
