@@ -14,20 +14,13 @@ import RightSidebar from '../components/RightBar';
 import LeftSidebar from '../components/LeftBar';
 import PollList from '../components/pollList';
 import { useIsLoggedIn } from '../provider/loggedInProvider';
+import ProtectedRoute from '../helper/protectedRoute';
 const bg = "/img/splashBG.jpg";
 
 const HomePage: React.FC = () => {
-    const router = useRouter();
-    const {isLoggedIn} = useIsLoggedIn();
-
-    useEffect(() => {
-        if(!isLoggedIn) {
-            router.push("/");
-        }
-    })
-
     return (
-        <div className = "home min-h screen flex flex-col">
+        <ProtectedRoute>
+                    <div className = "home min-h screen flex flex-col">
             <NavBar isAuthenticated={true}/>
             <div className = "flex">
                 <LeftSidebar/>
@@ -37,6 +30,7 @@ const HomePage: React.FC = () => {
             <RightSidebar />
            </div>
         </div>
+        </ProtectedRoute>
     );
 
 }
