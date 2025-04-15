@@ -47,6 +47,19 @@ h2 {
     border-radius: 50%;
 }
 
+
+.pol-btn-x {
+    padding: 5px;
+    background: none;
+    opacity: 0.5;
+    border: none;
+}
+
+.pol-btn-x:hover {
+    opacity: 1;
+    background: none;
+}
+
 .pol-modal-wrapper {
     z-index: 99;
     position: absolute;
@@ -93,15 +106,4 @@ h2 {
 
 .pol-text-dark {
     color: #1E4147;
-}
-
-.pol-btn-x {
-    padding: 5px;
-    background: none;
-    opacity: 0.5
-}
-
-.pol-btn-x:hover {
-    opacity: 1;
-    background: none;
 }
