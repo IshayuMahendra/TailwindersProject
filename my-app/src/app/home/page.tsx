@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
     return (
         <ProtectedRoute>
                     <div className = "home min-h screen flex flex-col">
-            <NavBar isAuthenticated={true}/>
+            <NavBar/>
             <div className = "flex">
                 <LeftSidebar/>
             <main className = "flex-1 p-6">

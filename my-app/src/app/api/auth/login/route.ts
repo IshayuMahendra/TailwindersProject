@@ -25,7 +25,10 @@ export async function POST(request: NextRequest) {
         
         if(await bcrypt.compare(password, saltedPassword)) {
             await createSession(user);
-            return NextResponse.json({ message: "success" }, { status: 200 });
+            return NextResponse.json({ message: "success", user: {
+                username: user.username,
+                display_name: user.display_name
+            } }, { status: 200 });
         }
         return NextResponse.json({ message: "Username or password is incorrect." }, { status: 403 });
 

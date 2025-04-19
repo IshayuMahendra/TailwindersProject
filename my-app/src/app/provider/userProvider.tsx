@@ -30,10 +30,13 @@ export const UserProvider = ({ children }: {children: React.ReactNode}) => {
       method: 'POST'
     }).then(async (response: Response) => {
       let jsonData = await response.json();
-      setIsLoggedIn(jsonData.isLoggedIn);
+      setIsLoggedIn(jsonData.loggedIn);
 
       if(jsonData.isLoggedIn) {
-        setUser(jsonData.user);
+        setUser({
+          username: jsonData.user["username"],
+          displayName: jsonData.user["display_name"]
+        });
       }
 
     })
