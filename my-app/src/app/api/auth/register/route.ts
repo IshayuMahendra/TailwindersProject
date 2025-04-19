@@ -18,6 +18,11 @@ export async function POST(request: NextRequest) {
 
         await dbConnect();
 
+        let foundUser = await User.findOne({username: username});
+        if(foundUser) {
+            return NextResponse.json({ message: "Username already exists" }, { status: 400 });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({
             username, salted_password: hashedPassword, display_name

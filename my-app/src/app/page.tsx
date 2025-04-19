@@ -11,6 +11,7 @@ import Typer from './components/typer';
 import { useRouter } from 'next/navigation';
 import { useUser } from './provider/userProvider';
 import LoginForm from './components/loginForm';
+import SignupForm from './components/signupForm';
 const bg = "/img/splashBG.jpg";
 
 const SplashPage: React.FC = () => {
@@ -56,24 +57,10 @@ const SplashPage: React.FC = () => {
             }
             {showSignupModal &&
                 <Modal onDismiss={() => setShowSignupModal(false)} transitionSeconds={0.3}>
-                    <div className="text-center">
-                        <h2>Sign Up</h2>
-                        <form className="mt-4">
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium">Name</label>
-                                <input type="text" id="signup-name" className="mt-1 p-2 w-full border rounded" required/>
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium">Username</label>
-                                <input type="text" id="signup-username" className="mt-1 p-2 w-full border rounded" required/>
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium">Password</label>
-                                <input type="password" id="signup-password" className="mt-1 p-2 w-full border rounded" required/>
-                            </div>
-                            <button type="submit" className="pol-button">Submit</button>
-                        </form>
-                    </div>
+                    <SignupForm onNewUser={() => {
+                        setShowSignupModal(false);
+                        setShowLoginModal(true);
+                    }}/>
                 </Modal>
             }
             <Image src={bg} className="splash-img" alt="test" fill />
