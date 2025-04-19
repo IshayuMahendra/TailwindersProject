@@ -1,36 +1,51 @@
 "use server";
 
-import crypto from 'crypto';
 import { cookies } from 'next/headers';
 import { IUser } from '@/models/userSchema';
-import sessionMap from './sessionMap';
 import { Model } from 'mongoose';
+import jwt from 'jsonwebtoken';
+import { jwtVerify } from 'jose';
 
-function generateRandomString(length: number) {
-    return crypto.randomBytes(Math.ceil(length / 2)).toString('hex').slice(0, length);
+interface UserSession {
+    _id: unknown;
+    username: string;
+    display_name: string;
 }
 
 export async function createSession(user: Model<IUser> & IUser) {
-    const newSessionID = generateRandomString(50);
-    sessionMap.set(newSessionID, user);
-    (await cookies()).set('pollster_session', newSessionID, {httpOnly: true, sameSite: 'strict'});
-    return newSessionID;
+    const session: UserSession = {
+        _id: user._id,
+        username: user.username,
+        display_name: user.display_name
+    }
+
+    const token = jwt.sign(session, 'your-secret-key', {});
+    (await cookies()).set('pollster_token', token, {httpOnly: true, sameSite: 'strict'});
 }
 
-export async function getSession(): Promise<Model<IUser> & IUser|undefined> {
-    const sessionID: string|undefined = (await cookies()).get('pollster_session')?.value;
-    if(!sessionID) {
+export async function getSession(): Promise<UserSession|undefined> {
+    const sessionToken: string|undefined = (await cookies()).get('pollster_token')?.value;
+    if(!sessionToken) {
         return undefined;
     }
-    return sessionMap.get(sessionID);
+    const secretKey = new TextEncoder().encode('your-secret-key');
+
+    const { payload } = await jwtVerify<UserSession>(
+        sessionToken,
+        secretKey,
+        {
+          algorithms: ['HS256'], // Or 'RS256' if using RSA keys
+        }
+      );
+
+    return payload;
 }
 
 export async function destroySession() {
-    const sessionID: string|undefined = (await cookies()).get('pollster_session')?.value;
+    const sessionID: string|undefined = (await cookies()).get('pollster_token')?.value;
     if(!sessionID) {
         return true;
     }
-    sessionMap.delete(sessionID);
-    (await cookies()).delete('pollster_session');
+    (await cookies()).delete('pollster_token');
     return true;
 }

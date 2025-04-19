@@ -2,7 +2,7 @@ import dbConnect from "@/app/lib/db_connection";
 import {createSession} from "@/app/lib/sessionManager";
 import User, { IUser } from "@/models/userSchema";
 import bcrypt from 'bcrypt';
-import { Model } from "mongoose";
+import { Model, Document } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
         await dbConnect();
 
-        let user: Model<IUser> & IUser|null = await User.findOne({username: username});
+        let user: Model<IUser> & IUser & Document<IUser>|null = await User.findOne({username: username});
 
         if(!user) {
             return NextResponse.json({ message: "Username or password is incorrect." }, { status: 403 });
