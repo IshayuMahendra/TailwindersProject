@@ -25,3 +25,13 @@ export async function getSession(): Promise<IUser|undefined> {
     console.log(sessionMap);
     return sessionMap.get(sessionID);
 }
+
+export async function destroySession() {
+    const sessionID: string|undefined = (await cookies()).get('pollster_session')?.value;
+    if(!sessionID) {
+        return true;
+    }
+    sessionMap.delete(sessionID);
+    (await cookies()).delete('pollster_session');
+    return true;
+}
