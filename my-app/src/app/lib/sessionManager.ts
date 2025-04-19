@@ -19,7 +19,11 @@ export async function createSession(user: Model<IUser> & IUser) {
         display_name: user.display_name
     }
 
-    const token = jwt.sign(session, 'your-secret-key', {});
+    if(process.env.JWT_SECRET == undefined) {
+        throw new Error("JWT_SECRET must be defined in .env file");
+    }
+
+    const token = jwt.sign(session, process.env.JWT_SECRET, {});
     (await cookies()).set('pollster_token', token, {httpOnly: true, sameSite: 'strict'});
 }
 
@@ -28,17 +32,26 @@ export async function getSession(): Promise<UserSession|undefined> {
     if(!sessionToken) {
         return undefined;
     }
-    const secretKey = new TextEncoder().encode('your-secret-key');
 
-    const { payload } = await jwtVerify<UserSession>(
-        sessionToken,
-        secretKey,
-        {
-          algorithms: ['HS256'], // Or 'RS256' if using RSA keys
-        }
-      );
+    if(process.env.JWT_SECRET == undefined) {
+        throw new Error("JWT_SECRET must be defined in .env file");
+    }
 
-    return payload;
+    try {
+        const secretKey = new TextEncoder().encode(process.env.JWT_SECRET);
+
+        const { payload } = await jwtVerify<UserSession>(
+            sessionToken,
+            secretKey,
+            {
+            algorithms: ['HS256'], // Or 'RS256' if using RSA keys
+            }
+        );
+
+        return payload;
+    } catch(e) {
+        return undefined;
+    }
 }
 
 export async function destroySession() {
