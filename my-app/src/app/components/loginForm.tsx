@@ -32,6 +32,7 @@ const LoginForm: React.FC = () => {
                     displayName: jsonData.user["display_name"]
                   });
                 userContext.setIsLoggedIn(true); 
+                router.push("/home");
             } else {
                 setAlert(jsonData.message);
             }

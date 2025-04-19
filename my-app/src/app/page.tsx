@@ -20,12 +20,6 @@ const SplashPage: React.FC = () => {
     const { isLoggedIn, setIsLoggedIn } = useUser();
     const router = useRouter();
 
-    useEffect(() => {
-        if(isLoggedIn) {
-            router.push("/home");
-        }
-    }, [isLoggedIn]);
-
     return (
                     <div className="splash">
             <div className="splash-left-corner">

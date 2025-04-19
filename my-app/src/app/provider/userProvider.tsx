@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from 'next/navigation';
 import React, { createContext, useState, useContext, Dispatch, useEffect } from 'react';
 
 interface User {
@@ -7,22 +8,23 @@ interface User {
 }
 
 interface ContextProps {
-    isLoggedIn: boolean,
-    setIsLoggedIn: Dispatch<any>,
-    user?: User,
-    setUser: Dispatch<any>
+  isLoggedIn: boolean,
+  setIsLoggedIn: Dispatch<any>,
+  user?: User,
+  setUser: Dispatch<any>
 }
 
 const UserContext = createContext<ContextProps>({
-    isLoggedIn: false,
-    setIsLoggedIn: (() => {return null}),
-    user: undefined,
-    setUser: (() => {return null})
+  isLoggedIn: false,
+  setIsLoggedIn: (() => { return null }),
+  user: undefined,
+  setUser: (() => { return null })
 });
 
-export const UserProvider = ({ children }: {children: React.ReactNode}) => {
+export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<User|undefined>(undefined);
+  const [user, setUser] = useState<User | undefined>(undefined);
 
   //Set initial state
   useEffect(() => {
@@ -32,11 +34,12 @@ export const UserProvider = ({ children }: {children: React.ReactNode}) => {
       let jsonData = await response.json();
       setIsLoggedIn(jsonData.loggedIn);
 
-      if(jsonData.isLoggedIn) {
+      if (jsonData.loggedIn) {
         setUser({
           username: jsonData.user["username"],
           displayName: jsonData.user["display_name"]
         });
+        router.push("/home");
       }
 
     })
