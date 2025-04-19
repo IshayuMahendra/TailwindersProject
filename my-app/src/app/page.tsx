@@ -9,14 +9,14 @@ import Link from 'next/link';
 import Modal from './components/modal';
 import Typer from './components/typer';
 import { useRouter } from 'next/navigation';
-import { useIsLoggedIn } from './provider/loggedInProvider';
+import { useUser } from './provider/userProvider';
 const bg = "/img/splashBG.jpg";
 
 const SplashPage: React.FC = () => {
     const [showSignupModal, setShowSignupModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const { isLoggedIn, setIsLoggedIn } = useIsLoggedIn();
+    const { isLoggedIn, setIsLoggedIn } = useUser();
     const router = useRouter();
 
     return (

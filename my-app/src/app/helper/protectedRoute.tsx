@@ -2,7 +2,7 @@
 
 import React, { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useIsLoggedIn } from '../provider/loggedInProvider';
+import { useUser } from '../provider/userProvider';
 
 interface ProtectedRouteProps {
     children: ReactNode;
@@ -10,7 +10,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }: ProtectedRouteProps) => {
     const router = useRouter();
-    const {isLoggedIn} = useIsLoggedIn();
+    const {isLoggedIn} = useUser();
     useEffect(() => {
         if(!isLoggedIn) {
             router.push("/");

@@ -13,7 +13,7 @@ import NavBar from '../components/navbar';
 import RightSidebar from '../components/RightBar';
 import LeftSidebar from '../components/LeftBar';
 import PollList from '../components/pollList';
-import { useIsLoggedIn } from '../provider/loggedInProvider';
+import { useUser } from '../provider/userProvider';
 import ProtectedRoute from '../helper/protectedRoute';
 const bg = "/img/splashBG.jpg";
 

@@ -1,4 +1,4 @@
-import { LoggedInProvider } from "./provider/loggedInProvider"
+import { UserProvider } from "./provider/userProvider"
 
 export const metadata = {
   title: 'Pollster',
@@ -13,9 +13,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <LoggedInProvider>
+        <UserProvider>
           {children}
-        </LoggedInProvider>
+        </UserProvider>
         </body>
     </html>
   )
