@@ -7,6 +7,8 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ message: "User is not logged in." }, { status: 403 });
     }
 
+    console.log(session._id); //User's ID
+
     try {
         return NextResponse.json({message: "yay!"}, {status: 200});
     } catch (e: any) {
