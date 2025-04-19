@@ -24,14 +24,18 @@ export const UserProvider = ({ children }: {children: React.ReactNode}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User|undefined>(undefined);
 
-  //Verify that the user is logged in
+  //Set initial state
   useEffect(() => {
     fetch("http://localhost:3000/api/auth", {
       method: 'POST'
     }).then(async (response: Response) => {
       let jsonData = await response.json();
       setIsLoggedIn(jsonData.isLoggedIn);
-      console.log(isLoggedIn);
+
+      if(jsonData.isLoggedIn) {
+        setUser(jsonData.user);
+      }
+
     })
   }, [])
 
