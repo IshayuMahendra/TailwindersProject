@@ -3,11 +3,12 @@ import React, { createContext, useState, useContext, Dispatch } from 'react';
 
 interface ContextProps {
     isLoggedIn: boolean,
-    setIsLoggedIn?: Dispatch<any>
+    setIsLoggedIn: Dispatch<any>
 }
 
 const LoggedInContext = createContext<ContextProps>({
-    isLoggedIn: false
+    isLoggedIn: false,
+    setIsLoggedIn: (() => {return null})
 });
 
 export const LoggedInProvider = ({ children }: {children: React.ReactNode}) => {

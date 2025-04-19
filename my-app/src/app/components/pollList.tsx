@@ -48,16 +48,9 @@ const PollList: React.FC = () => {
           onDismiss={() => setShowModal(false)}
           transitionSeconds={0.3}
           bgColor="#1E4147"
+          fgColor="#FFF"
         >
           <div className="w-[720px] h-[600px] p-10 overflow-auto rounded-lg">
-            <button
-                onClick={() => setShowModal(false)}
-                className="text-white text-3xl font-bold hover:text-red-400"
-                title="Close"
-                type="button"
-            >
-                X
-            </button>
             <AddPollForm onNewPoll={(poll) => setPolls((prev) => [...prev, {
               title: poll.title,
               imageUrl: "/img/image1.webp"
