@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import ImagePicker from "./imagePicker";
 
 interface Poll {
   title: string;
@@ -59,19 +60,12 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, onClose }) => {
   };
 
   return (
+    <>
+    <ImagePicker></ImagePicker>
     <form
       onSubmit={handleSubmit}
-      className="bg-[#1E4147] w-full max-w-lg text-white p-6 rounded shadow-xl font-mono relative"
+      className="w-full text-white p-6 font-mono relative"
     >
-      <div className="absolute top-4 right-4 flex gap-3">
-        <button
-          className="text-white text-xl hover:text-red-400"
-          title="Cancel and discard"
-          type="button"
-        >
-          <FontAwesomeIcon icon={faTrash} />
-        </button>
-      </div>
 
       <h2 className="text-2xl mb-6">Create/Edit Poll</h2>
 
@@ -129,6 +123,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, onClose }) => {
         </button>
       </div>
     </form>
+    </>
   );
 };
 

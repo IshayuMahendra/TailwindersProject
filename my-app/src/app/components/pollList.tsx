@@ -50,7 +50,7 @@ const PollList: React.FC = () => {
           bgColor="#1E4147"
           fgColor="#FFF"
         >
-          <div className="w-[720px] h-[600px] p-10 overflow-auto rounded-lg">
+          <div className="pol-modal-large">
             <AddPollForm onNewPoll={(poll) => setPolls((prev) => [...prev, {
               title: poll.title,
               imageUrl: "/img/image1.webp"
