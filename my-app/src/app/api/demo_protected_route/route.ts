@@ -1,14 +1,7 @@
-import { getSession } from "@/app/lib/sessionManager";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-    const session = await getSession();
-    if(!session) {
-        return NextResponse.json({ message: "User is not logged in." }, { status: 403 });
-    }
-
-    console.log(session._id); //User's ID
-
     try {
         return NextResponse.json({message: "yay!"}, {status: 200});
     } catch (e: any) {
