@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useState, useContext, Dispatch } from 'react';
+import React, { createContext, useState, useContext, Dispatch, useEffect } from 'react';
 
 interface User {
   username: string;
@@ -23,6 +23,17 @@ const UserContext = createContext<ContextProps>({
 export const UserProvider = ({ children }: {children: React.ReactNode}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User|undefined>(undefined);
+
+  //Verify that the user is logged in
+  useEffect(() => {
+    fetch("http://localhost:3000/api/auth", {
+      method: 'POST'
+    }).then(async (response: Response) => {
+      let jsonData = await response.json();
+      setIsLoggedIn(jsonData.isLoggedIn);
+      console.log(isLoggedIn);
+    })
+  }, [])
 
   return (
     <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser }}>
