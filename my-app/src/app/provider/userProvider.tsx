@@ -25,6 +25,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | undefined>(undefined);
+  const [isInit, setIsInit] = useState(false);
 
   //Set initial state
   useEffect(() => {
@@ -39,15 +40,15 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
           username: jsonData.user["username"],
           displayName: jsonData.user["display_name"]
         });
-        router.push("/home");
       }
 
+      setIsInit(true);
     })
   }, [])
 
   return (
     <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser }}>
-      {children}
+      {isInit && children}
     </UserContext.Provider>
   );
 };

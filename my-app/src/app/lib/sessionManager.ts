@@ -13,7 +13,6 @@ export async function createSession(user: IUser) {
     const newSessionID = generateRandomString(50);
     sessionMap.set(newSessionID, user);
     (await cookies()).set('pollster_session', newSessionID, {httpOnly: true, sameSite: 'strict'});
-    console.log(sessionMap);
     return newSessionID;
 }
 
@@ -22,7 +21,6 @@ export async function getSession(): Promise<IUser|undefined> {
     if(!sessionID) {
         return undefined;
     }
-    console.log(sessionMap);
     return sessionMap.get(sessionID);
 }
 
