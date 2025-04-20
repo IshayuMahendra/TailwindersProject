@@ -1,8 +1,8 @@
 "use server";
 
 import dbConnect from "@/app/lib/db_connection";
-import { createSession, getSession } from "@/app/lib/sessionManager";
-import Poll, { IPoll, IPollCreator } from "@/models/pollSchema";
+import { getSession } from "@/app/lib/sessionManager";
+import Poll, { IPoll } from "@/models/pollSchema";
 import User, { IUser } from "@/models/userSchema";
 import { Model, HydratedDocument } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
