@@ -2,7 +2,6 @@
 
 import { Schema, model, Document, Model, models } from 'mongoose';
 
-// Define interfaces for TypeScript
 interface IPollOption {
   text: string;
   votes: number;
@@ -11,12 +10,10 @@ interface IPollOption {
 interface IPoll extends Document {
   title: string;
   options: IPollOption[];
-  creator: string; // References username from IUser
+  creator: string;
   createdAt: Date;
   updatedAt?: Date;
 }
-
-// Define Mongoose schema
 const pollSchema = new Schema<IPoll>({
   title: {
     type: String,
@@ -48,7 +45,6 @@ const pollSchema = new Schema<IPoll>({
   },
 });
 
-// Export Mongoose model, reusing if already defined
 const Poll: Model<IPoll> = models.Poll || model<IPoll>('Poll', pollSchema);
 export default Poll;
 export type { IPoll };
