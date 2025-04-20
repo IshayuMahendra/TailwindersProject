@@ -35,6 +35,8 @@ const SignupForm: React.FC<SignupFormProps> = ({onNewUser}) => {
             } else {
                 setAlert(jsonData.message);
             }
+        }).catch(async (error: Error) => {
+            setAlert(error.message);
         })
     }
 

@@ -36,6 +36,8 @@ const LoginForm: React.FC = () => {
             } else {
                 setAlert(jsonData.message);
             }
+        }).catch(async (error: Error) => {
+            setAlert(error.message);
         })
     }
 
