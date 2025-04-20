@@ -65,8 +65,6 @@ export async function POST(request: NextRequest) {
 
     await poll.save();
 
-    await createSession(user);
-
     return NextResponse.json(
       {
         message: "Poll created successfully",
