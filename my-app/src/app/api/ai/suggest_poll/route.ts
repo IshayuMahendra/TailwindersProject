@@ -15,7 +15,18 @@ interface GeminiResponse {
     }[]
 }
 
+const targetDemographics = [
+    "university students of the University of Georgia in Athens, GA",
+    "american college students",
+    "students",
+    "Athens, GA, USA residents"
+]
+
 async function generatePoll(): Promise<AIPoll> {
+
+    const randomIndex = Math.floor(Math.random() * targetDemographics.length);
+    let randomDemographic = targetDemographics[randomIndex];
+
     let r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
         method: 'POST',
         headers: {
@@ -24,7 +35,7 @@ async function generatePoll(): Promise<AIPoll> {
         body: JSON.stringify({
             contents: [
                 {
-                    "parts": [{ "text": "Generate a unique poll for university students of the University of Georgia in Athens, GA.  Return a JSON object with the title of the poll as 'title' and  four options as a string array of 'options'.  Only return the JSON object, nothing else." }]
+                    "parts": [{ "text": `Generate a unique poll for ${randomDemographic}.  Return a JSON object with the title of the poll as 'title' and  four options as a string array of 'options'.  Only return the JSON object, nothing else.` }]
                 }
             ],
             generationConfig: { "response_mime_type": "application/json" }
