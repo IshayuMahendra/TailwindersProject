@@ -5,8 +5,9 @@ import { createSession, getSession } from "@/app/lib/sessionManager";
 import Poll, { IPoll } from "@/models/pollSchema";
 import User, { IUser } from "@/models/userSchema";
 import { NextRequest, NextResponse } from "next/server";
-import { isValidObjectId, Model } from "mongoose";
+import { isValidObjectId, Model, Types } from "mongoose";
 
+// Interface for request body
 interface EditPollRequest {
   title: string;
   options: string[];
@@ -57,7 +58,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       return NextResponse.json({ message: "Poll not found" }, { status: 404 });
     }
 
-    if (poll.creator !== user.username) {
+    if (!poll.creator.userId.equals(user._id as Types.ObjectId)) {
       return NextResponse.json(
         { message: "Forbidden: Only the creator can edit this poll" },
         { status: 403 }
@@ -65,9 +66,9 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     }
 
     poll.title = title;
-    poll.options = options.map((option) => ({
+    poll.options = options.map((option: string): { text: string; votes: number } => ({
       text: option,
-      votes: poll.options.find((o) => o.text === option)?.votes || 0,
+      votes: poll.options.find((o: { text: string; votes: number }) => o.text === option)?.votes || 0,
     }));
     poll.updatedAt = new Date();
 
@@ -89,8 +90,8 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       },
       { status: 200 }
     );
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("Error editing poll:", e);
-    return NextResponse.json({ message: e.message }, { status: 500 });
+    return NextResponse.json({ message: e instanceof Error ? e.message : "An unknown error occurred" }, { status: 500 });
   }
 }

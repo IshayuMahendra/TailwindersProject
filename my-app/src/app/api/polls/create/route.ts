@@ -2,9 +2,9 @@
 
 import dbConnect from "@/app/lib/db_connection";
 import { createSession, getSession } from "@/app/lib/sessionManager";
-import Poll, { IPoll } from "@/models/pollSchema";
-import { HydratedDocument } from "mongoose";
+import Poll, { IPoll, IPollCreator } from "@/models/pollSchema";
 import User, { IUser } from "@/models/userSchema";
+import { Model, HydratedDocument } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 interface CreatePollRequest {
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 
     await dbConnect();
 
-    const user: HydratedDocument<IUser> | null = await User.findById(
+    const user: (Model<IUser> & IUser & HydratedDocument<IUser>) | null = await User.findById(
       session._id
     );
     if (!user) {
@@ -43,10 +43,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    interface PollOption {
+      text: string;
+      votes: number;
+    }
+
+    interface PollCreator {
+      userId: string;
+      username: string;
+    }
+
     const poll: IPoll = new Poll({
       title,
-      options: options.map((option) => ({ text: option, votes: 0 })),
-      creator: user.username,
+      options: options.map((option: string): PollOption => ({ text: option, votes: 0 })),
+      creator: {
+      userId: user._id as string,
+      username: user.username as string,
+      } as PollCreator,
       createdAt: new Date(),
     });
 
@@ -68,7 +81,10 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (e: unknown) {
-    console.error("Error creating poll:", e);
-    return NextResponse.json({ message: e instanceof Error ? e.message : "An unknown error occurred" }, { status: 500 });
-    }
+      console.error("Error creating poll:", e instanceof Error ? e.message : e);
+      return NextResponse.json(
+        { message: e instanceof Error ? e.message : "An unknown error occurred" },
+        { status: 500 }
+      );
   }
+}

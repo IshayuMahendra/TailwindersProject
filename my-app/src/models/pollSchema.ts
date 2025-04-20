@@ -1,19 +1,25 @@
 "use server";
 
-import { Schema, model, Document, Model, models } from 'mongoose';
+import { Schema, model, Document, Model, models, Types } from 'mongoose';
 
 interface IPollOption {
   text: string;
   votes: number;
 }
 
+interface IPollCreator {
+  userId: Types.ObjectId;
+  username: string;
+}
+
 interface IPoll extends Document {
   title: string;
   options: IPollOption[];
-  creator: string;
+  creator: IPollCreator;
   createdAt: Date;
   updatedAt?: Date;
 }
+
 const pollSchema = new Schema<IPoll>({
   title: {
     type: String,
@@ -33,8 +39,15 @@ const pollSchema = new Schema<IPoll>({
     },
   ],
   creator: {
-    type: String,
-    required: true,
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
   },
   createdAt: {
     type: Date,
@@ -47,4 +60,4 @@ const pollSchema = new Schema<IPoll>({
 
 const Poll: Model<IPoll> = models.Poll || model<IPoll>('Poll', pollSchema);
 export default Poll;
-export type { IPoll };
+export type { IPoll, IPollCreator };
