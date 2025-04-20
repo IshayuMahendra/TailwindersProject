@@ -7,7 +7,6 @@ import User, { IUser } from "@/models/userSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { isValidObjectId, Model, Types } from "mongoose";
 
-// Interface for request body
 interface EditPollRequest {
   title: string;
   options: string[];
