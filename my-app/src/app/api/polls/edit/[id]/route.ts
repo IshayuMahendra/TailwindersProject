@@ -5,16 +5,25 @@ import { createSession, getSession } from "@/app/lib/sessionManager";
 import Poll, { IPoll } from "@/models/pollSchema";
 import User, { IUser } from "@/models/userSchema";
 import { NextRequest, NextResponse } from "next/server";
+import { isValidObjectId, Model } from "mongoose";
 
 interface EditPollRequest {
   title: string;
   options: string[];
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const { title, options } = await request.json();
+    const params = await context.params;
     const pollId = params.id;
+
+    if (!isValidObjectId(pollId)) {
+      return NextResponse.json(
+        { message: "Invalid poll ID" },
+        { status: 400 }
+      );
+    }
 
     if (!title || !options || options.length < 2) {
       return NextResponse.json(
@@ -33,7 +42,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     await dbConnect();
 
-    const user: (Model<IUser> & IUser & Document<IUser>) | null = await User.findById(
+    const user: (Model<IUser> & IUser & Document) | null = await User.findById(
       session._id
     );
     if (!user) {
@@ -64,7 +73,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     await poll.save();
 
-    // Update session
     await createSession(user);
 
     return NextResponse.json(

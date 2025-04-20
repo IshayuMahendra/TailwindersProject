@@ -3,6 +3,7 @@
 import dbConnect from "@/app/lib/db_connection";
 import { createSession, getSession } from "@/app/lib/sessionManager";
 import Poll, { IPoll } from "@/models/pollSchema";
+import { HydratedDocument } from "mongoose";
 import User, { IUser } from "@/models/userSchema";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
 
     await dbConnect();
 
-    const user: (Model<IUser> & IUser & Document<IUser>) | null = await User.findById(
+    const user: HydratedDocument<IUser> | null = await User.findById(
       session._id
     );
     if (!user) {
@@ -66,8 +67,8 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("Error creating poll:", e);
-    return NextResponse.json({ message: e.message }, { status: 500 });
+    return NextResponse.json({ message: e instanceof Error ? e.message : "An unknown error occurred" }, { status: 500 });
+    }
   }
-}
