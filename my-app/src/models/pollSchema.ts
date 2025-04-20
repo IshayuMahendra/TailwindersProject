@@ -47,4 +47,4 @@ const pollSchema = new Schema<IPoll>({
 
 const Poll: Model<IPoll> = models.Poll || model<IPoll>('Poll', pollSchema);
 export default Poll;
-export type { IPoll };
+export type { IPoll,IPollOption };

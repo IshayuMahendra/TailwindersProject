@@ -2,7 +2,7 @@
 
 import dbConnect from "@/app/lib/db_connection";
 import { createSession, getSession } from "@/app/lib/sessionManager";
-import Poll, { IPoll } from "@/models/pollSchema";
+import Poll, { IPoll, IPollOption } from "@/models/pollSchema";
 import { HydratedDocument } from "mongoose";
 import User, { IUser } from "@/models/userSchema";
 import { NextRequest, NextResponse } from "next/server";
@@ -45,14 +45,12 @@ export async function POST(request: NextRequest) {
 
     const poll: IPoll = new Poll({
       title,
-      options: options.map((option) => ({ text: option, votes: 0 })),
+      options: options.map((option: IPollOption) => ({ text: option, votes: 0 })),
       creator: user.username,
       createdAt: new Date(),
     });
 
     await poll.save();
-
-    await createSession(user);
 
     return NextResponse.json(
       {
