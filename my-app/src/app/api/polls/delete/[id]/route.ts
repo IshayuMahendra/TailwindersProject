@@ -1,7 +1,7 @@
 "use server";
 
 import dbConnect from "@/app/lib/db_connection";
-import { createSession, getSession } from "@/app/lib/sessionManager";
+import { getSession } from "@/app/lib/sessionManager";
 import Poll from "@/models/pollSchema";
 import User from "@/models/userSchema";
 import { NextRequest, NextResponse } from "next/server";
@@ -32,8 +32,6 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
     if (!deletedPoll) {
       return NextResponse.json({ message: "Poll not found or you are not the creator" }, { status: 404 });
     }
-
-    await createSession(user);
 
     return NextResponse.json({ message: "Poll deleted successfully" }, { status: 200 });
   } catch (e: unknown) {
