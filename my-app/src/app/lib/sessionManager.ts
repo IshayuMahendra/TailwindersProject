@@ -8,15 +8,11 @@ import { jwtVerify } from 'jose';
 
 interface UserSession {
     _id: unknown;
-    username: string;
-    display_name: string;
 }
 
 export async function createSession(user: Model<IUser> & IUser) {
     const session: UserSession = {
-        _id: user._id,
-        username: user.username,
-        display_name: user.display_name
+        _id: user._id
     }
 
     if(process.env.JWT_SECRET == undefined) {
