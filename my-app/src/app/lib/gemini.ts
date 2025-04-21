@@ -7,7 +7,8 @@ interface AIPoll {
 
 interface GeminiResponse {
     candidates: {
-        content: {
+        finishReason?: string;
+        content?: {
             parts: {
                 text?: string
                 inlineData?: {
@@ -20,6 +21,7 @@ interface GeminiResponse {
 }
 
 export async function generatePoll(demographic: string): Promise<AIPoll> {
+    console.log("[GEMINI] Generating Poll");
     let r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
         method: 'POST',
         headers: {
@@ -36,8 +38,12 @@ export async function generatePoll(demographic: string): Promise<AIPoll> {
     })
     let jsonData: GeminiResponse = await r.json();
 
-    if(!jsonData.candidates[0].content.parts[0].text) {
-        throw new Error("Failed to generate poll; Malformed gemini API response");
+    if(!jsonData.candidates || !jsonData.candidates[0] || !jsonData.candidates[0].content || !jsonData.candidates[0].content.parts || !jsonData.candidates[0].content.parts[0] || !jsonData.candidates[0].content.parts[0].text) {
+        let errorMsg = "unknown error";
+        if(jsonData.candidates && jsonData.candidates[0] && jsonData.candidates[0].finishReason) {
+            errorMsg = jsonData.candidates[0].finishReason;
+        }
+        throw new Error(`Error generating content: ${errorMsg}`);
     }
 
     let generatedPoll: AIPoll = JSON.parse(jsonData.candidates[0].content.parts[0].text);
@@ -61,9 +67,14 @@ export async function generateImage(prompt: string): Promise<Buffer> {
         })
     })
     let jsonData: GeminiResponse = await r.json();
+
     if(!jsonData.candidates || !jsonData.candidates[0] || !jsonData.candidates[0].content || !jsonData.candidates[0].content.parts[0] || !jsonData.candidates[0].content.parts[0].inlineData) {
-        console.log(jsonData);
-        throw new Error("Error generating image");
+        //Response is not as expected
+        let errorMsg = "unknown error";
+        if(jsonData.candidates && jsonData.candidates[0] && jsonData.candidates[0].finishReason) {
+            errorMsg = jsonData.candidates[0].finishReason;
+        }
+        throw new Error(`Error generating image: ${errorMsg}`);
     }
     const generatedImage = Buffer.from(jsonData.candidates[0].content.parts[0].inlineData.data, 'base64')
     return generatedImage;
