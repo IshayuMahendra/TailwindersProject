@@ -28,7 +28,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, onClose }) => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
   const [error, setError] = useState("");
-  const [imageFile, setImageFile] = useState<File|null>(null);
+  const [imageFile, setImageFile] = useState<File|undefined>(undefined);
 
   const handleOptionChange = (index: number, value: string) => {
     const updated = [...options];
@@ -59,7 +59,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, onClose }) => {
     const formData = new FormData();
     formData.append('question', question);
     cleanedOptions.map((option) => formData.append('option', option));
-    if(imageFile != null) {
+    if(imageFile) {
       formData.append('image', imageFile);
     }
 
