@@ -100,7 +100,8 @@ export async function bb_deleteFile(file: BackblazeFile): Promise<void> {
         })
     })
     if(response.status != 200) {
-        throw new Error("Failed to authorize");
+        console.log(`[BACKBLAZE] Failed to delete file: ${await response.json()}`);
+        throw new Error("Failed to delete file");
     }
     console.log(`[BACKBLAZE] Deleted file ${file.filename}`);
 }

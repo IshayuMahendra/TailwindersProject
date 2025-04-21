@@ -126,7 +126,9 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
         return NextResponse.json({ message: "Poll not found or you are not the creator" }, { status: 404 });
       }
   
-      await bb_deleteFile(deletedPoll.image);
+      if(deletedPoll.image) {
+        await bb_deleteFile(deletedPoll.image);
+      }
   
       return NextResponse.json({ message: "Poll deleted successfully" }, { status: 200 });
     } catch (e: unknown) {
