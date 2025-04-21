@@ -6,28 +6,16 @@ import Poll, { IPoll } from "@/models/pollSchema";
 import User, { IUser } from "@/models/userSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { isValidObjectId, Model, Types } from "mongoose";
-import { bb_deleteFile } from "@/app/lib/backblaze";
+import { BackblazeFile, bb_deleteFile, bb_uploadFile } from "@/app/lib/backblaze";
+import imageType from "image-type";
+import path from "path";
+import {v4 as uuidv4} from 'uuid';
 
 //Edit Poll
 export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { title, options } = await request.json();
     const params = await context.params;
     const pollId = params.id;
-
-    if (!isValidObjectId(pollId)) {
-      return NextResponse.json(
-        { message: "Invalid poll ID" },
-        { status: 400 }
-      );
-    }
-
-    if (!title || !options || options.length < 2) {
-      return NextResponse.json(
-        { message: "Title and at least two options are required" },
-        { status: 400 }
-      );
-    }
 
     const session = await getSession();
     if (!session || !session._id) {
@@ -36,6 +24,56 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       return NextResponse.json(
         { message: "An error occured while obtaining the session" },
         { status: 500 }
+      );
+    }
+
+    if (!isValidObjectId(pollId)) {
+      return NextResponse.json(
+        { message: "Invalid poll ID" },
+        { status: 400 }
+      );
+    }
+
+    const formData: FormData = (await request.formData());
+    
+        const title: string = formData.get('question') as string;
+        const options: string[] = formData.getAll('option') as string[];
+    
+        if (!title || !options || options.length < 2) {
+          return NextResponse.json(
+            { message: "Title and at least two options are required" },
+            { status: 400 }
+          );
+        }
+    
+        let uploadedImage: BackblazeFile|null = null;
+        if (formData.has('image')) {
+          let image = formData.get('image');
+    
+          if(!(image instanceof Blob)) {
+            throw new Error("Provided image was not a valid image file");
+          }
+    
+          const buffer = Buffer.from(await image.arrayBuffer());
+    
+          //If file is not an image
+          if(!(await imageType(buffer))) {
+            throw new Error("Provided upload was not an image file.");
+          }
+    
+          if(buffer.length == 0) {
+            throw new Error("Image provided was blank.");
+          }
+    
+          const imgExtension = path.extname(image.name);
+          const filename = `${uuidv4()}${imgExtension}`;
+          uploadedImage = await bb_uploadFile(filename, buffer);
+        }
+
+    if (!title || !options || options.length < 2) {
+      return NextResponse.json(
+        { message: "Title and at least two options are required" },
+        { status: 400 }
       );
     }
 
@@ -69,10 +107,11 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       votes: poll.options.find((o: { text: string; votes: number }) => o.text === option)?.votes || 0,
     }));
     poll.updatedAt = new Date();
+    if(uploadedImage) {
+      poll.image = uploadedImage;
+    }
 
     await poll.save();
-
-    await createSession(user);
 
     return NextResponse.json(
       {
