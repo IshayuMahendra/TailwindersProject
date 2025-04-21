@@ -9,6 +9,7 @@ import LeftSidebar from '../components/LeftBar';
 import PollList from '../components/pollList';
 import ProtectedRoute from '../helper/protectedRoute';
 
+//Home page with flex colummns and then scrolls vertically when on mobile
 const HomePage: React.FC = () => {
     return (
         <ProtectedRoute>

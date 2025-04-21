@@ -6,6 +6,7 @@ import Link from "next/link";
 import { UserProvider, useUser } from "../provider/userProvider";
 import { useRouter } from "next/navigation";
 
+//Nav bar, removes logout, user name and profile if use is not logged in
 const NavBar: React.FC = () => {
     const userProvider = useUser();
     const router = useRouter();
