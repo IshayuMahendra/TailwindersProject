@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 
+//Right side bar displaying the account options
 const RightSidebar: React.FC = () => {
     /*Just added the basic image I saw online since I couldn't get the figma ones */
     const contributors = [

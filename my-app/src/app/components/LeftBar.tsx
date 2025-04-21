@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link";
 
+//Left side bar displaying all the contributors
 const LeftSidebar: React.FC = () => {
     /*Temporary slots just to fill the left side - Ishayu */
     const navItems = [

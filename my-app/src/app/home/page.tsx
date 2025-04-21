@@ -1,39 +1,38 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import React from 'react';
 import '@/app/styles/global_styles.css';
 import '@/app/styles/home.css';
-import CustomButton from '../components/button';
-import Link from 'next/link';
-import Modal from '../components/modal';
-import Typer from '../components/typer';
 import NavBar from '../components/navbar';
 import RightSidebar from '../components/RightBar';
 import LeftSidebar from '../components/LeftBar';
 import PollList from '../components/pollList';
-import { useUser } from '../provider/userProvider';
 import ProtectedRoute from '../helper/protectedRoute';
-const bg = "/img/splashBG.jpg";
 
 const HomePage: React.FC = () => {
     return (
         <ProtectedRoute>
-                    <div className = "home min-h screen flex flex-col">
-            <NavBar/>
-            <div className = "flex">
-                <LeftSidebar/>
-            <main className = "flex-1 p-6">
-            <PollList/>
-            </main>
-            <RightSidebar />
-           </div>
-        </div>
+            <div className="home min-h-screen flex flex-col">
+                <NavBar />
+                <div className="flex flex-col lg:flex-row w-full">
+                    {/* Left Sidebar */}
+                    <div className="w-full lg:w-1/5 p-4">
+                        <LeftSidebar />
+                    </div>
+
+                    {/* Main Content */}
+                    <main className="w-full lg:w-3/5 p-4">
+                        <PollList />
+                    </main>
+
+                    {/* Right Sidebar */}
+                    <div className="w-full lg:w-1/5 p-4">
+                        <RightSidebar />
+                    </div>
+                </div>
+            </div>
         </ProtectedRoute>
     );
-
-}
-
+};
 
 export default HomePage;
