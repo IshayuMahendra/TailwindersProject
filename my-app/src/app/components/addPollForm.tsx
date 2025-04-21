@@ -35,7 +35,7 @@ interface AddPollFormProps {
 
 const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, initialData }) => {
   const [question, setQuestion] = useState(initialData ? initialData.title : "");
-  const [options, setOptions] = useState(["", ""]);
+  const [options, setOptions] = useState(initialData ? initialData.options.map((option) => option.text):[""] );
   const [error, setError] = useState("");
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
 

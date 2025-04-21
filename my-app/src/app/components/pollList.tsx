@@ -9,7 +9,7 @@ import { Poll } from "./addPollForm";
 
 const PollList: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
-  const [editingPollIndex, setEditingPollIndex] = useState<number | null>(null);
+  const [editingPoll, setEditingPoll] = useState<Poll | null>(null);
   
 
 
@@ -21,7 +21,9 @@ const PollList: React.FC = () => {
     const formData = new FormData();
     formData.append('question', poll.title);
     poll.options.forEach((option) => formData.append('option', option))
-
+    if(poll.image) {
+      formData.append('image', poll.image);
+    }
    fetch("http://localhost:3000/api/poll/create", {
       method: "POST",
       body: formData
@@ -31,6 +33,36 @@ const PollList: React.FC = () => {
         const poll: Poll = jsonData["poll"];
           setPolls ((prev) => [...prev, poll])
           setShowModal(false)
+      } else {
+       console.log("Unable to create poll");
+      }
+    }).catch((error: Error) => {
+     console.log(error);
+    });
+
+  };
+
+  const handleEditPoll = (poll: LocalPoll) => {
+    const formData = new FormData();
+    formData.append('question', poll.title);
+    poll.options.forEach((option) => formData.append('option', option))
+    if(poll.image) {
+      formData.append('image', poll.image);
+    }
+   fetch(`http://localhost:3000/api/poll/${editingPoll?.id}`, {
+      method: "PUT",
+      body: formData
+    }).then(async (res: Response) => {
+      const jsonData = await res.json();
+      if(res.status == 200) {
+        const poll: Poll = jsonData["poll"];
+        if(editingPoll){
+          editingPoll.title = poll.title
+          editingPoll.options = poll.options
+          editingPoll.imageURL = poll.imageURL
+          setEditingPoll(editingPoll)
+        }
+        setEditingPoll(null)
       } else {
        console.log("Unable to create poll");
       }
@@ -64,8 +96,7 @@ const PollList: React.FC = () => {
             <button
               className="mt-2 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
               onClick={() => {
-                setEditingPollIndex(index);
-                setShowModal(true);
+                setEditingPoll(poll);
               }}
             >
               Edit
@@ -91,6 +122,18 @@ const PollList: React.FC = () => {
         >
           <div className="pol-modal-large">
             <AddPollForm onNewPoll={handleNewPoll} />
+          </div>
+        </Modal>
+      )}
+      {editingPoll && (
+        <Modal
+          onDismiss={() => setShowModal(false)}
+          transitionSeconds={0.3}
+          bgColor="#1E4147"
+          fgColor="#FFF"
+        >
+          <div className="pol-modal-large">
+            <AddPollForm onNewPoll={handleEditPoll} initialData={editingPoll} />
           </div>
         </Modal>
       )}
