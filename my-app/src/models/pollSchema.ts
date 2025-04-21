@@ -18,6 +18,7 @@ interface IPoll extends Document {
   creator: IPollCreator;
   createdAt: Date;
   updatedAt?: Date;
+  imageURL: string;
 }
 
 const pollSchema = new Schema<IPoll>({
@@ -56,6 +57,9 @@ const pollSchema = new Schema<IPoll>({
   updatedAt: {
     type: Date,
   },
+  imageURL: {
+    type: String
+  }
 });
 
 const Poll: Model<IPoll> = models.Poll || model<IPoll>('Poll', pollSchema);
