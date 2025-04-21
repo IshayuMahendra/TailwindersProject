@@ -123,6 +123,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
           creator: poll.creator,
           createdAt: poll.createdAt,
           updatedAt: poll.updatedAt,
+          imageURL: poll.image.publicURL
         },
       },
       { status: 200 }
