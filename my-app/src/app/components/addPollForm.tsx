@@ -99,7 +99,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, onClose }) => {
 
   return (
     <>
-      <ImagePicker onImage={setImageFile}></ImagePicker>
+      <ImagePicker onImage={setImageFile} onError={setError}></ImagePicker>
       <form
         onSubmit={handleSubmit}
         className="w-full text-white p-6 font-mono relative"

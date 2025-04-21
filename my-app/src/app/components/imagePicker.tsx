@@ -2,13 +2,19 @@ import { useRef, useState } from "react";
 
 interface ImagePickerProps {
   onImage: (image: File) => void;
+  onError: (error: string) => void;
 }
 
-const ImagePicker: React.FC<ImagePickerProps> = ({ onImage }) => {
+const ImagePicker: React.FC<ImagePickerProps> = ({ onImage, onError }) => {
   const [previewImgURL, setPreviewURL] = useState<string | null>(null);
   const fileUploadRef = useRef<any>(null);
   const handleImageChange = async () => {
     const uploadedFile: File = fileUploadRef.current.files[0];
+    const uploadedFileType: string = uploadedFile.type.split("/")[0];
+    if(uploadedFileType != "image") {
+      onError("Invalid image type provided");
+      return;
+    }
     setPreviewURL(URL.createObjectURL(uploadedFile));
     onImage(uploadedFile);
   };
