@@ -3,8 +3,17 @@ import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHatWizard, faTrash } from "@fortawesome/free-solid-svg-icons";
 import ImagePicker from "./imagePicker";
+import { calculateJwkThumbprint } from "jose";
 
-interface Poll {
+export interface LocalPoll {
+  title: string;
+  options: string[]
+
+  image: File | undefined;
+}
+
+
+export interface Poll {
   id: string;
   title: string;
   options: {
@@ -16,19 +25,19 @@ interface Poll {
     username: string;
   }
   createdAt: string;
-  imageURL: string|null;
+  imageURL: string | undefined;
 }
 
 interface AddPollFormProps {
-  onNewPoll: (data: Poll) => void;
-  onClose: () => void;
+  onNewPoll: (data: LocalPoll) => void;
+  initialData?: Poll;
 }
 
-const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, onClose }) => {
-  const [question, setQuestion] = useState("");
+const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, initialData }) => {
+  const [question, setQuestion] = useState(initialData ? initialData.title : "");
   const [options, setOptions] = useState(["", ""]);
   const [error, setError] = useState("");
-  const [imageFile, setImageFile] = useState<File|undefined>(undefined);
+  const [imageFile, setImageFile] = useState<File | undefined>(undefined);
 
   const handleOptionChange = (index: number, value: string) => {
     const updated = [...options];
@@ -56,33 +65,18 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, onClose }) => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('question', question);
-    cleanedOptions.map((option) => formData.append('option', option));
-    if(imageFile) {
-      formData.append('image', imageFile);
+    if (!question) {
+      setError("Please provide a question!");
+      return;
     }
 
-   fetch("http://localhost:3000/api/poll/create", {
-      method: "POST",
-      body: formData
-    }).then(async (res: Response) => {
-      const jsonData = await res.json();
-      if(res.status == 201) {
-        const poll: Poll = jsonData["poll"];
-        setQuestion("");
-        setOptions(["", ""]);
-        setError("");
-        onNewPoll(poll);
-        onClose();
-      } else {
-        setError(jsonData.message);
-      }
-    }).catch((error: Error) => {
-      setError(error.message)
-    });
+    onNewPoll({
+      title: question,
+      options: cleanedOptions,
+      image: imageFile
+    })
 
-  };
+  }
 
   const generatePoll = async () => {
     try {
@@ -99,7 +93,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, onClose }) => {
 
   return (
     <>
-      <ImagePicker onImage={setImageFile} onError={setError}></ImagePicker>
+      <ImagePicker onImage={setImageFile} initialImageURL={initialData?.imageURL} onError={setError} ></ImagePicker>
       <form
         onSubmit={handleSubmit}
         className="w-full text-white p-6 font-mono relative"

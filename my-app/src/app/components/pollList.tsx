@@ -3,16 +3,42 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Modal from './modal';
-import AddPollForm from "./addPollForm";
+import AddPollForm, { LocalPoll } from "./addPollForm";
+import { Poll } from "./addPollForm";
+
 
 const PollList: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
+  const [editingPollIndex, setEditingPollIndex] = useState<number | null>(null);
+  
 
-  const [polls, setPolls] = useState([
-    { title: "sample poll", imageUrl: "/img/image1.webp" },
-    { title: "sample poll", imageUrl: "/img/image2.jpeg" },
-    { title: "sample poll", imageUrl: "/img/image3.webp" }
+
+  const [polls, setPolls] = useState<Poll[]>([
+
   ]);
+
+  const handleNewPoll = (poll: LocalPoll) => {
+    const formData = new FormData();
+    formData.append('question', poll.title);
+    poll.options.forEach((option) => formData.append('option', option))
+
+   fetch("http://localhost:3000/api/poll/create", {
+      method: "POST",
+      body: formData
+    }).then(async (res: Response) => {
+      const jsonData = await res.json();
+      if(res.status == 201) {
+        const poll: Poll = jsonData["poll"];
+          setPolls ((prev) => [...prev, poll])
+          setShowModal(false)
+      } else {
+       console.log("Unable to create poll");
+      }
+    }).catch((error: Error) => {
+     console.log(error);
+    });
+
+  };
 
   return (
     <div className="h-[600px] w-full max-w-5xl mx-auto p-6 bg-[#17393F] text-[#ffffff] rounded-lg flex flex-col">
@@ -23,9 +49,9 @@ const PollList: React.FC = () => {
             className="bg-[#234] py-4 px-6 rounded text-lg font-mono"
           >
             <div className="mb-4">
-              {poll.imageUrl &&
+              {poll.imageURL &&
                 <Image
-                src={poll.imageUrl}
+                src={poll.imageURL}
                 alt={`Image for poll ${index + 1}`}
                 width={150}
                 height={150}
@@ -34,6 +60,17 @@ const PollList: React.FC = () => {
               }
             </div>
             <div>{poll.title}</div>
+              {/*Edit Button */}
+            <button
+              className="mt-2 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
+              onClick={() => {
+                setEditingPollIndex(index);
+                setShowModal(true);
+              }}
+            >
+              Edit
+    </button>
+            
           </div>
         ))}
       </div>
@@ -53,10 +90,7 @@ const PollList: React.FC = () => {
           fgColor="#FFF"
         >
           <div className="pol-modal-large">
-            <AddPollForm onNewPoll={(poll) => setPolls((prev) => [...prev, {
-              title: poll.title,
-              imageUrl: poll.imageURL!
-            }])}onClose={() => setShowModal(false)} />
+            <AddPollForm onNewPoll={handleNewPoll} />
           </div>
         </Modal>
       )}

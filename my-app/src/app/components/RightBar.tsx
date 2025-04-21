@@ -16,6 +16,7 @@ const RightSidebar: React.FC = () => {
         <aside className="w-64 min-h-screen p-6 bg-[#17393F] text-[#AAC789]">
             <div className="mt-10 text-lg font-semibold text-center mb-6">Top Contributors</div>
             <ul className="space-y-5">
+                {/*Mapping the array to a list -Ishayu */}
                 {contributors.map((contributor, index) => (
                     <li key={index} className="flex items-center space-x-4">
                         <img
