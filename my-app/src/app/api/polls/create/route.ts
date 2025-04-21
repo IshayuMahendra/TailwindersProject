@@ -55,9 +55,11 @@ export async function POST(request: NextRequest) {
 
     const session = await getSession();
     if (!session || !session._id) {
+      //Note: User's authentication will already be checked with middleware, so session should never be null.
+      //hence, if session or session id is null, we have an odd error.
       return NextResponse.json(
-        { message: "Unauthorized: Please log in" },
-        { status: 401 }
+        { message: "An error occured while obtaining the session" },
+        { status: 500 }
       );
     }
 

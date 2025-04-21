@@ -16,12 +16,17 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
       return NextResponse.json({ message: "Invalid poll ID" }, { status: 400 });
     }
 
+    await dbConnect();
+
     const session = await getSession();
     if (!session || !session._id) {
-      return NextResponse.json({ message: "Unauthorized: Please log in" }, { status: 401 });
+      //Note: User's authentication will already be checked with middleware, so session should never be null.
+      //hence, if session or session id is null, we have an odd error.
+      return NextResponse.json(
+        { message: "An error occured while obtaining the session" },
+        { status: 500 }
+      );
     }
-
-    await dbConnect();
 
     const user = await User.findById(session._id);
     if (!user) {
