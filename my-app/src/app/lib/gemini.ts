@@ -50,7 +50,7 @@ export async function generatePoll(demographic: string): Promise<AIPoll> {
         if(jsonData.candidates && jsonData.candidates[0] && jsonData.candidates[0].finishReason) {
             errorMsg = jsonData.candidates[0].finishReason;
         }
-        throw new Error(`Error generating content: ${errorMsg}`);
+        throw new Error(errorMsg);
     }
 
     let generatedPoll: AIPoll = JSON.parse(jsonData.candidates[0].content.parts[0].text);
