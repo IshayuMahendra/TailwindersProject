@@ -9,8 +9,7 @@ import { Model, HydratedDocument } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import {v4 as uuidv4} from 'uuid';
 import path from "path";
-import { BackblazeFile, bb_uploadFile, connectBackblaze } from "@/app/lib/backblaze";
-import { generateImage } from "@/app/lib/gemini";
+import { BackblazeFile, bb_uploadFile } from "@/app/lib/backblaze";
 import imageType from 'image-type';
 
 
