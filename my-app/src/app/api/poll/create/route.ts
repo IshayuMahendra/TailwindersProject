@@ -10,11 +10,8 @@ import { NextRequest, NextResponse } from "next/server";
 import {v4 as uuidv4} from 'uuid';
 import path from "path";
 import { BackblazeFile, bb_uploadFile, connectBackblaze } from "@/app/lib/backblaze";
+import { generateImage } from "@/app/lib/gemini";
 
-interface CreatePollRequest {
-  title: string;
-  options: string[];
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -93,6 +90,16 @@ export async function POST(request: NextRequest) {
     });
 
     await poll.save();
+
+    //Start generating an image for the poll in the BG if no image was provided
+    if(!(formData.has('image'))) {
+      generateImage(`Generate a 16:9 image of a scene related to the prompt "${poll.title}". Do not include any text in the image.`).then(async (imageBuffer: Buffer) => {
+        const filename = `${uuidv4()}.png`;
+        const uploadedImage = await bb_uploadFile(filename, imageBuffer);
+        poll.image = uploadedImage;
+        await poll.save();
+      });
+    }
 
     return NextResponse.json(
       {
