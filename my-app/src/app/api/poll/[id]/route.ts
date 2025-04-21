@@ -126,8 +126,10 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
         return NextResponse.json({ message: "Poll not found or you are not the creator" }, { status: 404 });
       }
   
-      if(deletedPoll.image) {
-        await bb_deleteFile(deletedPoll.image);
+      const imageToDelete = deletedPoll.toObject().image;
+      if(imageToDelete) {
+        console.log(imageToDelete);
+        await bb_deleteFile(imageToDelete);
       }
   
       return NextResponse.json({ message: "Poll deleted successfully" }, { status: 200 });

@@ -86,8 +86,6 @@ export async function bb_deleteFile(file: BackblazeFile): Promise<void> {
         throw new Error("B2 Bucket ID not set");
     }
 
-    let uploadURL: string|null = null;
-    let uploadToken: string|null = null;
     let response = await fetch(`https://api005.backblazeb2.com/b2api/v3/b2_delete_file_version`, {
         method: "POST",
         headers: {
