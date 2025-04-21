@@ -56,35 +56,3 @@ export async function generatePoll(demographic: string): Promise<AIPoll> {
     let generatedPoll: AIPoll = JSON.parse(jsonData.candidates[0].content.parts[0].text);
     return generatedPoll;
 }
-
-export async function generateImage(prompt: string): Promise<Buffer> {
-    verifyKey();
-
-    console.log(`[GEMINI] Generating image: ${prompt}`)
-    let r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateContent?key=${process.env.GEMINI_API_KEY}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            contents: [
-                {
-                    "parts": [{ "text": prompt }]
-                }
-            ],
-            generationConfig: {"responseModalities":["TEXT", "IMAGE"]}
-        })
-    })
-    let jsonData: GeminiResponse = await r.json();
-
-    if(!jsonData.candidates || !jsonData.candidates[0] || !jsonData.candidates[0].content || !jsonData.candidates[0].content.parts[0] || !jsonData.candidates[0].content.parts[0].inlineData) {
-        //Response is not as expected
-        let errorMsg = "unknown error";
-        if(jsonData.candidates && jsonData.candidates[0] && jsonData.candidates[0].finishReason) {
-            errorMsg = jsonData.candidates[0].finishReason;
-        }
-        throw new Error(errorMsg);
-    }
-    const generatedImage = Buffer.from(jsonData.candidates[0].content.parts[0].inlineData.data, 'base64')
-    return generatedImage;
-}

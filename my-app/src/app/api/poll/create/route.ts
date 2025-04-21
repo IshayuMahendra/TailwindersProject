@@ -97,18 +97,6 @@ export async function POST(request: NextRequest) {
 
     await poll.save();
 
-    //Start generating an image for the poll in the BG if no image was provided
-    if(!(formData.has('image'))) {
-      generateImage(`Generate a 16:9 image of a scene related to the prompt "${poll.title}". Do not include any text in the image.`).then(async (imageBuffer: Buffer) => {
-        const filename = `${uuidv4()}.png`;
-        const uploadedImage = await bb_uploadFile(filename, imageBuffer);
-        poll.image = uploadedImage;
-        await poll.save();
-      }).catch((error: Error) => {
-        console.log(`Failed to generate image: ${error.message}`);
-      });
-    }
-
     return NextResponse.json(
       {
         message: "Poll created successfully",
