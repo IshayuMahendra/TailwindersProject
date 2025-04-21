@@ -53,7 +53,7 @@ const PollList: React.FC = () => {
           <div className="pol-modal-large">
             <AddPollForm onNewPoll={(poll) => setPolls((prev) => [...prev, {
               title: poll.title,
-              imageUrl: "/img/image1.webp"
+              imageUrl: poll.imageURL!
             }])}onClose={() => setShowModal(false)} />
           </div>
         </Modal>
