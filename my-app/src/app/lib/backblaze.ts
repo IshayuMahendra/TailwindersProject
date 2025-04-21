@@ -68,12 +68,13 @@ export async function bb_uploadFile(filename: string, fileBuffer: Buffer): Promi
         body: fileBuffer
     })
     jsonData = await response.json();
-    console.log(`[BACKBLAZE] Uploaded file ${jsonData.fileName}`);
-    return {
+    const uploadedFile = {
         fileID: jsonData.fileId,
         filename: jsonData.fileName,
         publicURL: `https://${process.env.BACKBLAZE_S3_PUBLIC_DOMAIN}/${jsonData.fileName}`
     }
+    console.log(`[BACKBLAZE] Uploaded file ${uploadedFile.filename} (${uploadedFile.publicURL})`);
+    return uploadedFile;
 }
 
 export async function bb_deleteFile(file: BackblazeFile): Promise<void> {
