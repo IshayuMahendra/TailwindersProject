@@ -5,10 +5,11 @@ import { useRef, useState } from "react";
 interface ImagePickerProps {
   onImage: (image: File | undefined) => void;
   onError: (error: string) => void;
+  initialImageURL?: string;
 }
 
-const ImagePicker: React.FC<ImagePickerProps> = ({ onImage, onError }) => {
-  const [previewImgURL, setPreviewURL] = useState<string | undefined>(undefined);
+const ImagePicker: React.FC<ImagePickerProps> = ({ onImage, onError, initialImageURL }) => {
+  const [previewImgURL, setPreviewURL] = useState<string | undefined>(initialImageURL);
   const fileUploadRef = useRef<any>(null);
   const handleImageChange = async () => {
     const uploadedFile: File = fileUploadRef.current.files[0];
