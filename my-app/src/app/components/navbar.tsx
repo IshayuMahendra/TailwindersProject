@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useUser } from "../provider/userProvider";
+import { UserProvider, useUser } from "../provider/userProvider";
 import { useRouter } from "next/navigation";
 
 const NavBar: React.FC = () => {
@@ -32,6 +32,7 @@ const NavBar: React.FC = () => {
                     <button className=" bg-[#1E4147] px-8 py-4 border border-[#AAC789] text-[#AAC789] hover:bg-[#1E4147] transition rounded" onClick={doLogout}>
                         <h3>LOGOUT</h3>
                     </button>
+                    <h2>{userProvider.user?.displayName}</h2>
                     <div className="w-15 h-15 rounded-full overflow-hidden border-2 border-[#AAC789]">
                         <Image
                             src="/img/avatar.webp"
