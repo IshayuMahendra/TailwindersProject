@@ -13,6 +13,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "bcrypt": "^5.1.1",
+    "image-type": "^5.2.0",
     "jose": "^6.0.10",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",

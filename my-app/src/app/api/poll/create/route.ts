@@ -11,6 +11,7 @@ import {v4 as uuidv4} from 'uuid';
 import path from "path";
 import { BackblazeFile, bb_uploadFile, connectBackblaze } from "@/app/lib/backblaze";
 import { generateImage } from "@/app/lib/gemini";
+import imageType from 'image-type';
 
 
 export async function POST(request: NextRequest) {
@@ -46,6 +47,11 @@ export async function POST(request: NextRequest) {
       }
 
       const buffer = Buffer.from(await image.arrayBuffer());
+
+      //If file is not an image
+      if(!(await imageType(buffer))) {
+        throw new Error("Provided upload was not an image file.");
+      }
 
       if(buffer.length == 0) {
         throw new Error("Image provided was blank.");
