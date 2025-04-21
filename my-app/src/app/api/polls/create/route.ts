@@ -9,6 +9,7 @@ import { Model, HydratedDocument } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import {v4 as uuidv4} from 'uuid';
 import path from "path";
+import { bb_uploadFile, connectBackblaze } from "@/app/lib/backblaze";
 
 interface CreatePollRequest {
   title: string;
@@ -23,6 +24,7 @@ export async function POST(request: NextRequest) {
     const options: string[] = formData.getAll('option') as string[];
 
     let imageURL: string|null = null;
+
     if (formData.has('image')) {
       let image = formData.get('image');
 
@@ -30,14 +32,18 @@ export async function POST(request: NextRequest) {
         throw new Error("Provided image was not a valid image file");
       }
 
+
+      await connectBackblaze();
+
       const buffer = Buffer.from(await image.arrayBuffer());
+
+      if(buffer.length == 0) {
+        throw new Error("Image provided was blank.");
+      }
+
       const imgExtension = path.extname(image.name);
       const filename = `${uuidv4()}${imgExtension}`;
-      await writeFile(
-        path.join(process.cwd(), `public/uploads/${filename}`),
-        buffer
-      );
-      imageURL = `http://localhost:3000/uploads/${filename}`
+      imageURL = await bb_uploadFile(filename, buffer);
     }
 
     if (!title || !options || options.length < 2) {
@@ -99,11 +105,13 @@ export async function POST(request: NextRequest) {
           options: poll.options,
           creator: poll.creator,
           createdAt: poll.createdAt,
+          imageURL: poll.imageURL
         },
       },
       { status: 201 }
     );
   } catch (e: unknown) {
+    console.log(e);
     console.error("Error creating poll:", e instanceof Error ? e.message : e);
     return NextResponse.json(
       { message: e instanceof Error ? e.message : "An unknown error occurred" },
