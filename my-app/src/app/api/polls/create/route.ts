@@ -9,7 +9,7 @@ import { Model, HydratedDocument } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import {v4 as uuidv4} from 'uuid';
 import path from "path";
-import { bb_uploadFile, connectBackblaze } from "@/app/lib/backblaze";
+import { BackblazeFile, bb_uploadFile, connectBackblaze } from "@/app/lib/backblaze";
 
 interface CreatePollRequest {
   title: string;
@@ -18,22 +18,35 @@ interface CreatePollRequest {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getSession();
+    if (!session || !session._id) {
+      //Note: User's authentication will already be checked with middleware, so session should never be null.
+      //hence, if session or session id is null, we have an odd error.
+      return NextResponse.json(
+        { message: "An error occured while obtaining the session" },
+        { status: 500 }
+      );
+    }
+
     const formData: FormData = (await request.formData());
 
     const title: string = formData.get('question') as string;
     const options: string[] = formData.getAll('option') as string[];
 
-    let imageURL: string|null = null;
+    if (!title || !options || options.length < 2) {
+      return NextResponse.json(
+        { message: "Title and at least two options are required" },
+        { status: 400 }
+      );
+    }
 
+    let uploadedImage: BackblazeFile|null = null;
     if (formData.has('image')) {
       let image = formData.get('image');
 
       if(!(image instanceof Blob)) {
         throw new Error("Provided image was not a valid image file");
       }
-
-
-      await connectBackblaze();
 
       const buffer = Buffer.from(await image.arrayBuffer());
 
@@ -43,24 +56,7 @@ export async function POST(request: NextRequest) {
 
       const imgExtension = path.extname(image.name);
       const filename = `${uuidv4()}${imgExtension}`;
-      imageURL = await bb_uploadFile(filename, buffer);
-    }
-
-    if (!title || !options || options.length < 2) {
-      return NextResponse.json(
-        { message: "Title and at least two options are required" },
-        { status: 400 }
-      );
-    }
-
-    const session = await getSession();
-    if (!session || !session._id) {
-      //Note: User's authentication will already be checked with middleware, so session should never be null.
-      //hence, if session or session id is null, we have an odd error.
-      return NextResponse.json(
-        { message: "An error occured while obtaining the session" },
-        { status: 500 }
-      );
+      uploadedImage = await bb_uploadFile(filename, buffer);
     }
 
     await dbConnect();
@@ -93,7 +89,7 @@ export async function POST(request: NextRequest) {
         username: user.username as string,
       } as PollCreator,
       createdAt: new Date(),
-      imageURL: imageURL
+      image: uploadedImage
     });
 
     await poll.save();
@@ -107,7 +103,7 @@ export async function POST(request: NextRequest) {
           options: poll.options,
           creator: poll.creator,
           createdAt: poll.createdAt,
-          imageURL: poll.imageURL
+          imageURL: poll.image?.publicURL
         },
       },
       { status: 201 }

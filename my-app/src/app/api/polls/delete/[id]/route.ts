@@ -6,6 +6,7 @@ import Poll from "@/models/pollSchema";
 import User from "@/models/userSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { isValidObjectId } from "mongoose";
+import { bb_deleteFile } from "@/app/lib/backblaze";
 
 export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
@@ -37,6 +38,8 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
     if (!deletedPoll) {
       return NextResponse.json({ message: "Poll not found or you are not the creator" }, { status: 404 });
     }
+
+    await bb_deleteFile(deletedPoll.image);
 
     return NextResponse.json({ message: "Poll deleted successfully" }, { status: 200 });
   } catch (e: unknown) {

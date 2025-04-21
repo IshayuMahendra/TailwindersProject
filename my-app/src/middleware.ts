@@ -3,7 +3,7 @@ import { getSession } from './app/lib/sessionManager';
 
 export async function middleware(request: NextRequest) {
     const session = await getSession();
-    if (!session) {
+    if (!session || !session._id) {
         return NextResponse.json({ message: "User is not logged in." }, { status: 401 });
     }
     return NextResponse.next();

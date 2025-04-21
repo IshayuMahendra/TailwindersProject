@@ -4,6 +4,12 @@ let authToken: string | null = null;
 let uploadToken: string | null = null
 let isConnected = false;
 
+export interface BackblazeFile {
+    fileID: string;
+    filename: string;
+    publicURL: string;
+}
+
 export async function connectBackblaze() {
     if (isConnected == true) {
         return;
@@ -20,16 +26,18 @@ export async function connectBackblaze() {
         }
     })
     const jsonData = await response.json();
-    if (Object.keys(jsonData).includes("authorizationToken")) {
-        authToken = jsonData.authorizationToken;
-        isConnected = true;
-        console.log("CONNECTED TO BACKBLAZE");
+    if (!(Object.keys(jsonData).includes("authorizationToken"))) {
+        throw new Error(`Blackblaze authorization sent invalid response ${jsonData}`);
     }
+    authToken = jsonData.authorizationToken;
+    isConnected = true;
+    console.log("CONNECTED TO BACKBLAZE");
 }
 
-export async function bb_uploadFile(filename: string, fileBuffer: Buffer) {
-    if(authToken == null) {
-        throw Error("Backblaze is not initialized");
+export async function bb_uploadFile(filename: string, fileBuffer: Buffer): Promise<BackblazeFile> {
+    await connectBackblaze();
+    if(!authToken) {
+        throw new Error("Backblaze Authorization Error");
     }
 
     let uploadURL: string|null = null;
@@ -61,6 +69,41 @@ export async function bb_uploadFile(filename: string, fileBuffer: Buffer) {
         body: fileBuffer
     })
     jsonData = await response.json();
-    return `https://${process.env.BACKBLAZE_S3_PUBLIC_DOMAIN}/${filename}`;
+    console.log(`[BACKBLAZE] Uploaded file ${jsonData.fileName}`);
+    console.log(jsonData);
+    return {
+        fileID: jsonData.fileId,
+        filename: jsonData.fileName,
+        publicURL: `https://${process.env.BACKBLAZE_S3_PUBLIC_DOMAIN}/${jsonData.fileName}`
+    }
+}
+
+export async function bb_deleteFile(file: BackblazeFile): Promise<void> {
+    await connectBackblaze();
+    if(!authToken) {
+        throw new Error("Backblaze Authorization Error");
+    }
+
+    if(!process.env.BACKBLAZE_B2_BUCKET_ID) {
+        throw new Error("B2 Bucket ID not set");
+    }
+
+    let uploadURL: string|null = null;
+    let uploadToken: string|null = null;
+    let response = await fetch(`https://api005.backblazeb2.com/b2api/v3/b2_delete_file_version`, {
+        method: "POST",
+        headers: {
+            "Authorization": authToken,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            fileName: file.filename,
+            fileId: file.fileID
+        })
+    })
+    if(response.status != 200) {
+        throw new Error("Failed to authorize");
+    }
+    console.log(`[BACKBLAZE] Deleted file ${file.filename}`);
 }
 

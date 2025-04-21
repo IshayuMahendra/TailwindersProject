@@ -1,6 +1,7 @@
 "use server";
 
 import { Schema, model, Document, Model, models, Types } from 'mongoose';
+import { BackblazeFile } from '@/app/lib/backblaze';
 
 interface IPollOption {
   text: string;
@@ -18,7 +19,7 @@ interface IPoll extends Document {
   creator: IPollCreator;
   createdAt: Date;
   updatedAt?: Date;
-  imageURL: string;
+  image: BackblazeFile;
 }
 
 const pollSchema = new Schema<IPoll>({
@@ -57,8 +58,16 @@ const pollSchema = new Schema<IPoll>({
   updatedAt: {
     type: Date,
   },
-  imageURL: {
-    type: String
+  image: {
+    fileID: {
+      type: String
+    },
+    filename: {
+      type: String
+    },
+    publicURL: {
+      type: String
+    }
   }
 });
 
