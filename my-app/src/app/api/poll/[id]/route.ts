@@ -128,7 +128,6 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
   
       const imageToDelete = deletedPoll.toObject().image;
       if(imageToDelete) {
-        console.log(imageToDelete);
         await bb_deleteFile(imageToDelete);
       }
   
