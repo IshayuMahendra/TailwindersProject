@@ -61,8 +61,9 @@ export async function generateImage(prompt: string): Promise<Buffer> {
         })
     })
     let jsonData: GeminiResponse = await r.json();
-    if(!jsonData.candidates[0].content.parts[0].inlineData) {
-        throw new Error("Error generating image")
+    if(!jsonData.candidates || !jsonData.candidates[0] || !jsonData.candidates[0].content || !jsonData.candidates[0].content.parts[0] || !jsonData.candidates[0].content.parts[0].inlineData) {
+        console.log(jsonData);
+        throw new Error("Error generating image");
     }
     const generatedImage = Buffer.from(jsonData.candidates[0].content.parts[0].inlineData.data, 'base64')
     return generatedImage;

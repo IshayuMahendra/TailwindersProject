@@ -104,6 +104,8 @@ export async function POST(request: NextRequest) {
         const uploadedImage = await bb_uploadFile(filename, imageBuffer);
         poll.image = uploadedImage;
         await poll.save();
+      }).catch((error: Error) => {
+        console.log(`Failed to generate image: ${error.message}`);
       });
     }
 
