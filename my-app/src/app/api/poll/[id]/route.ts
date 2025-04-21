@@ -6,12 +6,9 @@ import Poll, { IPoll } from "@/models/pollSchema";
 import User, { IUser } from "@/models/userSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { isValidObjectId, Model, Types } from "mongoose";
+import { bb_deleteFile } from "@/app/lib/backblaze";
 
-interface EditPollRequest {
-  title: string;
-  options: string[];
-}
-
+//Edit Poll
 export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const { title, options } = await request.json();
@@ -96,3 +93,44 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     return NextResponse.json({ message: e instanceof Error ? e.message : "An unknown error occurred" }, { status: 500 });
   }
 }
+
+//Delete Poll
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
+    try {
+      const params = await context.params;
+      const pollId = params.id;
+  
+      if (!isValidObjectId(pollId)) {
+        return NextResponse.json({ message: "Invalid poll ID" }, { status: 400 });
+      }
+  
+      await dbConnect();
+  
+      const session = await getSession();
+      if (!session || !session._id) {
+        //Note: User's authentication will already be checked with middleware, so session should never be null.
+        //hence, if session or session id is null, we have an odd error.
+        return NextResponse.json(
+          { message: "An error occured while obtaining the session" },
+          { status: 500 }
+        );
+      }
+  
+      const user = await User.findById(session._id);
+      if (!user) {
+        return NextResponse.json({ message: "User not found" }, { status: 404 });
+      }
+  
+      const deletedPoll = await Poll.findOneAndDelete({ _id: pollId, 'creator.userId': user._id });
+      if (!deletedPoll) {
+        return NextResponse.json({ message: "Poll not found or you are not the creator" }, { status: 404 });
+      }
+  
+      await bb_deleteFile(deletedPoll.image);
+  
+      return NextResponse.json({ message: "Poll deleted successfully" }, { status: 200 });
+    } catch (e: unknown) {
+      console.error("Error deleting poll:", e);
+      return NextResponse.json({ message: e instanceof Error ? e.message : "An unknown error occurred" }, { status: 500 });
+    }
+  }
