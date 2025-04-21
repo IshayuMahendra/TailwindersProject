@@ -5,8 +5,18 @@ import { faHatWizard, faTrash } from "@fortawesome/free-solid-svg-icons";
 import ImagePicker from "./imagePicker";
 
 interface Poll {
+  id: string;
   title: string;
-  options: string[];
+  options: {
+    text: string;
+    votes: number;
+  }[];
+  creator: {
+    userId: string;
+    username: string;
+  }
+  createdAt: string;
+  imageURL: string|null;
 }
 
 interface AddPollFormProps {
@@ -46,28 +56,32 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, onClose }) => {
       return;
     }
 
-    const poll: Poll = {
-      title: question,
-      options: cleanedOptions,
-    };
-
-    console.log("Poll Created:", poll);
-
     const formData = new FormData();
     formData.append('question', question);
-    options.map((option) => formData.append('option', option));
+    cleanedOptions.map((option) => formData.append('option', option));
     if(imageFile != null) {
       formData.append('image', imageFile);
     }
 
-    //TODO: /api/polls/create POST request with body as formData (do not pass content type header)
+   fetch("http://localhost:3000/api/polls/create", {
+      method: "POST",
+      body: formData
+    }).then(async (res: Response) => {
+      const jsonData = await res.json();
+      if(res.status == 201) {
+        const poll: Poll = jsonData["poll"];
+        setQuestion("");
+        setOptions(["", ""]);
+        setError("");
+        onNewPoll(poll);
+        onClose();
+      } else {
+        setError(jsonData.message);
+      }
+    }).catch((error: Error) => {
+      setError(error.message)
+    });
 
-
-    setQuestion("");
-    setOptions(["", ""]);
-    setError("");
-    onNewPoll(poll);
-    onClose();
   };
 
   const generatePoll = async () => {
