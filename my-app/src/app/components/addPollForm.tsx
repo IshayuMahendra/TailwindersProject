@@ -63,7 +63,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, onClose }) => {
       formData.append('image', imageFile);
     }
 
-   fetch("http://localhost:3000/api/polls/create", {
+   fetch("http://localhost:3000/api/poll/create", {
       method: "POST",
       body: formData
     }).then(async (res: Response) => {
