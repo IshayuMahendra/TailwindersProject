@@ -1,7 +1,6 @@
 "use server";
 import crypto from 'crypto';
 let authToken: string | null = null;
-let uploadToken: string | null = null
 let isConnected = false;
 
 export interface BackblazeFile {
@@ -70,7 +69,6 @@ export async function bb_uploadFile(filename: string, fileBuffer: Buffer): Promi
     })
     jsonData = await response.json();
     console.log(`[BACKBLAZE] Uploaded file ${jsonData.fileName}`);
-    console.log(jsonData);
     return {
         fileID: jsonData.fileId,
         filename: jsonData.fileName,
