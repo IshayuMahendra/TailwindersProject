@@ -9,8 +9,11 @@ export async function connectBackblaze() {
         return;
     }
 
+    if(!process.env.BACKBLAZE_B2_APPLICATION_KEY_ID || !process.env.BACKBLAZE_B2_APPLICATION_KEY) {
+        throw new Error("Backblaze env variables not set");
+    }
+
     const baseAuth: string = `${process.env.BACKBLAZE_B2_APPLICATION_KEY_ID}:${process.env.BACKBLAZE_B2_APPLICATION_KEY}`;
-    console.log(baseAuth);
     const response = await fetch("https://api005.backblazeb2.com/b2api/v3/b2_authorize_account", {
         headers: {
             "Authorization": `Basic ${btoa(baseAuth)}`
