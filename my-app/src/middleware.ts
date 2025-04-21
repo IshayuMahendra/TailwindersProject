@@ -10,5 +10,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/api/demo_protected_route', '/api/ai/:path*', '/api/polls/:path*'],
+    matcher: ['/api/demo_protected_route', '/api/ai/:path*', '/api/poll/:path*'],
 }
