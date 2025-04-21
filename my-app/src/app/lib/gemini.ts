@@ -20,7 +20,14 @@ interface GeminiResponse {
     }[]
 }
 
+function verifyKey() {
+    if(!process.env.GEMINI_API_KEY) {
+        throw new Error("Unable to find GEMINI_API_KEY in env");
+    }
+}
+
 export async function generatePoll(demographic: string): Promise<AIPoll> {
+    verifyKey();
     console.log("[GEMINI] Generating Poll");
     let r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
         method: 'POST',
@@ -51,6 +58,8 @@ export async function generatePoll(demographic: string): Promise<AIPoll> {
 }
 
 export async function generateImage(prompt: string): Promise<Buffer> {
+    verifyKey();
+
     console.log(`[GEMINI] Generating image: ${prompt}`)
     let r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateContent?key=${process.env.GEMINI_API_KEY}`, {
         method: 'POST',
