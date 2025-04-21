@@ -74,7 +74,7 @@ export async function generateImage(prompt: string): Promise<Buffer> {
         if(jsonData.candidates && jsonData.candidates[0] && jsonData.candidates[0].finishReason) {
             errorMsg = jsonData.candidates[0].finishReason;
         }
-        throw new Error(`Error generating image: ${errorMsg}`);
+        throw new Error(errorMsg);
     }
     const generatedImage = Buffer.from(jsonData.candidates[0].content.parts[0].inlineData.data, 'base64')
     return generatedImage;
