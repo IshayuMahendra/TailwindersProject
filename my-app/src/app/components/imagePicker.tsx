@@ -47,6 +47,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ onImage, onError }) => {
         {previewImgURL && <button className="pol-button ml-auto mt-2" style={{ paddingTop: 10, paddingBottom: 10, fontSize: 12 }} onClick={() => {
           onImage(undefined);
           setPreviewURL(undefined);
+          fileUploadRef.current.value = "";
         }}><FontAwesomeIcon icon={faX}></FontAwesomeIcon> Discard Image</button>}
       </div>
     </>
