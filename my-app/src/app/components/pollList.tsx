@@ -23,13 +23,15 @@ const PollList: React.FC = () => {
             className="bg-[#234] py-4 px-6 rounded text-lg font-mono"
           >
             <div className="mb-4">
-              <Image
+              {poll.imageUrl &&
+                <Image
                 src={poll.imageUrl}
                 alt={`Image for poll ${index + 1}`}
                 width={150}
                 height={150}
                 className="rounded-md"
               />
+              }
             </div>
             <div>{poll.title}</div>
           </div>
