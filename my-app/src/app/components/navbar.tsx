@@ -27,7 +27,7 @@ const NavBar: React.FC = () => {
     };
 
     return (
-        <nav className="h-20 px-8 py-4 bg-[#0E2A2D] text-[#AAC789] flex border-solid border-[#667753] border-b-1 ">
+        <nav className="h-20 px-8 py-4 bg-[#0E2A2D] text-[#AAC789] flex border-solid border-[#667753] border-b-1">
             <div className="w-1/2 text-lg sm:text-4xl font-mono mt-auto mb-auto">Pollster.</div>
 
             {userProvider.isLoggedIn &&
