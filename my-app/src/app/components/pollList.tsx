@@ -55,7 +55,7 @@ const PollList: React.FC = () => {
           <div className="ml-auto">
           <button
             className="pol-button rounded-full text-center"
-            style={{position: "fixed", bottom: 0, marginBottom: 20, marginLeft: -100, width: 60, height: 60, fontSize: 20, padding: 0}}
+            style={{position: "fixed", bottom: 0, marginBottom: 20, marginLeft: -100, width: 60, height: 60, fontSize: 20, padding: 0, border: 0}}
             onClick={() => setShowModal(true)}
           ><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></button>
           </div>
