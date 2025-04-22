@@ -12,6 +12,10 @@ html,body {
     font-family: "Overpass Mono";
 }
 
+body {
+    background: #12282C;
+}
+
 h1 {
     font-size: 50px;
 }

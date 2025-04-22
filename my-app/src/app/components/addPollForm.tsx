@@ -107,7 +107,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, initialData }) => 
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
           />
-          <button className="pol-button pol-button-form mt-0" onClick={async (e) => {
+          <button className="pol-button pol-button-form mt-0" onClick={(e) => {
             e.preventDefault();
             generatePoll();
           }}><FontAwesomeIcon icon={faHatWizard}></FontAwesomeIcon> Generate</button>
