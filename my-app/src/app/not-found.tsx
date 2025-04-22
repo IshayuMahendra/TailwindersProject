@@ -7,12 +7,12 @@ import '@/app/styles/global_styles.css';
 export default function NotFound() {
     return (
 
-        <div className="home h-full flex flex-col ">
+        <div className="h-full flex flex-col ">
             <NavBar />
         
     
-                <main className="ml-auto mr-auto flex-1 p-6 mt-80">
-                    <h1>404 NOT FOUND</h1>
+                <main className="ml-auto mr-auto flex-1 p-6 mt-80 text-[#FFFFF]">
+                    <h1 className="text-white">404 NOT FOUND</h1>
                 </main>
               
 

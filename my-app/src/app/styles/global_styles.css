@@ -12,6 +12,10 @@ html,body {
     font-family: "Overpass Mono";
 }
 
+body {
+    background: #12282C;
+}
+
 h1 {
     font-size: 50px;
 }
@@ -128,9 +132,12 @@ h2 {
     color: #1E4147;
 }
 
-.pol-modal-large {
-    min-width: 650px;
+@media screen and (min-width: 740px) {
+    .pol-modal-large {
+        min-width: 650px;
+    }
 }
+
 
 .pol-img-preview-box {
     position: relative;

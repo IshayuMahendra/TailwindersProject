@@ -29,14 +29,14 @@ export interface Poll {
 }
 
 interface AddPollFormProps {
-  onNewPoll: (data: LocalPoll) => void;
-  initialData?: Poll;
+  onCompletion: (data: Poll) => void;
+  pollToEdit?: Poll;
 }
 
-const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, initialData }) => {
-  const [question, setQuestion] = useState(initialData ? initialData.title : "");
-  const [options, setOptions] = useState(initialData ? initialData.options.map((option) => option.text):[""] );
-  const [error, setError] = useState("");
+const AddPollForm: React.FC<AddPollFormProps> = ({ onCompletion, pollToEdit }) => {
+  const [question, setQuestion] = useState(pollToEdit ? pollToEdit.title : "");
+  const [options, setOptions] = useState(pollToEdit ? pollToEdit.options.map((option) => option.text):[""] );
+  const [error, setError] = useState<string|undefined>(undefined);
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
 
   const handleOptionChange = (index: number, value: string) => {
@@ -56,8 +56,57 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, initialData }) => 
     setOptions(updated);
   };
 
+  const handleNewPoll = (localPoll: LocalPoll) => {
+    const formData = new FormData();
+    formData.append('question', localPoll.title);
+    localPoll.options.forEach((option) => formData.append('option', option))
+    if (localPoll.image) {
+      formData.append('image', localPoll.image);
+    }
+    fetch("http://localhost:3000/api/poll/create", {
+      method: "POST",
+      body: formData
+    }).then(async (res: Response) => {
+      const jsonData = await res.json();
+      if (res.status == 201) {
+        const poll: Poll = jsonData["poll"];
+        onCompletion(poll);
+      } else {
+        setError(jsonData["message"]);
+      }
+    }).catch((error: Error) => {
+      setError(error.message);
+    });
+
+  };
+
+  const handleEditPoll = (id:string, localPoll: LocalPoll) => {
+    const formData = new FormData();
+    formData.append('question', localPoll.title);
+    localPoll.options.forEach((option) => formData.append('option', option))
+    if (localPoll.image) {
+      formData.append('image', localPoll.image);
+    }
+    fetch(`http://localhost:3000/api/poll/${id}`, {
+      method: "PUT",
+      body: formData
+    }).then(async (res: Response) => {
+      const jsonData = await res.json();
+      if (res.status == 200) {
+        const editedPoll: Poll = jsonData["poll"];
+        onCompletion(editedPoll);
+      } else {
+        setError(jsonData["message"]);
+      }
+    }).catch((error: Error) => {
+      setError(error.message);
+    });
+
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError(undefined);
 
     const cleanedOptions = options.filter((opt) => opt.trim() !== "");
     if (cleanedOptions.length < 2) {
@@ -70,12 +119,17 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, initialData }) => 
       return;
     }
 
-    onNewPoll({
+    const localPoll = {
       title: question,
       options: cleanedOptions,
       image: imageFile
-    })
+    };
 
+    if(pollToEdit) {
+      handleEditPoll(pollToEdit.id, localPoll);
+      return;
+    }
+    handleNewPoll(localPoll);
   }
 
   const generatePoll = async () => {
@@ -93,21 +147,21 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, initialData }) => 
 
   return (
     <>
-            <h2 className="text-white text-2xl mb-6">Create/Edit Poll</h2>
-      <ImagePicker onImage={setImageFile} initialImageURL={initialData?.imageURL} onError={setError} ></ImagePicker>
+            <span className="text-white text-lg mb-6">Create/Edit Poll</span>
+      <ImagePicker onImage={setImageFile} initialImageURL={pollToEdit?.imageURL} onError={setError} ></ImagePicker>
       <form
         onSubmit={handleSubmit}
         className="w-full text-white px-6 font-mono relative mt-6"
       >
-        <div className="flex items-center mb-6 gap-2">
+        <div className="flex flex-col sm:flex-row w-full items-center mb-6 gap-2">
           <input
             type="text"
             placeholder="What’s your question?"
-            className="d-block flex-1 p-3 text-black bg-gray-300 rounded placeholder:text-black"
+            className="w-full flex-1 p-3 text-black bg-gray-300 rounded placeholder:text-black"
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
           />
-          <button className="pol-button pol-button-form mt-0" onClick={async (e) => {
+          <button className="pol-button pol-button-form mt-0" onClick={(e) => {
             e.preventDefault();
             generatePoll();
           }}><FontAwesomeIcon icon={faHatWizard}></FontAwesomeIcon> Generate</button>
