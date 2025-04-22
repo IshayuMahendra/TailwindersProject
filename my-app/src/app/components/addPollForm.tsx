@@ -8,21 +8,23 @@ import { calculateJwkThumbprint } from "jose";
 export interface LocalPoll {
   title: string;
   options: string[]
-
   image: File | undefined;
+}
+
+export interface PollOption {
+  text: string;
+  votes: number;
 }
 
 
 export interface Poll {
   id: string;
   title: string;
-  options: {
-    text: string;
-    votes: number;
-  }[];
+  options: PollOption[];
   createdAt: string;
   imageURL: string | undefined;
   isOwnPoll?: boolean;
+  hasVoted: boolean;
 }
 
 interface AddPollFormProps {

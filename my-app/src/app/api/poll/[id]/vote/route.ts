@@ -27,13 +27,15 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
         );
       }
 
-      const {optionIndex}: {optionIndex: number} = await request.json();
-      if(!optionIndex) {
+      const jsonData = await request.json();
+      if(!Object.keys(jsonData).includes("optionIndex")) {
         return NextResponse.json(
-            { message: "An option index was not provided" },
+            { message: "A valid option index was not provided" },
             { status: 400 }
           );
       }
+
+      const optionIndex:number = parseInt(jsonData["optionIndex"]);
   
       await dbConnect();
   

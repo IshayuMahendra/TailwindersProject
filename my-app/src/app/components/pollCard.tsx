@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Modal from './modal';
-import AddPollForm, { LocalPoll } from "./addPollForm";
+import AddPollForm, { LocalPoll, PollOption } from "./addPollForm";
 import { Poll } from "./addPollForm";
+import UnvotedOptions from "./unvotedOptions";
 
 interface PollCardProps {
   poll: Poll;
@@ -34,6 +35,28 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
       })
   }
 
+  const submitVote = (index: number) => {
+    setAlertMsg("");
+    fetch(`http://localhost:3000/api/poll/${poll.id}/vote`, {
+      method: 'POST',
+      body: JSON.stringify({
+        optionIndex: index
+      })
+    })
+      .then(async (res: Response) => {
+        const jsonData = await res.json();
+        if (res.status == 200) {
+          const pollResults: PollOption[] = jsonData.results;
+          poll.options = pollResults;
+          poll.hasVoted = true;
+        } else {
+          setAlertMsg(jsonData.message);
+        }
+      }).catch((error: Error) => {
+        setAlertMsg(error.message);
+      })
+  }
+
   return (
     <>
       <div
@@ -55,9 +78,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
           )}
         </div>
         <ul className="flex flex-col space-x-0 space-y-3 mt-3">
-          {poll.options.map((option, index) => (
-            <li key={index} className="inline-block flex-1"><button className="pol-button w-full h-full">{option.text}</button></li>
-            ))}
+        <UnvotedOptions options={poll.options} onVote={(index) => submitVote(index)}></UnvotedOptions>
         </ul>
         {poll.isOwnPoll && (
           <div className="mt-4">
