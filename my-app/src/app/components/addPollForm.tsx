@@ -20,12 +20,9 @@ export interface Poll {
     text: string;
     votes: number;
   }[];
-  creator: {
-    userId: string;
-    username: string;
-  }
   createdAt: string;
   imageURL: string | undefined;
+  isOwnPoll?: boolean;
 }
 
 interface AddPollFormProps {

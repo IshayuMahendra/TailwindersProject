@@ -6,6 +6,8 @@ import Modal from './modal';
 import AddPollForm, { LocalPoll } from "./addPollForm";
 import { Poll } from "./addPollForm";
 import PollCard from "./pollCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 //Main feed page that displaus all the polls
 const PollList: React.FC = () => {
@@ -48,14 +50,16 @@ const PollList: React.FC = () => {
             });
           }}></PollCard>
         ))}
-                <button
-            className="pol-button"
-            style={{ bottom: 0, position: "absolute"}}
-            onClick={() => setShowModal(true)}
-          >
-            <span className="text-4xl">+</span>
-          </button>
       </div>
+      <div className="flex w-full">
+          <div className="ml-auto">
+          <button
+            className="pol-button rounded-full text-center"
+            style={{position: "fixed", bottom: 0, marginBottom: 20, marginLeft: -100, width: 60, height: 60, fontSize: 20, padding: 0, border: 0}}
+            onClick={() => setShowModal(true)}
+          ><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></button>
+          </div>
+        </div>
 
       {/*This is the create modal*/}
       {showModal && (

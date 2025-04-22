@@ -124,18 +124,11 @@ h2 {
 }
 
 .pol-modal-content {
-    padding: 0px 30px;
     padding-bottom: 20px;
 }
 
 .pol-text-dark {
     color: #1E4147;
-}
-
-@media screen and (min-width: 740px) {
-    .pol-modal-large {
-        min-width: 650px;
-    }
 }
 
 
@@ -196,7 +189,30 @@ h2 {
     background: #000;
 }
 
-@media screen and (min-width: 1024px) {
+.pol-modal-content {
+    padding: 0px 30px;
+    padding-bottom: 20px;
+}
+
+.pol-modal-large {
+    min-width: 640px;
+}
+
+
+/* Make Modal have padding and ignore min width */
+@media screen and (max-width: 40rem) {
+    .pol-modal {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .pol-modal-large {
+        min-width: 0px;
+    }
+}
+
+/* lG BREAKPOINT */
+@media screen and (min-width: 64rem) {
     .pol-feed-container {
         height: 0px;
         flex: 1 1 auto;

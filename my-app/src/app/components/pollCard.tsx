@@ -34,7 +34,6 @@ const PollCard: React.FC<PollCardProps> = ({poll, onDelete}: PollCardProps) => {
       })
   }
 
-  //Main central page
   return (
     <>
           <div
@@ -56,26 +55,30 @@ const PollCard: React.FC<PollCardProps> = ({poll, onDelete}: PollCardProps) => {
               }
             </div>
             <div>{poll.title}</div>
-            {/*Edit Button */}
+            {poll.isOwnPoll && (
+              <>
+                          {/*Edit Button */}
             <button
-              className="mt-2 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
-              onClick={() => {
-                setAlertMsg(undefined);
-                setIsBeingEdited(true);
-              }}
-            >
-              Edit
-            </button>
+            className="mt-2 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
+            onClick={() => {
+              setAlertMsg(undefined);
+              setIsBeingEdited(true);
+            }}
+          >
+            Edit
+          </button>
 
-            {/*Delete button */}
-            <button
-              className="ml-4 mt-2 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
-              onClick={() => {
-                handleDeletePoll()
-              }}
-            >
-              Delete
-            </button>
+          {/*Delete button */}
+          <button
+            className="ml-4 mt-2 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
+            onClick={() => {
+              handleDeletePoll()
+            }}
+          >
+            Delete
+          </button>
+          </>
+            )}
 
           </div>
 
