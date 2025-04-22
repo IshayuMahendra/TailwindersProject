@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Modal from './modal';
 import AddPollForm, { LocalPoll } from "./addPollForm";
@@ -16,6 +16,22 @@ const PollList: React.FC = () => {
   const [polls, setPolls] = useState<Poll[]>([
 
   ]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/poll", {
+      method: "GET"
+    }).then(async (res: Response) => {
+      const jsonData = await res.json();
+      if (res.status == 200) {
+        const polls: Poll[] = jsonData;
+        setPolls(polls);
+      } else {
+        console.log("Unable to list polls");
+      }
+    }).catch((error: Error) => {
+      console.log(error);
+    });
+  }, []);
 
   //Function to create new polls
   const handleNewPoll = (poll: LocalPoll) => {
@@ -79,24 +95,25 @@ const PollList: React.FC = () => {
     fetch(`http://localhost:3000/api/poll/${poll.id}`, {
       method: 'DELETE'
     })
-    .then (async( res: Response) => {
-      if(res.status == 200) {
-        const pollIndex = polls.indexOf(poll);
-        setPolls((prev) => {
-          let newPolls = [...prev] 
-          newPolls.splice(pollIndex, 1)
-          return newPolls;
-        })
-      }
-    
-    })
+      .then(async (res: Response) => {
+        if (res.status == 200) {
+          const pollIndex = polls.indexOf(poll);
+          setPolls((prev) => {
+            let newPolls = [...prev]
+            newPolls.splice(pollIndex, 1)
+            return newPolls;
+          })
+        }
+
+      })
 
   }
 
   //Main central page
   return (
-    <div className="w-full h-full p-6 bg-[#12282C] text-[#ffffff] flex flex-col">
-      <div className="flex-1 space-y-4">
+    <>
+    <div className="w-full h-full bg-[#12282C] text-[#ffffff] flex flex-col">
+      <div className="flex-1 space-y-4 p-6 pol-feed-container">
         {polls.map((poll, index) => (
           <div
             key={index}
@@ -125,7 +142,7 @@ const PollList: React.FC = () => {
               Edit
             </button>
 
-              {/*Delete button */}
+            {/*Delete button */}
             <button
               className="ml-4 mt-2 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
               onClick={() => {
@@ -137,19 +154,19 @@ const PollList: React.FC = () => {
 
           </div>
         ))}
+                <button
+            className="pol-button"
+            style={{ bottom: 0, position: "absolute"}}
+            onClick={() => setShowModal(true)}
+          >
+            <span className="text-4xl">+</span>
+          </button>
       </div>
 
-      <button
-        className="pol-button ml-auto"
-        onClick={() => setShowModal(true)}
-      >
-       <span className="text-4xl">+</span>
-      </button>
-
-        {/*This is the create modal*/}
+      {/*This is the create modal*/}
       {showModal && (
         <Modal
-        key="createModal"
+          key="createModal"
           onDismiss={() => setShowModal(false)}
           transitionSeconds={0.3}
           bgColor="#1E4147"
@@ -163,7 +180,7 @@ const PollList: React.FC = () => {
       {/*This is the editing modal */}
       {editingPoll && (
         <Modal
-         key="editModel"
+          key="editModel"
           onDismiss={() => setEditingPoll(null)}
           transitionSeconds={0.3}
           bgColor="#1E4147"
@@ -175,6 +192,7 @@ const PollList: React.FC = () => {
         </Modal>
       )}
     </div>
+    </>
   );
 };
 
