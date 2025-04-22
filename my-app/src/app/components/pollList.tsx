@@ -166,7 +166,6 @@ const PollList: React.FC = () => {
       {/*This is the create modal*/}
       {showModal && (
         <Modal
-          key="createModal"
           onDismiss={() => setShowModal(false)}
           transitionSeconds={0.3}
           bgColor="#1E4147"
@@ -180,7 +179,6 @@ const PollList: React.FC = () => {
       {/*This is the editing modal */}
       {editingPoll && (
         <Modal
-          key="editModel"
           onDismiss={() => setEditingPoll(null)}
           transitionSeconds={0.3}
           bgColor="#1E4147"

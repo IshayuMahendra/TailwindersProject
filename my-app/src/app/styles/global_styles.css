@@ -128,9 +128,12 @@ h2 {
     color: #1E4147;
 }
 
-.pol-modal-large {
-    min-width: 650px;
+@media screen and (min-width: 650px) {
+    .pol-modal-large {
+        min-width: 650px;
+    }
 }
+
 
 .pol-img-preview-box {
     position: relative;
