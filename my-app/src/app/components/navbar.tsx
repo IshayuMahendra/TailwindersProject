@@ -35,7 +35,7 @@ const NavBar: React.FC = () => {
                     <div className="ml-auto space-x-3 md:space-x-6 flex items-center">
                         <span className="hidden md:inline-block">Hello, {userProvider.user?.displayName}</span>
                         <img className="inline-block rounded-full border-3 h-full" src="img/avatar.webp"></img>
-                        <button className="pol-icon-button" onClick={doLogout}>
+                        <button className="pol-iconbtn" onClick={doLogout}>
                             <FontAwesomeIcon icon={faRightFromBracket}></FontAwesomeIcon>
                         </button>
                     </div>

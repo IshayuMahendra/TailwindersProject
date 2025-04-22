@@ -38,14 +38,23 @@ h2 {
     background-color: #306770;
 }
 
-.pol-icon-button {
+.pol-button-slim {
+    padding: 5px 15px;
+}
+
+.pol-button-form {
+    height: 100%;
+    padding: 10px 15px;
+}
+
+.pol-iconbtn {
     cursor: pointer;
     font-size: 20px;
     color: #809668;
     transition: 0.2s;
 }
 
-.pol-icon-button:hover {
+.pol-iconbtn:hover {
     color: #AAC789;
 }
 

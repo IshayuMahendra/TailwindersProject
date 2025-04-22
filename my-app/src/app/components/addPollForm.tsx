@@ -93,14 +93,12 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, initialData }) => 
 
   return (
     <>
+            <h2 className="text-white text-2xl mb-6">Create/Edit Poll</h2>
       <ImagePicker onImage={setImageFile} initialImageURL={initialData?.imageURL} onError={setError} ></ImagePicker>
       <form
         onSubmit={handleSubmit}
-        className="w-full text-white p-6 font-mono relative"
+        className="w-full text-white px-6 font-mono relative mt-6"
       >
-
-        <h2 className="text-2xl mb-6">Create/Edit Poll</h2>
-
         <div className="flex items-center mb-6 gap-2">
           <input
             type="text"
@@ -109,7 +107,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, initialData }) => 
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
           />
-          <button className="pol-button mt-0" onClick={async (e) => {
+          <button className="pol-button pol-button-form mt-0" onClick={async (e) => {
             e.preventDefault();
             generatePoll();
           }}><FontAwesomeIcon icon={faHatWizard}></FontAwesomeIcon> Generate</button>
@@ -147,7 +145,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, initialData }) => 
             <button
               type="button"
               onClick={handleAddOption}
-              className="text-white border border-white px-4 py-1 rounded hover:bg-white hover:text-[#1E4147]"
+              className="pol-button pol-button-slim"
             >
               + Add Option
             </button>
@@ -155,7 +153,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onNewPoll, initialData }) => 
 
           <button
             type="submit"
-            className="bg-[#355F63] hover:bg-[#43797F] text-white px-6 py-2 rounded"
+            className="pol-button pol-button-slim  ml-auto"
           >
             Submit
           </button>

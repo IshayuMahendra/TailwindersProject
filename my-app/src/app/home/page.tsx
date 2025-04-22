@@ -17,17 +17,17 @@ const HomePage: React.FC = () => {
                 {/* flex-1 allows rest of space to be filled */}
                 <div className="flex-1 flex flex-col lg:flex-row w-full">
                     {/* Left Sidebar */}
-                    <div className="w-full lg:w-1/5">
+                    <div className="w-full lg:w-1/4 xl:w-1/5">
                         <LeftSidebar />
                     </div>
 
                     {/* Main Content */}
-                    <main className="w-full">
+                    <main className="flex-1">
                         <PollList />
                     </main>
 
                     {/* Right Sidebar */}
-                    <div className="w-full lg:w-1/5">
+                    <div className="w-full lg:w-1/4 xl:w-1/5">
                         <RightSidebar />
                     </div>
                 </div>
