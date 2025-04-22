@@ -93,6 +93,8 @@ h2 {
     height: 100%;
     left: 0;
     top: 0;
+    bottom: 0;
+    overflow-y: scroll;
 }
 
 .pol-modal-overlay {

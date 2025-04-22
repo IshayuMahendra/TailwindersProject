@@ -41,8 +41,8 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
       >
           <div className="pol-poll-header rounded" style={{backgroundImage: poll.imageURL ? `
              linear-gradient(
-      rgba(0, 0, 0, 0.4),
-      rgba(0, 0, 0, 0.4)
+      rgba(0, 0, 0, 0.65),
+      rgba(0, 0, 0, 0.65)
     ),
             url(${poll.imageURL})
             `:''}}>
