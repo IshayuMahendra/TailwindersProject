@@ -39,8 +39,8 @@ const PollList: React.FC = () => {
   //Main central page
   return (
     <>
-    <div className="w-full h-full bg-[#12282C] text-[#ffffff] flex flex-col">
-      <div className="flex-1 space-y-4 p-6 pol-feed-container">
+    <div className="w-full h-full bg-[#12282C] text-[#ffffff] flex flex-col items-center">
+      <div className="w-full md:w-2/3 lg:w-full xl:w-2/3 space-y-6 p-6">
         {polls.map((poll, index) => (
           <PollCard poll={poll} key={index} onDelete={() => {
             setPolls((prev) => {
