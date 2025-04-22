@@ -12,9 +12,9 @@ interface PollCardProps {
 }
 
 //Main feed page that displaus all the polls
-const PollCard: React.FC<PollCardProps> = ({poll, onDelete}: PollCardProps) => {
+const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) => {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
-  const [alertMsg, setAlertMsg] = useState<undefined|string>(undefined);
+  const [alertMsg, setAlertMsg] = useState<undefined | string>(undefined);
 
   //Delete poll function 
   const handleDeletePoll = () => {
@@ -36,51 +36,56 @@ const PollCard: React.FC<PollCardProps> = ({poll, onDelete}: PollCardProps) => {
 
   return (
     <>
-          <div
-            className="bg-[#234] py-4 px-6 rounded text-lg font-mono"
-          >
-            <div className="mb-4">
-              
-            {alertMsg && (
-          <p className="text-red-400 mb-4 font-semibold">{alertMsg}</p>
-        )}
-              {poll.imageURL &&
-                <Image
-                  src={poll.imageURL}
-                  alt={`Image for poll`}
-                  width={150}
-                  height={150}
-                  className="rounded-md"
-                />
-              }
-            </div>
-            <div>{poll.title}</div>
-            {poll.isOwnPoll && (
-              <>
-                          {/*Edit Button */}
-            <button
-            className="mt-2 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
-            onClick={() => {
-              setAlertMsg(undefined);
-              setIsBeingEdited(true);
-            }}
-          >
-            Edit
-          </button>
-
-          {/*Delete button */}
-          <button
-            className="ml-4 mt-2 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
-            onClick={() => {
-              handleDeletePoll()
-            }}
-          >
-            Delete
-          </button>
-          </>
-            )}
-
+      <div
+        className="bg-[#1E4147] pb-4 rounded text-lg font-mono border-solid border-1 border-[#AAC789]"
+      >
+          <div className="pol-poll-header rounded" style={{backgroundImage: poll.imageURL ? `
+             linear-gradient(
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+    ),
+            url(${poll.imageURL})
+            `:''}}>
+            <span className="text-xl">{poll.title}</span>
           </div>
+          <div className="px-6">
+          <div className="mb-4">
+          {alertMsg && (
+            <p className="text-red-400 mb-4 font-semibold">{alertMsg}</p>
+          )}
+        </div>
+        <ul className="flex flex-col space-x-0 space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0 mt-3">
+          {poll.options.map((option, index) => (
+            <li key={index} className="inline-block flex-1"><button className="pol-button w-full h-full">{option.text}</button></li>
+            ))}
+        </ul>
+        {poll.isOwnPoll && (
+          <div className="mt-4">
+            {/*Edit Button */}
+            <button
+              className="bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
+              onClick={() => {
+                setAlertMsg(undefined);
+                setIsBeingEdited(true);
+              }}
+            >
+              Edit
+            </button>
+
+            {/*Delete button */}
+            <button
+              className="ml-4 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
+              onClick={() => {
+                handleDeletePoll()
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        )}
+          </div>
+
+      </div>
 
       {/*This is the editing modal */}
       {isBeingEdited && (

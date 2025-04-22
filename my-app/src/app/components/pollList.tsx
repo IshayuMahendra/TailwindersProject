@@ -40,7 +40,7 @@ const PollList: React.FC = () => {
   return (
     <>
     <div className="w-full h-full bg-[#12282C] text-[#ffffff] flex flex-col">
-      <div className="flex-1 space-y-4 p-6 pol-feed-container">
+      <div className="flex-1 space-y-6 p-6 pol-feed-container">
         {polls.map((poll, index) => (
           <PollCard poll={poll} key={index} onDelete={() => {
             setPolls((prev) => {

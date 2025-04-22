@@ -211,11 +211,20 @@ h2 {
     }
 }
 
-/* lG BREAKPOINT */
-@media screen and (min-width: 64rem) {
-    .pol-feed-container {
-        height: 0px;
-        flex: 1 1 auto;
-        overflow-y: auto;
-    }
+/* POLL CARD */
+.pol-poll-header {
+    background-color: #2b6068;
+    background-size: cover;
+    height: 200px;
+    width: 100%;
+    z-index: 1;
+    display: flex;
+}
+
+.pol-poll-header span {
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
