@@ -153,11 +153,11 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onCompletion, pollToEdit }) =
         onSubmit={handleSubmit}
         className="w-full text-white px-6 font-mono relative mt-6"
       >
-        <div className="flex items-center mb-6 gap-2">
+        <div className="flex flex-col sm:flex-row w-full items-center mb-6 gap-2">
           <input
             type="text"
             placeholder="What’s your question?"
-            className="d-block flex-1 p-3 text-black bg-gray-300 rounded placeholder:text-black"
+            className="w-full flex-1 p-3 text-black bg-gray-300 rounded placeholder:text-black"
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
           />

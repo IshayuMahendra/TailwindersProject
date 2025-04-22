@@ -132,7 +132,7 @@ h2 {
     color: #1E4147;
 }
 
-@media screen and (min-width: 650px) {
+@media screen and (min-width: 740px) {
     .pol-modal-large {
         min-width: 650px;
     }
