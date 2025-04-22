@@ -46,7 +46,7 @@ const SplashPage: React.FC = () => {
                 <Modal onDismiss={() => setShowModal(false)} transitionSeconds={0.3}>
                     <div className="text-center" style={{maxWidth: 650}}>
                         <h2>about us</h2>
-                        <p className="mt-4">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                        <p className="mt-4">This project aims to create a social media-like service involving polls. Users can create a poll and post it on to a universal feed that others can then vote on. These polls can range from professors, classes or events at UGA. The goal of this project is to give students an easier way to share their opinion and become informed about how their peers are feeling about life on campus.</p>
                     </div>
                 </Modal>
             }
