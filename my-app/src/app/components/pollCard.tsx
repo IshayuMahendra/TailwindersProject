@@ -54,7 +54,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
             <p className="text-red-400 mb-4 font-semibold">{alertMsg}</p>
           )}
         </div>
-        <ul className="flex flex-col space-x-0 space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0 mt-3">
+        <ul className="flex flex-col space-x-0 space-y-3 mt-3">
           {poll.options.map((option, index) => (
             <li key={index} className="inline-block flex-1"><button className="pol-button w-full h-full">{option.text}</button></li>
             ))}
