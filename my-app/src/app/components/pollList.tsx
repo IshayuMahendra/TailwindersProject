@@ -95,7 +95,7 @@ const PollList: React.FC = () => {
 
   //Main central page
   return (
-    <div className="h-[600px] w-full max-w-5xl mx-auto p-6 bg-[#17393F] text-[#ffffff] rounded-lg flex flex-col">
+    <div className="w-full h-full p-6 bg-[#12282C] text-[#ffffff] flex flex-col">
       <div className="flex-1 space-y-4 overflow-auto pr-1">
         {polls.map((poll, index) => (
           <div

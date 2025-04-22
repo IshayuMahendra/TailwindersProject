@@ -38,6 +38,17 @@ h2 {
     background-color: #306770;
 }
 
+.pol-icon-button {
+    cursor: pointer;
+    font-size: 20px;
+    color: #809668;
+    transition: 0.2s;
+}
+
+.pol-icon-button:hover {
+    color: #AAC789;
+}
+
 .pol-button-circle {
     text-align: center;
     padding: 0;
@@ -158,4 +169,13 @@ h2 {
 
 .pol-img-preview-box:hover .selection-text {
     opacity: 1 !important;
+}
+
+.pol-sidebar {
+    background: #1E4147;
+    color: #AAC789;
+}
+
+.pol-home {
+    background: #000;
 }

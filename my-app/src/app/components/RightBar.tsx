@@ -14,8 +14,8 @@ const RightSidebar: React.FC = () => {
     ];
 
     return (
-        <aside className="w-64 min-h-screen p-6 bg-[#17393F] text-[#AAC789]">
-            <div className="mt-10 text-lg font-semibold text-center mb-6">Top Contributors</div>
+        <aside className="pol-sidebar h-full w-full py-4 px-8 border-[#667753] border-l-0 lg:border-l-1">
+            <div className="text-md font-semibold mb-6 mt-2">Top Contributors</div>
             <ul className="space-y-5">
                 {/*Mapping the array to a list -Ishayu */}
                 {contributors.map((contributor, index) => (

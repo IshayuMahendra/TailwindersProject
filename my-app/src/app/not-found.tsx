@@ -2,7 +2,6 @@
 
 import NavBar from "./components/navbar"
 import '@/app/styles/global_styles.css';
-import '@/app/styles/home.css';
 
 //This is the 404 page
 export default function NotFound() {
