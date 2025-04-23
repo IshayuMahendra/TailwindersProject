@@ -236,22 +236,28 @@ h2 {
     background-color: #0e1e20;
     text-decoration: none;
     color: #AAC789;
-    border: 1px solid #AAC789;
+    border: 1px solid hsl(88, 36%, 66%);
     transition: 0.2s;
+    display: grid;
+    z-index: 1;
 }
 
 .pol-result-bar {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    padding-left: 0px;
-    padding-right: 0px;
+    grid-column: 1;
+  grid-row: 1;
     width: 100%;
     background: rgb(119, 139, 96);
-    color: #fff;
-    white-space: nowrap;
+    z-index: 2;
 }
 
-.pol-result-bar span {
+.pol-result-opt-text {
+    grid-column: 1;
+  grid-row: 1;
+    display: block;
     padding-left: 30px;
     padding-right: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: #fff;
+    z-index: 3;
 }
