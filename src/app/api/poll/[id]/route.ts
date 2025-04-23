@@ -64,14 +64,6 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       uploadedImage = await processAndUploadImage(image);
     }
 
-    //Check if the title and options are valid
-    if (!title || !options || options.length < 2) {
-      return NextResponse.json(
-        { message: "Title and at least two options are required" },
-        { status: 400 }
-      );
-    }
-
     await dbConnect();
 
     //Check if the user is logged in
@@ -106,6 +98,10 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     }));
     poll.updatedAt = new Date();
     if (uploadedImage) {
+      const imageToDelete = poll.toObject().image;
+      if (imageToDelete) {
+        await bb_deleteFile(imageToDelete);
+      }
       poll.image = uploadedImage;
     }
 
