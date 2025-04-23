@@ -9,11 +9,13 @@ import PollCard from "./pollCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-//Main feed page that displaus all the polls
-const PollList: React.FC = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [editingPoll, setEditingPoll] = useState<Poll | null>(null);
+interface PollListProps {
+  collectionType: "profile"|"home"
+}
 
+//Main feed page that displaus all the polls
+const PollList: React.FC<PollListProps> = ({collectionType}) => {
+  const [showModal, setShowModal] = useState(false);
 
   //State for the polls
   const [polls, setPolls] = useState<Poll[]>([
@@ -21,7 +23,13 @@ const PollList: React.FC = () => {
   ]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/poll", {
+    let fetchURL = "http://localhost:3000/api/poll"
+
+    if(collectionType == "profile") {
+      fetchURL = "http://localhost:3000/api/profile"
+    }
+
+    fetch(fetchURL, {
       method: "GET"
     }).then(async (res: Response) => {
       const jsonData = await res.json();

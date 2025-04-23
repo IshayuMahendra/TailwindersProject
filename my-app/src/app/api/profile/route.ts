@@ -3,6 +3,7 @@
 import dbConnect from "@/app/lib/db_connection";
 import { getSession } from "@/app/lib/sessionManager";
 import Poll from "@/models/pollSchema";
+import { publicPollFromPoll } from "@/models/publicPoll";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -18,13 +19,11 @@ export async function GET(request: NextRequest) {
     const userID = session._id;
     const userPolls = await Poll.find({ 'creator.userId': userID }).sort({ createdAt: -1 });
     
-    const publicPolls = userPolls.map((poll) => {return {
-      id: poll._id,
-      title: poll.title,
-      options: poll.options,
-      createdAt: poll.createdAt,
-      imageURL: poll.image?.publicURL
-    }})
+    const publicPolls = [];
+    for(let poll of userPolls) {
+      publicPolls.push(await publicPollFromPoll(poll, session));
+    }
+    
     return NextResponse.json(publicPolls, { status: 200 });
   } catch (error: any) {
     console.error(error);
