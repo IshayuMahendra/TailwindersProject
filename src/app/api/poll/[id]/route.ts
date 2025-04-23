@@ -93,10 +93,13 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
 
     //Update the poll
     poll.title = title;
-    poll.options = options.map((option: string): { text: string; votes: number } => ({
-      text: option,
-      votes: poll.options.find((o: { text: string; votes: number }) => o.text === option)?.votes || 0,
+
+    const oldOptions = [...poll.options];
+    poll.options = options.map((optionString: string, index): { text: string; votes: number } => ({
+      text: optionString,
+      votes: oldOptions[index]? oldOptions[index].votes : 0
     }));
+
     poll.updatedAt = new Date();
     if (uploadedImage) {
       const imageToDelete = poll.toObject().image;
