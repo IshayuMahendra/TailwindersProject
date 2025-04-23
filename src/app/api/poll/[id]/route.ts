@@ -9,8 +9,10 @@ import { isValidObjectId, Model, Types } from "mongoose";
 import { BackblazeFile, bb_deleteFile, bb_uploadFile } from "@/app/lib/backblaze";
 import imageType from "image-type";
 import path from "path";
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { publicPollFromPoll } from "@/models/publicPoll";
+import sharp from "sharp";
+import { processAndUploadImage } from "@/app/lib/imageManager";
 
 //Edit Poll
 //PUT /api/poll/:id
@@ -37,42 +39,32 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     }
 
     const formData: FormData = (await request.formData());
-    
-        const title: string = formData.get('question') as string;
-        const options: string[] = formData.getAll('option') as string[];
 
-        //Check if the title and options are valid
-        if (!title || !options || options.length < 2) {
-          return NextResponse.json(
-            { message: "Title and at least two options are required" },
-            { status: 400 }
-          );
-        }
-        let uploadedImage: BackblazeFile|null = null;
-        if (formData.has('image')) {
-          let image = formData.get('image');
-    
-          if(!(image instanceof Blob)) {
-            throw new Error("Provided image was not a valid image file");
-          }
-    
-          const buffer = Buffer.from(await image.arrayBuffer());
-    
-          //If file is not an image
-          if(!(await imageType(buffer))) {
-            throw new Error("Provided upload was not an image file.");
-          }
-    
-          if(buffer.length == 0) {
-            throw new Error("Image provided was blank.");
-          }
-    
-          const imgExtension = path.extname(image.name);
-          const filename = `${uuidv4()}${imgExtension}`;
-          uploadedImage = await bb_uploadFile(filename, buffer);
-        }
+    const title: string = formData.get('question') as string;
+    const options: string[] = formData.getAll('option') as string[];
 
-        //Check if the title and options are valid
+    //Check if the title and options are valid
+    if (!title || !options || options.length < 2) {
+      return NextResponse.json(
+        { message: "Title and at least two options are required" },
+        { status: 400 }
+      );
+    }
+
+    let uploadedImage: BackblazeFile | null = null;
+    if (formData.has('image')) {
+      let image = formData.get('image');
+      //If file is not an image
+      if (!image) {
+        return NextResponse.json(
+          { message: "An error occured while fetching the uploaded image" },
+          { status: 500 }
+        );
+      }
+      uploadedImage = await processAndUploadImage(image);
+    }
+
+    //Check if the title and options are valid
     if (!title || !options || options.length < 2) {
       return NextResponse.json(
         { message: "Title and at least two options are required" },
@@ -113,7 +105,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       votes: poll.options.find((o: { text: string; votes: number }) => o.text === option)?.votes || 0,
     }));
     poll.updatedAt = new Date();
-    if(uploadedImage) {
+    if (uploadedImage) {
       poll.image = uploadedImage;
     }
 
@@ -134,45 +126,45 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
 
 //Delete Poll
 export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
-    try {
-      const params = await context.params;
-      const pollId = params.id;
-  
-      if (!isValidObjectId(pollId)) {
-        return NextResponse.json({ message: "Invalid poll ID" }, { status: 400 });
-      }
-  
-      await dbConnect();
-  
-      const session = await getSession();
-      if (!session || !session._id) {
-        //Note: User's authentication will already be checked with middleware, so session should never be null.
-        //hence, if session or session id is null, we have an odd error.
-        return NextResponse.json(
-          { message: "An error occured while obtaining the session" },
-          { status: 500 }
-        );
-      }
-  
-      //Check if the user is logged in
-      const user = await User.findById(session._id);
-      if (!user) {
-        return NextResponse.json({ message: "User not found" }, { status: 404 });
-      }
-      //Check if the user is the creator of the poll
-      const deletedPoll = await Poll.findOneAndDelete({ _id: pollId, 'creator.userId': user._id });
-      if (!deletedPoll) {
-        return NextResponse.json({ message: "Poll not found or you are not the creator" }, { status: 404 });
-      }
-      //Delete the image from Backblaze if it exists
-      const imageToDelete = deletedPoll.toObject().image;
-      if(imageToDelete) {
-        await bb_deleteFile(imageToDelete);
-      }
-      //Delete the poll from the database
-      return NextResponse.json({ message: "Poll deleted successfully" }, { status: 200 });
-    } catch (e: unknown) {
-      console.error("Error deleting poll:", e);
-      return NextResponse.json({ message: e instanceof Error ? e.message : "An unknown error occurred" }, { status: 500 });
+  try {
+    const params = await context.params;
+    const pollId = params.id;
+
+    if (!isValidObjectId(pollId)) {
+      return NextResponse.json({ message: "Invalid poll ID" }, { status: 400 });
     }
+
+    await dbConnect();
+
+    const session = await getSession();
+    if (!session || !session._id) {
+      //Note: User's authentication will already be checked with middleware, so session should never be null.
+      //hence, if session or session id is null, we have an odd error.
+      return NextResponse.json(
+        { message: "An error occured while obtaining the session" },
+        { status: 500 }
+      );
+    }
+
+    //Check if the user is logged in
+    const user = await User.findById(session._id);
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+    //Check if the user is the creator of the poll
+    const deletedPoll = await Poll.findOneAndDelete({ _id: pollId, 'creator.userId': user._id });
+    if (!deletedPoll) {
+      return NextResponse.json({ message: "Poll not found or you are not the creator" }, { status: 404 });
+    }
+    //Delete the image from Backblaze if it exists
+    const imageToDelete = deletedPoll.toObject().image;
+    if (imageToDelete) {
+      await bb_deleteFile(imageToDelete);
+    }
+    //Delete the poll from the database
+    return NextResponse.json({ message: "Poll deleted successfully" }, { status: 200 });
+  } catch (e: unknown) {
+    console.error("Error deleting poll:", e);
+    return NextResponse.json({ message: e instanceof Error ? e.message : "An unknown error occurred" }, { status: 500 });
   }
+}

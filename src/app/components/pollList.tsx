@@ -51,12 +51,7 @@ const PollList: React.FC<PollListProps> = ({collectionType}) => {
       <div className="w-full md:w-2/3 lg:w-full xl:w-2/3 space-y-6 p-6">
         {polls.map((poll) => (
           <PollCard poll={poll} key={poll.id} onDelete={() => {
-            setPolls((prev) => {
-              let index = polls.indexOf(poll);
-              let newPolls = [...prev];
-              newPolls.splice(index, 1);
-              return newPolls;
-            });
+            setPolls((prev) => prev.filter((entry) => entry.id != poll.id));
           }}></PollCard>
         ))}
       </div>

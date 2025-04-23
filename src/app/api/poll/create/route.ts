@@ -11,6 +11,7 @@ import path from "path";
 import { BackblazeFile, bb_uploadFile } from "@/app/lib/backblaze";
 import imageType from 'image-type';
 import { publicPollFromPoll } from "@/models/publicPoll";
+import { processAndUploadImage } from "@/app/lib/imageManager";
 
 //POST /api/poll/create
 //Create Poll
@@ -41,26 +42,15 @@ export async function POST(request: NextRequest) {
     
     let uploadedImage: BackblazeFile|null = null;
     if (formData.has('image')) {
-      let image = formData.get('image');
-
-      if(!(image instanceof Blob)) {
-        throw new Error("Provided image was not a valid image file");
-      }
-
-      const buffer = Buffer.from(await image.arrayBuffer());
-
-      //If file is not an image
-      if(!(await imageType(buffer))) {
-        throw new Error("Provided upload was not an image file.");
-      }
-
-      if(buffer.length == 0) {
-        throw new Error("Image provided was blank.");
-      }
-
-      const imgExtension = path.extname(image.name);
-      const filename = `${uuidv4()}${imgExtension}`;
-      uploadedImage = await bb_uploadFile(filename, buffer); //Upload file to Backblaze B2 and reutrn BackblazeFile object.
+          let image = formData.get('image');
+          //If file is not an image
+          if(!image) {
+            return NextResponse.json(
+              { message: "An error occured while fetching the uploaded image" },
+              { status: 500 }
+            );
+          }
+          uploadedImage = await processAndUploadImage(image);
     }
 
     await dbConnect();
