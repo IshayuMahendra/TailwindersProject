@@ -6,6 +6,8 @@ import Vote, { IVote } from "@/models/voteSchema";
 import { isValidObjectId, Model, Types } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
+//POST /api/poll/:id/vote
+//Vote on a poll with id :id
 export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
     try {
       const params = await context.params;

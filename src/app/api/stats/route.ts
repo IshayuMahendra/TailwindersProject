@@ -2,6 +2,8 @@ import Poll from "@/models/pollSchema";
 import User from "@/models/userSchema";
 import { NextRequest, NextResponse } from "next/server";
 
+//GET /api/stats
+//Return the leaderboard of users sorted by the number of polls they have contributed.
 export async function GET(request: NextRequest) {
     try {
         const stats = await Poll.aggregate().sortByCount("creator.userId");

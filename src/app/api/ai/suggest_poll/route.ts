@@ -7,6 +7,7 @@ const targetDemographics = [
     "Athens, GA, USA residents"
 ]
 
+//GET /api/api/suggest_poll
 export async function GET(request: NextRequest) {
     try {
         const randomIndex = Math.floor(Math.random() * targetDemographics.length);

@@ -7,6 +7,8 @@ import Vote, { IVote } from "@/models/voteSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { PublicPoll, publicPollFromPoll } from "@/models/publicPoll";
 
+//GET /api/poll
+//List all polls ever created.
 export async function GET(request: NextRequest) {
     try {
       await dbConnect();
