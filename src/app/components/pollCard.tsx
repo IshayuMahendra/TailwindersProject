@@ -14,10 +14,9 @@ interface PollCardProps {
 }
 
 //Main feed page that displaus all the polls
-const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) => {
+const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [hasVoted, setHasVoted] = useState(poll.hasVoted);
-  const [results, setResults] = useState<PollOption[]|undefined>(poll.results);
   const [alertMsg, setAlertMsg] = useState<undefined | string>(undefined);
 
   //Delete poll function 
@@ -53,7 +52,6 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
           poll.results = pollResults;
           poll.hasVoted = true;
           setHasVoted(true);
-          setResults(pollResults);
         } else {
           setAlertMsg(jsonData.message);
         }
@@ -61,6 +59,8 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
         setAlertMsg(error.message);
       })
   }
+
+  useEffect(() => setHasVoted(poll.hasVoted), [hasVoted]);
 
   return (
     <>
@@ -83,8 +83,8 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
           )}
         </div>
         <ul className="space-x-0 space-y-3 mt-3">
-        {hasVoted == true && results ? 
-        <VotedOptions options={results}></VotedOptions>
+        {hasVoted && poll.results ? 
+        <VotedOptions options={poll.results}></VotedOptions>
         :
         <UnvotedOptions options={poll.options} onVote={(index) => submitVote(index)}></UnvotedOptions>
       }
@@ -133,7 +133,6 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
               poll.imageURL = editedPoll.imageURL;
               if(editedPoll.results) {
                 poll.results = editedPoll.results;
-                setResults(editedPoll.results);
               }
             }} pollToEdit={poll} />
           </div>
