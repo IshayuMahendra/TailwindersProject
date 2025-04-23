@@ -14,15 +14,6 @@ export async function GET(request: NextRequest) {
       const polls = await Poll.find().sort({ createdAt: -1 });
       const session = await getSession();
 
-      if (!session || !session._id) {
-        //Note: User's authentication will already be checked with middleware, so session should never be null.
-        //hence, if session or session id is null, we have an odd error.
-        return NextResponse.json(
-          { message: "An error occured while obtaining the session" },
-          { status: 500 }
-        );
-      }
-
       const publicPolls = [];
       for(let poll of polls) {
         publicPolls.push(await publicPollFromPoll(poll, session));

@@ -18,7 +18,7 @@ export interface PublicPoll {
           hasVoted: boolean
 }
 
-export async function publicPollFromPoll(poll: IPoll, session: UserSession|null) {
+export async function publicPollFromPoll(poll: IPoll, session: UserSession|null|undefined) {
 
     let publicPoll: PublicPoll = {
       id: poll._id,
