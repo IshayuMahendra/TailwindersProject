@@ -131,11 +131,9 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
               poll.title = editedPoll.title;
               poll.options = editedPoll.options;
               poll.imageURL = editedPoll.imageURL;
-              if(poll.results) {
-                setResults(poll.results.map((result, index) => {
-                  result.text = poll.options[index];
-                  return result;
-                }))
+              if(editedPoll.results) {
+                poll.results = editedPoll.results;
+                setResults(editedPoll.results);
               }
             }} pollToEdit={poll} />
           </div>
