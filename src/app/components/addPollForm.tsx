@@ -26,6 +26,7 @@ export interface Poll {
   imageURL: string | undefined;
   isOwnPoll?: boolean;
   hasVoted: boolean;
+  hasVotes: boolean;
 }
 
 interface AddPollFormProps {

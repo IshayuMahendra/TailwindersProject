@@ -17,6 +17,7 @@ interface PollCardProps {
 const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [hasVoted, setHasVoted] = useState(poll.hasVoted);
+  const [hasVotes, setHasVotes] = useState(poll.hasVotes);
   const [alertMsg, setAlertMsg] = useState<undefined | string>(undefined);
 
   //Delete poll function 
@@ -51,7 +52,9 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
           const pollResults: PollOption[] = jsonData.results;
           poll.results = pollResults;
           poll.hasVoted = true;
+          poll.hasVotes = true;
           setHasVoted(true);
+          setHasVotes(true);
         } else {
           setAlertMsg(jsonData.message);
         }
@@ -61,6 +64,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
   }
 
   useEffect(() => setHasVoted(poll.hasVoted), [poll.hasVoted]);
+  useEffect(() => setHasVoted(poll.hasVotes), [poll.hasVotes]);
 
   return (
     <>
@@ -91,9 +95,12 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
         </ul>
         {poll.isOwnPoll && (
           <div className="mt-4">
-            {/*Edit Button */}
+            {
+            /*Edit Button */
+            }
+            {!hasVotes &&
             <button
-              className="bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
+              className="mr-4 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
               onClick={() => {
                 setAlertMsg(undefined);
                 setIsBeingEdited(true);
@@ -101,10 +108,11 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
             >
               Edit
             </button>
+            }
 
             {/*Delete button */}
             <button
-              className="ml-4 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
+              className="bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
               onClick={() => {
                 handleDeletePoll()
               }}
