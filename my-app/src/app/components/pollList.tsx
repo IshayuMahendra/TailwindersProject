@@ -79,7 +79,7 @@ const PollList: React.FC<PollListProps> = ({collectionType}) => {
         >
           <div className="pol-modal-large">
             <AddPollForm onCompletion={(newPoll) => {
-              setPolls((prev) => [...prev, newPoll])
+              setPolls((prev) => [newPoll, ...prev])
               setShowModal(false);
             }}  />
           </div>
