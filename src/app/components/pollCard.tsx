@@ -17,7 +17,7 @@ interface PollCardProps {
 const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [hasVoted, setHasVoted] = useState(poll.hasVoted);
-  const [hasVotes, setHasVotes] = useState(poll.hasVotes);
+  const [hasVotes, setHasVotes] = useState<boolean>(poll.hasVotes);
   const [alertMsg, setAlertMsg] = useState<undefined | string>(undefined);
 
   //Delete poll function 
@@ -64,7 +64,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
   }
 
   useEffect(() => setHasVoted(poll.hasVoted), [poll.hasVoted]);
-  useEffect(() => setHasVoted(poll.hasVotes), [poll.hasVotes]);
+  useEffect(() => setHasVotes(poll.hasVotes), [poll.hasVotes]);
 
   return (
     <>
