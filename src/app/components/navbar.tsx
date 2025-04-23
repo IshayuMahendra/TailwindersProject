@@ -32,9 +32,9 @@ const NavBar: React.FC = () => {
         }).then(async (response: Response) => {
             let jsonData = await response.json();
             if (response.status == 200) {
+                router.push("/home");
                 userProvider.setUser(null);
                 userProvider.setIsLoggedIn(false);
-                router.push("/home");
             }
         })
     };

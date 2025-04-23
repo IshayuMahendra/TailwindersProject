@@ -60,7 +60,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
       })
   }
 
-  useEffect(() => setHasVoted(poll.hasVoted), [hasVoted]);
+  useEffect(() => setHasVoted(poll.hasVoted), [poll.hasVoted]);
 
   return (
     <>
