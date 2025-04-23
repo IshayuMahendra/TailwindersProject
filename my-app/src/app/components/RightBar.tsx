@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 //Right side bar displaying the account options
@@ -13,21 +13,45 @@ const RightSidebar: React.FC = () => {
         { name: "John Doe", points: 10, image: "/img/avatar.webp"  },
     ];
 
+    interface TopUser {
+        userId: string;
+        displayName: string;
+        count: number;
+    }
+
+    const [topUsers, setTopUsers] = useState<TopUser[]>([]);
+
+    useEffect(() => {
+            fetch("http://localhost:3000/api/stats", {
+              method: "GET"
+            }).then(async (res: Response) => {
+              const jsonData = await res.json();
+              if (res.status == 200) {
+                const topUsers: TopUser[] = jsonData;
+                setTopUsers(topUsers);
+              } else {
+                console.log("Unable to fetch top users");
+              }
+            }).catch((error: Error) => {
+              console.log(error);
+            });
+    }, []);
+
     return (
         <aside className="pol-sidebar h-full w-full py-4 px-8 border-[#667753] border-l-0 lg:border-l-1">
             <div className="text-md font-semibold mb-6 mt-2">Top Contributors</div>
             <ul className="space-y-5">
                 {/*Mapping the array to a list -Ishayu */}
-                {contributors.map((contributor, index) => (
+                {topUsers.map((topUser, index) => (
                     <li key={index} className="flex items-center space-x-4">
                         <img
-                            src={contributor.image}
-                            alt={contributor.name}
+                            src={"/img/avatar.webp"}
+                            alt={topUser.displayName}
                             className="w-12 h-12 rounded-full object-cover border border-[#AAC789]"
                         />
                         <div className="flex flex-col">
-                            <span className="font-medium">{contributor.name}</span>
-                            <span className="text-sm text-[#88a27b]">{contributor.points} points</span>
+                            <span className="font-medium">{topUser.displayName}</span>
+                            <span className="text-sm text-[#88a27b]">{topUser.count} contribution(s)</span>
                         </div>
                     </li>
                 ))}
