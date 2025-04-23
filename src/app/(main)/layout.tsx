@@ -1,18 +1,20 @@
-"use client";
+import LeftSidebar from "../components/LeftBar"
+import NavBar from "../components/navbar"
+import RightSidebar from "../components/RightBar"
+import { UserProvider } from "../provider/userProvider"
 
-import React from 'react';
-import '@/app/styles/global_styles.css';
-import NavBar from '../components/navbar';
-import RightSidebar from '../components/RightBar';
-import LeftSidebar from '../components/LeftBar';
-import PollList from '../components/pollList';
-import ProtectedRoute from '../helper/protectedRoute';
+export const metadata = {
+  title: 'Pollster',
+  description: 'your vote. your polls. your impact.',
+}
 
-//Home page with flex colummns and then scrolls vertically when on mobile
-const ProfilePage: React.FC = () => {
-    return (
-        <ProtectedRoute>
-            <div className="pol-home h-full flex flex-col">
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <div className="pol-home h-full flex flex-col">
                 <NavBar />
                 {/* flex-1 allows rest of space to be filled */}
                 <div className="flex-1 flex flex-col lg:flex-row w-full">
@@ -23,7 +25,7 @@ const ProfilePage: React.FC = () => {
 
                     {/* Main Content */}
                     <main className="flex-1">
-                    <PollList collectionType='profile' />
+                    {children}
                     </main>
 
                     {/* Right Sidebar */}
@@ -32,8 +34,5 @@ const ProfilePage: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </ProtectedRoute>
-    );
-};
-
-export default ProfilePage;
+  )
+}
