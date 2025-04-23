@@ -3,8 +3,9 @@ import User from "@/models/userSchema";
 import bcrypt from 'bcrypt';
 import { NextRequest, NextResponse } from "next/server";
 
+
+//POST request to /api/auth/register
 export async function POST(request: NextRequest) {
-    //Handle POST request
     try {
         const { username, password, display_name } = await request.json();
 
@@ -23,6 +24,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ message: "Username already exists" }, { status: 400 });
         }
 
+        //Hash password along with 10 salt rounds.
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({
             username, salted_password: hashedPassword, display_name

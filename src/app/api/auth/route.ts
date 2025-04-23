@@ -3,6 +3,8 @@ import { getSession } from "@/app/lib/sessionManager";
 import User from "@/models/userSchema";
 import dbConnect from "@/app/lib/db_connection";
 
+//POST /api/auth
+//This endpoint returns the current authentication status of the user, as well as public user attributes, based upon their JWT cookie.
 export async function POST(request: NextRequest) {
     try {
         const session = await getSession();

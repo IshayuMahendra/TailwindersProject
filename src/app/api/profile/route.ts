@@ -6,6 +6,8 @@ import Poll from "@/models/pollSchema";
 import { publicPollFromPoll } from "@/models/publicPoll";
 import { NextRequest, NextResponse } from "next/server";
 
+//GET /api/profile
+//Returns polls (editable) the user has created.
 export async function GET(request: NextRequest) {
   try {
     await dbConnect();

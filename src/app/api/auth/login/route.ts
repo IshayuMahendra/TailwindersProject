@@ -5,8 +5,8 @@ import bcrypt from 'bcrypt';
 import { Model, Document } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
+//POST request to /api/auth/login
 export async function POST(request: NextRequest) {
-    //Handle POST request
     try {
         const { username, password } = await request.json();
 

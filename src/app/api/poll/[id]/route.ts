@@ -13,6 +13,7 @@ import {v4 as uuidv4} from 'uuid';
 import { publicPollFromPoll } from "@/models/publicPoll";
 
 //Edit Poll
+//PUT /api/poll/:id
 export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const params = await context.params;

@@ -1,8 +1,8 @@
 import {destroySession} from "@/app/lib/sessionManager";
 import { NextRequest, NextResponse } from "next/server";
 
+//POST request to /api/auth/logout
 export async function POST(request: NextRequest) {
-    //Handle POST request
     try {
         await destroySession();
         return NextResponse.json({message: "success"}, {status: 200});

@@ -12,7 +12,8 @@ import { BackblazeFile, bb_uploadFile } from "@/app/lib/backblaze";
 import imageType from 'image-type';
 import { publicPollFromPoll } from "@/models/publicPoll";
 
-
+//POST /api/poll/create
+//Create Poll
 export async function POST(request: NextRequest) {
   try {
     const session = await getSession();
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
 
       const imgExtension = path.extname(image.name);
       const filename = `${uuidv4()}${imgExtension}`;
-      uploadedImage = await bb_uploadFile(filename, buffer);
+      uploadedImage = await bb_uploadFile(filename, buffer); //Upload file to Backblaze B2 and reutrn BackblazeFile object.
     }
 
     await dbConnect();
