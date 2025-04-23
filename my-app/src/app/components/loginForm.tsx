@@ -1,6 +1,5 @@
 "use client";
-import React, { Dispatch, FormEvent, useContext, useEffect, useState } from 'react';
-import Modal from './modal';
+import React, { FormEvent, useState } from 'react';
 import { useUser } from '../provider/userProvider';
 import { useRouter } from 'next/navigation';
 
@@ -40,7 +39,7 @@ const LoginForm: React.FC = () => {
             setAlert(error.message);
         })
     }
-
+    
     return (
         <div className="text-center">
             {alert &&
