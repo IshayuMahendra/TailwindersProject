@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { publicPollFromPoll } from "@/models/publicPoll";
 import sharp from "sharp";
 import { processAndUploadImage } from "@/app/lib/imageManager";
+import Vote from "@/models/voteSchema";
 
 //Edit Poll
 //PUT /api/poll/:id
@@ -142,22 +143,30 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
       );
     }
 
-    //Check if the user is logged in
+    //Verify that the user exists
     const user = await User.findById(session._id);
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
-    //Check if the user is the creator of the poll
+
+        //Delete the poll from the database
     const deletedPoll = await Poll.findOneAndDelete({ _id: pollId, 'creator.userId': user._id });
     if (!deletedPoll) {
       return NextResponse.json({ message: "Poll not found or you are not the creator" }, { status: 404 });
     }
+
     //Delete the image from Backblaze if it exists
     const imageToDelete = deletedPoll.toObject().image;
     if (imageToDelete) {
       await bb_deleteFile(imageToDelete);
     }
-    //Delete the poll from the database
+
+    //Delete the Votes
+    await Vote.deleteMany({
+      userId: user._id,
+      pollId: pollId
+    });
+
     return NextResponse.json({ message: "Poll deleted successfully" }, { status: 200 });
   } catch (e: unknown) {
     console.error("Error deleting poll:", e);
