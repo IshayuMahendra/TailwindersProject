@@ -7,6 +7,8 @@ import AddPollForm, { LocalPoll, PollOption } from "./addPollForm";
 import { Poll } from "./addPollForm";
 import UnvotedOptions from "./unvotedOptions";
 import VotedOptions from "./votedOptions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 interface PollCardProps {
   poll: Poll;
@@ -94,30 +96,30 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
       }
         </ul>
         {poll.isOwnPoll && (
-          <div className="mt-4">
+          <div className="mt-4 ml-3">
             {
             /*Edit Button */
             }
             {!hasVotes &&
             <button
-              className="mr-4 bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
+              className=" mr-4 text-2xl pol-iconbtn"
               onClick={() => {
                 setAlertMsg(undefined);
                 setIsBeingEdited(true);
               }}
             >
-              Edit
+              <FontAwesomeIcon icon={faPencil}></FontAwesomeIcon>
             </button>
             }
 
             {/*Delete button */}
             <button
-              className="bg-[#355F63] hover:bg-[#43797F] text-white px-4 py-1 rounded"
+              className="pol-iconbtn text-white"
               onClick={() => {
                 handleDeletePoll()
               }}
             >
-              Delete
+              <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
             </button>
           </div>
         )}
