@@ -163,7 +163,6 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
 
     //Delete the Votes
     await Vote.deleteMany({
-      userId: user._id,
       pollId: pollId
     });
 
