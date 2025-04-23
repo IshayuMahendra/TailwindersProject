@@ -8,3 +8,7 @@ Notable Features
 -	Cloud image storage via Backblaze B2 free tier (AWS S3 alternative)
 -	Leaderboard showing top users in terms of polls contributed.
 
+Accomplishments & Challenges
+We built a serverless Next.JS application that enables the university community to create, answer, and analyze polls.  It utilizes Backblaze B2, an AWS S3 alternative, to store user-uploaded images, and offers users the ability to randomly generate polls related to the University of Georgia, Athens-Clarke County, and other topics via Google’s Gemini AI model.
+By far, our largest challenge was learning Next.JS as we went.  Many of us spent hours perusing Next.JS, React, and Tailwind documentation to fully understand this technology stack.  It is without a doubt that these technologies have a major learning curve, and we are proud of the work it took to get here.
+Another challenge we faced was the tight timeline of this project.  Given more time, we would have been able to fully flesh out the implementation of our features.  While we were unable to implement all the functionality we initially planned for, all of us are happy with what we have achieved in the result.
