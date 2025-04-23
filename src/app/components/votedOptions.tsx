@@ -21,11 +21,9 @@ const VotedOptions: React.FC<VotedOptionsProps> = ({ options }: VotedOptionsProp
     <>
           {options.map((option, index) => (
             <li key={index} className="flex-1"><div className="pol-result w-full h-full text-left">
-              <div className="flex w-full h-full">
+              <span className="pol-result-opt-text">{option.text}</span>
                 <div className="pol-result-bar" style={{width: `${getVotesPercentage(option)}%`}}>
-                  <span>{option.text}</span>
                   </div>
-              </div>
               </div></li>
             ))}
     </>
