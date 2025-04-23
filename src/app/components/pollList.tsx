@@ -45,8 +45,7 @@ const PollList: React.FC<PollListProps> = ({collectionType}) => {
       console.log(error);
     });
   };
-
-  useEffect(updatePolls, []);
+  
   useEffect(updatePolls, [user.isLoggedIn]);
 
   //Main central page
