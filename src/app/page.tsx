@@ -15,8 +15,6 @@ import SignupForm from './components/signupForm';
 const bg = "/img/splashBG.jpg";
 
 const SplashPage: React.FC = () => {
-    const [showSignupModal, setShowSignupModal] = useState(false);
-    const [showLoginModal, setShowLoginModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const { isLoggedIn, setIsLoggedIn } = useUser();
     const router = useRouter();
@@ -38,8 +36,7 @@ const SplashPage: React.FC = () => {
                 <h1>Pollster</h1>
                 <p><Typer typedString="your vote. your polls. your impact." msSpeed={40}></Typer></p>
                 <div className="mt-4 block">
-                    <button className="pol-button inline-block" onClick={() => setShowLoginModal(true)}>Login</button>
-                    <button className="pol-button ml-4 inline-block" onClick={() => setShowSignupModal(true)}>Sign Up</button>
+                    <Link className="pol-button inline-block" href="/home">Enter</Link>
                 </div>
             </div>
             {showModal &&
@@ -48,19 +45,6 @@ const SplashPage: React.FC = () => {
                         <h2>about us</h2>
                         <p className="mt-4">This project aims to create a social media-like service involving polls. Users can create a poll and post it on to a universal feed that others can then vote on. These polls can range from professors, classes or events at UGA. The goal of this project is to give students an easier way to share their opinion and become informed about how their peers are feeling about life on campus.</p>
                     </div>
-                </Modal>
-            }
-            {showLoginModal &&
-                <Modal onDismiss={() => setShowLoginModal(false)} transitionSeconds={0.3}>
-                    <LoginForm></LoginForm>
-                </Modal>
-            }
-            {showSignupModal &&
-                <Modal onDismiss={() => setShowSignupModal(false)} transitionSeconds={0.3}>
-                    <SignupForm onNewUser={() => {
-                        setShowSignupModal(false);
-                        setShowLoginModal(true);
-                    }}/>
                 </Modal>
             }
             <Image src={bg} className="splash-img" alt="test" fill />

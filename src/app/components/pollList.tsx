@@ -8,6 +8,7 @@ import { Poll } from "./addPollForm";
 import PollCard from "./pollCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useUser } from "../provider/userProvider";
 
 interface PollListProps {
   collectionType: "profile"|"home"
@@ -21,8 +22,9 @@ const PollList: React.FC<PollListProps> = ({collectionType}) => {
   const [polls, setPolls] = useState<Poll[]>([
 
   ]);
+  const user = useUser();
 
-  useEffect(() => {
+  let updatePolls = () => {
     let fetchURL = "http://localhost:3000/api/poll"
 
     if(collectionType == "profile") {
@@ -42,7 +44,10 @@ const PollList: React.FC<PollListProps> = ({collectionType}) => {
     }).catch((error: Error) => {
       console.log(error);
     });
-  }, []);
+  };
+
+  useEffect(updatePolls, []);
+  useEffect(updatePolls, [user.isLoggedIn]);
 
   //Main central page
   return (

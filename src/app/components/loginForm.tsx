@@ -3,7 +3,11 @@ import React, { FormEvent, useState } from 'react';
 import { useUser } from '../provider/userProvider';
 import { useRouter } from 'next/navigation';
 
-const LoginForm: React.FC = () => {
+interface LoginFormProps {
+    onLogin: () => void
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({onLogin}) => {
     const userContext = useUser();
     const router = useRouter();
     const [username, setUsername] = useState("");
@@ -31,6 +35,7 @@ const LoginForm: React.FC = () => {
                     displayName: jsonData.user["display_name"]
                 });
                 userContext.setIsLoggedIn(true);
+                onLogin();
                 router.push("/home");
             } else {
                 setAlert(jsonData.message);

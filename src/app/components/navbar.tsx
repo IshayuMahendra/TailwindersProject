@@ -26,7 +26,6 @@ const NavBar: React.FC = () => {
             if (response.status == 200) {
                 userProvider.setUser(null);
                 userProvider.setIsLoggedIn(false);
-                router.push("/");
             }
         })
     };
@@ -49,9 +48,11 @@ const NavBar: React.FC = () => {
                     <>
                     <button className="pol-button" onClick={() => setShowLoginModal(true)}>Login</button>
                     <button className="pol-button" onClick={() => setShowSignupModal(true)}>Sign Up</button>
+                    </>
+                    }
                     {showLoginModal &&
                 <Modal onDismiss={() => setShowLoginModal(false)} transitionSeconds={0.3}>
-                    <LoginForm></LoginForm>
+                    <LoginForm onLogin={() => setShowLoginModal(false)}></LoginForm>
                 </Modal>
             }
             {showSignupModal &&
@@ -61,9 +62,7 @@ const NavBar: React.FC = () => {
                         setShowLoginModal(true);
                     }}/>
                 </Modal>
-            }
-                    </>
-                    }
+}
                     </div>
                 </div>
         </nav>
