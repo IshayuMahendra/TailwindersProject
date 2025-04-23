@@ -82,7 +82,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
             <p className="text-red-400 mb-4 font-semibold">{alertMsg}</p>
           )}
         </div>
-        <ul className="flex flex-col space-x-0 space-y-3 mt-3">
+        <ul className="space-x-0 space-y-3 mt-3">
         {hasVoted == true && results ? 
         <VotedOptions options={results}></VotedOptions>
         :
@@ -131,6 +131,12 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
               poll.title = editedPoll.title;
               poll.options = editedPoll.options;
               poll.imageURL = editedPoll.imageURL;
+              if(poll.results) {
+                setResults(poll.results.map((result, index) => {
+                  result.text = poll.options[index];
+                  return result;
+                }))
+              }
             }} pollToEdit={poll} />
           </div>
         </Modal>

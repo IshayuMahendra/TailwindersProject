@@ -250,14 +250,16 @@ h2 {
     z-index: 2;
 }
 
-.pol-result-opt-text {
+.pol-result-content {
     grid-column: 1;
   grid-row: 1;
-    display: block;
+    z-index: 3;
+}
+
+.pol-result-text {
     padding-left: 30px;
     padding-right: 30px;
     padding-top: 15px;
     padding-bottom: 15px;
     color: #fff;
-    z-index: 3;
 }
