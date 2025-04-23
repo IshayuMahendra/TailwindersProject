@@ -78,7 +78,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
           )}
         </div>
         <ul className="flex flex-col space-x-0 space-y-3 mt-3">
-        <UnvotedOptions options={poll.options} onVote={(index) => submitVote(index)}></UnvotedOptions>
+        {!poll.hasVoted && <UnvotedOptions options={poll.options} onVote={(index) => submitVote(index)}></UnvotedOptions>}
         </ul>
         {poll.isOwnPoll && (
           <div className="mt-4">
