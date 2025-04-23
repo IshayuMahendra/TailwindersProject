@@ -12,7 +12,6 @@ import { Poll } from '../components/addPollForm';
 //Home page with flex colummns and then scrolls vertically when on mobile
 const HomePage: React.FC = () => {
     return (
-        <ProtectedRoute>
             <div className="pol-home h-full flex flex-col">
                 <NavBar />
                 {/* flex-1 allows rest of space to be filled */}
@@ -33,7 +32,6 @@ const HomePage: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </ProtectedRoute>
     );
 };
 
