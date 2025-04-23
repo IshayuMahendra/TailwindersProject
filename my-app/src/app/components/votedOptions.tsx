@@ -9,12 +9,11 @@ interface VotedOptionsProps {
 
 //Main feed page that displaus all the polls
 const VotedOptions: React.FC<VotedOptionsProps> = ({ options }: VotedOptionsProps) => {
-  let totalVotes = 0;
+  const getVotesPercentage = (option: PollOption) => {
+    let totalVotes = 0;
   for(let option of options) {
     totalVotes += option.votes
   }
-
-  const getVotesPercentage = (option: PollOption) => {
     return Math.round((option.votes / totalVotes)*100);
   }
 

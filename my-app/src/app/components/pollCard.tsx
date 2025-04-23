@@ -17,6 +17,7 @@ interface PollCardProps {
 const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) => {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [hasVoted, setHasVoted] = useState(poll.hasVoted);
+  const [results, setResults] = useState<PollOption[]|undefined>(poll.results);
   const [alertMsg, setAlertMsg] = useState<undefined | string>(undefined);
 
   //Delete poll function 
@@ -52,6 +53,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
           poll.results = pollResults;
           poll.hasVoted = true;
           setHasVoted(true);
+          setResults(pollResults);
         } else {
           setAlertMsg(jsonData.message);
         }
@@ -81,8 +83,8 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
           )}
         </div>
         <ul className="flex flex-col space-x-0 space-y-3 mt-3">
-        {hasVoted == true && poll.results ? 
-        <VotedOptions options={poll.results}></VotedOptions>
+        {hasVoted == true && results ? 
+        <VotedOptions options={results}></VotedOptions>
         :
         <UnvotedOptions options={poll.options} onVote={(index) => submitVote(index)}></UnvotedOptions>
       }
