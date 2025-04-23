@@ -10,7 +10,7 @@ import { BackblazeFile, bb_deleteFile, bb_uploadFile } from "@/app/lib/backblaze
 import imageType from "image-type";
 import path from "path";
 import { v4 as uuidv4 } from 'uuid';
-import { publicPollFromPoll } from "@/models/publicPoll";
+import { pollHasVotes, publicPollFromPoll } from "@/models/publicPoll";
 import sharp from "sharp";
 import { processAndUploadImage } from "@/app/lib/imageManager";
 import Vote from "@/models/voteSchema";
@@ -91,12 +91,22 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       );
     }
 
+    //Check if the poll has any votes
+    if(await pollHasVotes(poll)) {
+      return NextResponse.json(
+        { message: "Forbidden: A poll cannot be edited after it has received a vote." },
+        { status: 403 }
+      );
+    }
+
     //Update the poll
     poll.title = title;
-    poll.options = options.map((option: string): { text: string; votes: number } => ({
-      text: option,
-      votes: poll.options.find((o: { text: string; votes: number }) => o.text === option)?.votes || 0,
+
+    poll.options = options.map((optionString: string, index): { text: string; votes: number } => ({
+      text: optionString,
+      votes: 0
     }));
+
     poll.updatedAt = new Date();
     if (uploadedImage) {
       const imageToDelete = poll.toObject().image;
