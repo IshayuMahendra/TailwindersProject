@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { UserProvider, useUser } from "../provider/userProvider";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./modal";
@@ -14,7 +14,15 @@ import SignupForm from "./signupForm";
 //Nav bar, removes logout, user name and profile if use is not logged in
 const NavBar: React.FC = () => {
     const userProvider = useUser();
+    const searchParams = useSearchParams()
     const router = useRouter();
+
+    useEffect(() => {
+        if(searchParams.get('login') == 'true') {
+            setShowLoginModal(true);
+        }
+    }, [searchParams])
+
         const [showSignupModal, setShowSignupModal] = useState(false);
         const [showLoginModal, setShowLoginModal] = useState(false);
 
@@ -26,6 +34,7 @@ const NavBar: React.FC = () => {
             if (response.status == 200) {
                 userProvider.setUser(null);
                 userProvider.setIsLoggedIn(false);
+                router.push("/home");
             }
         })
     };
