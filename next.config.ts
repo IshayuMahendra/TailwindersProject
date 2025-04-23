@@ -8,7 +8,8 @@ const nextConfig: NextConfig = {
       hostname: 'pollster.s3.us-east-005.backblazeb2.com',
       pathname: '**',
     }]
-  }
+  },
+  reactStrictMode: false
 };
 
 export default nextConfig;

@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }: ProtectedRo
         if(!isLoggedIn) {
             router.push("/");
         }
-    }, []);
+    }, [isLoggedIn]);
 
 
     return (

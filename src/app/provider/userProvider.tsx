@@ -22,7 +22,6 @@ const UserContext = createContext<ContextProps>({
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | undefined>(undefined);
   const [isInit, setIsInit] = useState(false);
@@ -47,9 +46,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   return (
-    <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser }}>
-      {isInit && children}
+    <>
+    {isInit &&
+      <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser }}>
+      {children}
     </UserContext.Provider>
+    }
+    </>
   );
 };
 
