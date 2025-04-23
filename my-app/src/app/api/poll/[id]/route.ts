@@ -10,6 +10,7 @@ import { BackblazeFile, bb_deleteFile, bb_uploadFile } from "@/app/lib/backblaze
 import imageType from "image-type";
 import path from "path";
 import {v4 as uuidv4} from 'uuid';
+import { publicPollFromPoll } from "@/models/publicPoll";
 
 //Edit Poll
 export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -116,15 +117,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     return NextResponse.json(
       {
         message: "Poll updated successfully",
-        poll: {
-          id: poll._id,
-          title: poll.title,
-          options: poll.options,
-          creator: poll.creator,
-          createdAt: poll.createdAt,
-          updatedAt: poll.updatedAt,
-          imageURL: poll.image.publicURL
-        },
+        poll: await publicPollFromPoll(poll, session),
       },
       { status: 200 }
     );

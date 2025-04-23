@@ -2,6 +2,7 @@ import dbConnect from "@/app/lib/db_connection";
 import { getSession } from "@/app/lib/sessionManager";
 import Poll, { IPoll } from "@/models/pollSchema";
 import User, { IUser } from "@/models/userSchema";
+import Vote, { IVote } from "@/models/voteSchema";
 import { isValidObjectId, Model, Types } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -54,11 +55,23 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
         return NextResponse.json({ message: "Poll not found" }, { status: 404 });
       }
 
+      //Check to ensure the user has not already voted
+      const potentialVote: IVote | null = await Vote.findOne({pollId: poll._id, userId: user._id});
+      if(potentialVote) {
+        return NextResponse.json({ message: "You've already voted on this poll." }, { status: 403 });
+      }
+
       if(!poll.options[optionIndex]) {
         return NextResponse.json({ message: `Option at index ${optionIndex} does not exist on poll ${pollId}` }, { status: 404 });
       }
+
       poll.options[optionIndex].votes++;
+      const vote: IVote = new Vote({
+        userId: user._id,
+        pollId: poll._id
+      });
   
+      await vote.save();
       await poll.save();
   
       return NextResponse.json(

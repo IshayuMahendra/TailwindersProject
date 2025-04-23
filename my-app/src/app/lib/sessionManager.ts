@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import { jwtVerify } from 'jose';
 
-interface UserSession {
+export interface UserSession {
     _id: unknown;
 }
 
