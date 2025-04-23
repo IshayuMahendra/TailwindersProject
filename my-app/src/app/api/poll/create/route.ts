@@ -11,6 +11,7 @@ import {v4 as uuidv4} from 'uuid';
 import path from "path";
 import { BackblazeFile, bb_uploadFile } from "@/app/lib/backblaze";
 import imageType from 'image-type';
+import { publicPollFromPoll } from "@/models/publicPoll";
 
 
 export async function POST(request: NextRequest) {
@@ -99,14 +100,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         message: "Poll created successfully",
-        poll: {
-          id: poll._id,
-          title: poll.title,
-          options: poll.options,
-          creator: poll.creator,
-          createdAt: poll.createdAt,
-          imageURL: poll.image?.publicURL
-        },
+        poll: await publicPollFromPoll(poll, session),
       },
       { status: 201 }
     );

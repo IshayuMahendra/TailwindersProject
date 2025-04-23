@@ -5,6 +5,7 @@ import { getSession } from "@/app/lib/sessionManager";
 import Poll from "@/models/pollSchema";
 import Vote, { IVote } from "@/models/voteSchema";
 import { NextRequest, NextResponse } from "next/server";
+import { PublicPoll, publicPollFromPoll } from "@/models/publicPoll";
 
 export async function GET(request: NextRequest) {
     try {
@@ -24,16 +25,7 @@ export async function GET(request: NextRequest) {
 
       const publicPolls = [];
       for(let poll of polls) {
-        const hasVoted: boolean = await Vote.findOne({pollId: poll._id, userId: session._id}) != null;
-        publicPolls.push({
-          id: poll._id,
-          title: poll.title,
-          options: poll.options,
-          createdAt: poll.createdAt,
-          imageURL: poll.image?.publicURL,
-          isOwnPoll: poll.creator.userId == session?._id,
-          hasVoted
-        })
+        publicPolls.push(await publicPollFromPoll(poll, session));
       }
       
       return NextResponse.json(publicPolls, { status: 200 });

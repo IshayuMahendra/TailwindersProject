@@ -6,6 +6,7 @@ import Modal from './modal';
 import AddPollForm, { LocalPoll, PollOption } from "./addPollForm";
 import { Poll } from "./addPollForm";
 import UnvotedOptions from "./unvotedOptions";
+import VotedOptions from "./votedOptions";
 
 interface PollCardProps {
   poll: Poll;
@@ -15,6 +16,7 @@ interface PollCardProps {
 //Main feed page that displaus all the polls
 const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) => {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
+  const [hasVoted, setHasVoted] = useState(poll.hasVoted);
   const [alertMsg, setAlertMsg] = useState<undefined | string>(undefined);
 
   //Delete poll function 
@@ -47,8 +49,9 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
         const jsonData = await res.json();
         if (res.status == 200) {
           const pollResults: PollOption[] = jsonData.results;
-          poll.options = pollResults;
+          poll.results = pollResults;
           poll.hasVoted = true;
+          setHasVoted(true);
         } else {
           setAlertMsg(jsonData.message);
         }
@@ -78,7 +81,11 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete }: PollCardProps) =>
           )}
         </div>
         <ul className="flex flex-col space-x-0 space-y-3 mt-3">
-        {!poll.hasVoted && <UnvotedOptions options={poll.options} onVote={(index) => submitVote(index)}></UnvotedOptions>}
+        {hasVoted == true && poll.results ? 
+        <VotedOptions options={poll.results}></VotedOptions>
+        :
+        <UnvotedOptions options={poll.options} onVote={(index) => submitVote(index)}></UnvotedOptions>
+      }
         </ul>
         {poll.isOwnPoll && (
           <div className="mt-4">

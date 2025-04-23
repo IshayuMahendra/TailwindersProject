@@ -20,7 +20,8 @@ export interface PollOption {
 export interface Poll {
   id: string;
   title: string;
-  options: PollOption[];
+  options: string[];
+  results?: PollOption[];
   createdAt: string;
   imageURL: string | undefined;
   isOwnPoll?: boolean;
@@ -34,7 +35,7 @@ interface AddPollFormProps {
 
 const AddPollForm: React.FC<AddPollFormProps> = ({ onCompletion, pollToEdit }) => {
   const [question, setQuestion] = useState(pollToEdit ? pollToEdit.title : "");
-  const [options, setOptions] = useState(pollToEdit ? pollToEdit.options.map((option) => option.text):[""] );
+  const [options, setOptions] = useState(pollToEdit ? pollToEdit.options:[""] );
   const [error, setError] = useState<string|undefined>(undefined);
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
 
