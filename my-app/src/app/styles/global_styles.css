@@ -243,10 +243,15 @@ h2 {
 .pol-result-bar {
     padding-top: 15px;
     padding-bottom: 15px;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 0px;
+    padding-right: 0px;
     width: 100%;
     background: rgb(119, 139, 96);
     color: #fff;
     white-space: nowrap;
+}
+
+.pol-result-bar span {
+    padding-left: 30px;
+    padding-right: 30px;
 }
