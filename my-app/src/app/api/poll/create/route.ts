@@ -4,7 +4,6 @@ import dbConnect from "@/app/lib/db_connection";
 import { getSession } from "@/app/lib/sessionManager";
 import Poll, { IPoll } from "@/models/pollSchema";
 import User, { IUser } from "@/models/userSchema";
-import { writeFile } from "fs/promises";
 import { Model, HydratedDocument } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import {v4 as uuidv4} from 'uuid';
@@ -27,10 +26,10 @@ export async function POST(request: NextRequest) {
     }
 
     const formData: FormData = (await request.formData());
-
+    
     const title: string = formData.get('question') as string;
     const options: string[] = formData.getAll('option') as string[];
-
+    //Check if the title and options are valid
     if (!title || !options || options.length < 2) {
       return NextResponse.json(
         { message: "Title and at least two options are required" },
@@ -38,6 +37,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    
     let uploadedImage: BackblazeFile|null = null;
     if (formData.has('image')) {
       let image = formData.get('image');
@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
 
     await dbConnect();
 
+    //Check if the user exists
     const user: (Model<IUser> & IUser & HydratedDocument<IUser>) | null = await User.findById(
       session._id
     );
@@ -84,6 +85,7 @@ export async function POST(request: NextRequest) {
       username: string;
     }
 
+    //Create the poll
     const poll: IPoll = new Poll({
       title,
       options: options.map((option: string): PollOption => ({ text: option, votes: 0 })),

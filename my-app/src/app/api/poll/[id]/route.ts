@@ -27,7 +27,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
         { status: 500 }
       );
     }
-
+    //Check if the pollId is a valid ObjectId
     if (!isValidObjectId(pollId)) {
       return NextResponse.json(
         { message: "Invalid poll ID" },
@@ -39,14 +39,14 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     
         const title: string = formData.get('question') as string;
         const options: string[] = formData.getAll('option') as string[];
-    
+
+        //Check if the title and options are valid
         if (!title || !options || options.length < 2) {
           return NextResponse.json(
             { message: "Title and at least two options are required" },
             { status: 400 }
           );
         }
-    
         let uploadedImage: BackblazeFile|null = null;
         if (formData.has('image')) {
           let image = formData.get('image');
@@ -71,6 +71,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
           uploadedImage = await bb_uploadFile(filename, buffer);
         }
 
+        //Check if the title and options are valid
     if (!title || !options || options.length < 2) {
       return NextResponse.json(
         { message: "Title and at least two options are required" },
@@ -80,6 +81,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
 
     await dbConnect();
 
+    //Check if the user is logged in
     const user: (Model<IUser> & IUser & Document) | null = await User.findById(
       session._id
     );
@@ -95,6 +97,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       return NextResponse.json({ message: "Poll not found" }, { status: 404 });
     }
 
+    //Check if the user is the creator of the poll
     if (!poll.creator.userId.equals(user._id as Types.ObjectId)) {
       return NextResponse.json(
         { message: "Forbidden: Only the creator can edit this poll" },
@@ -102,6 +105,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       );
     }
 
+    //Update the poll
     poll.title = title;
     poll.options = options.map((option: string): { text: string; votes: number } => ({
       text: option,
@@ -149,21 +153,22 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
         );
       }
   
+      //Check if the user is logged in
       const user = await User.findById(session._id);
       if (!user) {
         return NextResponse.json({ message: "User not found" }, { status: 404 });
       }
-  
+      //Check if the user is the creator of the poll
       const deletedPoll = await Poll.findOneAndDelete({ _id: pollId, 'creator.userId': user._id });
       if (!deletedPoll) {
         return NextResponse.json({ message: "Poll not found or you are not the creator" }, { status: 404 });
       }
-  
+      //Delete the image from Backblaze if it exists
       const imageToDelete = deletedPoll.toObject().image;
       if(imageToDelete) {
         await bb_deleteFile(imageToDelete);
       }
-  
+      //Delete the poll from the database
       return NextResponse.json({ message: "Poll deleted successfully" }, { status: 200 });
     } catch (e: unknown) {
       console.error("Error deleting poll:", e);
