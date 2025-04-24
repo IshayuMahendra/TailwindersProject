@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 //     "Athens, GA, USA residents"
 // ]
 
-const targetDemographics = ["tired students in an 8AM web programming class at the university of georgia", "students watching a product demo for an anonymous university poll service named Pollster"]
+const targetDemographics = ["tired students in an 8AM web programming class at the university of georgia"]
 
 //GET /api/api/suggest_poll
 export async function GET() {
