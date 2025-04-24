@@ -54,8 +54,8 @@ const NavBar: React.FC = () => {
                     </>
                     :
                     <>
-                    <button className="pol-button" onClick={() => setShowLoginModal(true)}>Login</button>
-                    <button className="pol-button" onClick={() => setShowSignupModal(true)}>Sign Up</button>
+                    <button className="pol-button pol-button-slim" onClick={() => setShowLoginModal(true)}>Login</button>
+                    <button className="pol-button pol-button-slim" onClick={() => setShowSignupModal(true)}>Sign Up</button>
                     </>
                     }
                     {showLoginModal &&
