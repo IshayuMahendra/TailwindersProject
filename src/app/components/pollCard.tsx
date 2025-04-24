@@ -1,9 +1,9 @@
 "use client";
 
-import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faRefresh, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useUser } from "../provider/userProvider";
 import AddPollForm, { Poll, PollOption } from "./addPollForm";
 import Modal from './modal';
@@ -13,13 +13,12 @@ import VotedOptions from "./votedOptions";
 interface PollCardProps {
   poll: Poll;
   onDelete: () => void;
+  onUpdated: () => void;
 }
 
 //Main feed page that displaus all the polls
-const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => {
+const PollCard: React.FC<PollCardProps> = ({ poll, onDelete, onUpdated}: PollCardProps) => {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
-  const [hasVoted, setHasVoted] = useState(poll.hasVoted);
-  const [hasVotes, setHasVotes] = useState<boolean>(poll.hasVotes);
   const [alertMsg, setAlertMsg] = useState<undefined | string>(undefined);
   const user = useUser();
   const router = useRouter();
@@ -64,8 +63,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
           poll.results = pollResults;
           poll.hasVoted = true;
           poll.hasVotes = true;
-          setHasVoted(true);
-          setHasVotes(true);
+          onUpdated();
         } else {
           setAlertMsg(jsonData.message);
         }
@@ -74,8 +72,25 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
       })
   }
 
-  useEffect(() => setHasVoted(poll.hasVoted), [poll.hasVoted]);
-  useEffect(() => setHasVotes(poll.hasVotes), [poll.hasVotes]);
+  const doRefresh = () => {
+    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/poll/${poll.id}`, {
+      method: 'GET'
+    })
+      .then(async (res: Response) => {
+        const jsonData = await res.json();
+        if (res.status == 200 && jsonData.poll) {
+          const newPoll: Poll = jsonData.poll;
+          poll.results = newPoll.results;
+          poll.title = newPoll.title;
+          poll.options = newPoll.options;
+          onUpdated();
+        } else {
+          setAlertMsg(jsonData.message);
+        }
+      }).catch((error: Error) => {
+        setAlertMsg(error.message);
+      })
+  }
 
   return (
     <>
@@ -98,7 +113,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
           )}
         </div>
         <ul className="space-x-0 space-y-3 mt-3">
-        {hasVoted && poll.results && poll.results.length > 0 ? 
+        {poll.hasVoted && poll.results && poll.results.length > 0 ? 
         <VotedOptions options={poll.results}></VotedOptions>
         :
         <UnvotedOptions options={poll.options} onVote={(index) => submitVote(index)}></UnvotedOptions>
@@ -109,9 +124,9 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
             {
             /*Edit Button */
             }
-            {!hasVotes &&
+            {!poll.hasVotes &&
             <button
-              className=" mr-4 text-2xl pol-iconbtn"
+              className=" mr-4 pol-iconbtn"
               onClick={() => {
                 setAlertMsg(undefined);
                 setIsBeingEdited(true);
@@ -123,12 +138,18 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
 
             {/*Delete button */}
             <button
-              className="pol-iconbtn text-white"
+              className="pol-iconbtn mr-4"
               onClick={() => {
                 handleDeletePoll()
               }}
             >
               <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+            </button>
+            <button
+              className="mr-4 pol-iconbtn"
+              onClick={doRefresh}
+            >
+              <FontAwesomeIcon icon={faRefresh}></FontAwesomeIcon>
             </button>
           </div>
         )}
@@ -153,6 +174,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
               if(editedPoll.results) {
                 poll.results = editedPoll.results;
               }
+              onUpdated();
             }} pollToEdit={poll} />
           </div>
         </Modal>

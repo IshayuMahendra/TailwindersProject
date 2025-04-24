@@ -11,6 +11,48 @@ import Vote from "@/models/voteSchema";
 import { isValidObjectId, Model, Types } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
+//Get Poll
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
+  try {
+    const params = await context.params;
+    const pollId = params.id;
+
+    const session = await getSession();
+    if (!session || !session._id) {
+      //Note: User's authentication will already be checked with middleware, so session should never be null.
+      //hence, if session or session id is null, we have an odd error.
+      return NextResponse.json(
+        { message: "An error occured while obtaining the session" },
+        { status: 500 }
+      );
+    }
+    //Check if the pollId is a valid ObjectId
+    if (!isValidObjectId(pollId)) {
+      return NextResponse.json(
+        { message: "Invalid poll ID" },
+        { status: 400 }
+      );
+    }
+
+    await dbConnect();
+
+    const poll: IPoll | null = await Poll.findById(pollId);
+    if (!poll) {
+      return NextResponse.json({ message: "Poll not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(
+      {
+        poll: await publicPollFromPoll(poll, session),
+      },
+      { status: 200 }
+    );
+  } catch (e: unknown) {
+    console.error("Error getting poll:", e);
+    return NextResponse.json({ message: e instanceof Error ? e.message : "An unknown error occurred" }, { status: 500 });
+  }
+}
+
 //Edit Poll
 //PUT /api/poll/:id
 export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {

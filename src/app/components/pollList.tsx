@@ -2,12 +2,12 @@
 
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useUser } from "../provider/userProvider";
 import AddPollForm, { Poll } from "./addPollForm";
 import Modal from './modal';
 import PollCard from "./pollCard";
-import { useRouter } from "next/navigation";
 
 interface PollListProps {
   collectionType: "profile" | "home"
@@ -56,7 +56,7 @@ const PollList: React.FC<PollListProps> = ({ collectionType }) => {
           {polls.map((poll) => (
             <PollCard poll={poll} key={poll.id} onDelete={() => {
               setPolls((prev) => prev.filter((entry) => entry.id != poll.id));
-            }}></PollCard>
+            }} onUpdated={() => setPolls((prev) => [...prev])}></PollCard>
           ))}
         </div>
         <div className="flex w-full">
