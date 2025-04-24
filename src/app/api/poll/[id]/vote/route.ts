@@ -3,7 +3,7 @@ import { getSession } from "@/app/lib/sessionManager";
 import Poll, { IPoll } from "@/models/pollSchema";
 import User, { IUser } from "@/models/userSchema";
 import Vote, { IVote } from "@/models/voteSchema";
-import { isValidObjectId, Model } from "mongoose";
+import { isValidObjectId } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 //POST /api/poll/:id/vote
