@@ -133,20 +133,23 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onCompletion, pollToEdit }) =
   }
 
   const generatePoll = async () => {
-    try {
-      const r = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/ai/suggest_poll`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/ai/suggest_poll`, {
         method: 'GET'
+      }).then(async (r) => {
+        const jsonData = await r.json();
+        if(r.status == 200) {
+          setQuestion(jsonData.title);
+          setOptions(jsonData.options);
+        } else {
+          setError(jsonData.message);
+        }
+      }).catch((e) => {
+        if(e instanceof Error) {
+          setError(e.message);
+          return;
+        }
+        setError("unknown error");
       })
-      const response = await r.json();
-      setQuestion(response.title);
-      setOptions(response.options);
-    } catch (e: unknown) {
-      if(e instanceof Error) {
-        setError(e.message);
-        return;
-      }
-      setError("unknown error");
-    }
   };
 
   return (
