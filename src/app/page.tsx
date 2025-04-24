@@ -13,7 +13,7 @@ const bg = "/img/splashBG.jpg";
 
 const SplashPage: React.FC = () => {
     const [showModal, setShowModal] = useState(false);
-    const { isLoggedIn, setIsLoggedIn } = useUser();
+    const { isLoggedIn } = useUser();
     const router = useRouter();
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const SplashPage: React.FC = () => {
                     <div className="splash">
             <div className="splash-left-corner">
                 <button className="pol-button pol-button-circle inline-block" onClick={() => {
-                    setShowModal((prev) => true);
+                    setShowModal(true);
                 }}>?</button>
             </div>
             <div className="splash-content">

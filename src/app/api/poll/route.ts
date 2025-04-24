@@ -4,11 +4,11 @@ import dbConnect from "@/app/lib/db_connection";
 import { getSession } from "@/app/lib/sessionManager";
 import Poll from "@/models/pollSchema";
 import { publicPollFromPoll } from "@/models/publicPoll";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 //GET /api/poll
 //List all polls ever created.
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
       await dbConnect();
   
@@ -16,14 +16,18 @@ export async function GET(request: NextRequest) {
       const session = await getSession();
 
       const publicPolls = [];
-      for(let poll of polls) {
+      for(const poll of polls) {
         publicPolls.push(await publicPollFromPoll(poll, session));
       }
       
       return NextResponse.json(publicPolls, { status: 200 });
-    } catch (error: any) {
-      console.error(error);
-      return NextResponse.json({ message: 'Error fetching polls', error: error.message }, { status: 500 });
+    } catch (e) {
+      console.log(e);
+        let message = "unknown error";
+        if(e instanceof Error) {
+            message = e.message;
+        }
+        return NextResponse.json({ message: message }, { status: 500 });
     }
   }
   

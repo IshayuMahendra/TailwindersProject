@@ -134,14 +134,18 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onCompletion, pollToEdit }) =
 
   const generatePoll = async () => {
     try {
-      let r = await fetch(`http://localhost:3000/api/ai/suggest_poll`, {
+      const r = await fetch(`http://localhost:3000/api/ai/suggest_poll`, {
         method: 'GET'
       })
-      let response = await r.json();
+      const response = await r.json();
       setQuestion(response.title);
       setOptions(response.options);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      if(e instanceof Error) {
+        setError(e.message);
+        return;
+      }
+      setError("unknown error");
     }
   };
 

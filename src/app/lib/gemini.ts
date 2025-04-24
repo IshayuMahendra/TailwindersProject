@@ -29,7 +29,7 @@ function verifyKey() {
 export async function generatePoll(demographic: string): Promise<AIPoll> {
     verifyKey();
     console.log("[GEMINI] Generating Poll");
-    let r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ export async function generatePoll(demographic: string): Promise<AIPoll> {
             generationConfig: { "response_mime_type": "application/json" }
         })
     })
-    let jsonData: GeminiResponse = await r.json();
+    const jsonData: GeminiResponse = await r.json();
 
     if(!jsonData.candidates || !jsonData.candidates[0] || !jsonData.candidates[0].content || !jsonData.candidates[0].content.parts || !jsonData.candidates[0].content.parts[0] || !jsonData.candidates[0].content.parts[0].text) {
         let errorMsg = "unknown error";
@@ -53,6 +53,6 @@ export async function generatePoll(demographic: string): Promise<AIPoll> {
         throw new Error(errorMsg);
     }
 
-    let generatedPoll: AIPoll = JSON.parse(jsonData.candidates[0].content.parts[0].text);
+    const generatedPoll: AIPoll = JSON.parse(jsonData.candidates[0].content.parts[0].text);
     return generatedPoll;
 }

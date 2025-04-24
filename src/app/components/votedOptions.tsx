@@ -16,13 +16,13 @@ const VotedOptions: React.FC<VotedOptionsProps> = ({ options }: VotedOptionsProp
   const [votedOptions, setVotedOptions] = useState<VotedOption[]>([]);
   useEffect(() => {
     let totalVotes = 0;
-    for (let option of options) {
+    for (const option of options) {
       totalVotes += option.votes
     }
 
     setTimeout(() => {
       setVotedOptions(options.map((option) => {
-        let newOption = {
+        const newOption = {
           text: option.text,
           votes: option.votes,
           percentage: Math.round((option.votes / totalVotes) * 100)

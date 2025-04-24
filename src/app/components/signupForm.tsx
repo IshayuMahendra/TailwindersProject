@@ -1,20 +1,16 @@
 "use client";
-import { useRouter } from 'next/navigation';
 import React, { FormEvent, useState } from 'react';
-import { useUser } from '../provider/userProvider';
 interface SignupFormProps {
-onNewUser: Function
+onNewUser: () => void
 };
 
 const SignupForm: React.FC<SignupFormProps> = ({onNewUser}) => {
-    const userContext = useUser();
-    const router = useRouter();
     const [displayName, setDisplayName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [alertValue, setAlert] = useState<string | null>(null);
 
-    let handleFormSubmit = (e: FormEvent) => {
+    const handleFormSubmit = (e: FormEvent) => {
         e.preventDefault();
         setAlert(null);
         fetch("http://localhost:3000/api/auth/register", {
@@ -28,7 +24,7 @@ const SignupForm: React.FC<SignupFormProps> = ({onNewUser}) => {
                 display_name: displayName
             })
         }).then(async (response: Response) => {
-            let jsonData = await response.json();
+            const jsonData = await response.json();
             if (response.status == 201) {
                 onNewUser();
             } else {

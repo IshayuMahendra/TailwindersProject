@@ -8,7 +8,7 @@ interface ModalProps {
     children?: ReactNode;
     bgColor?: string;
     fgColor?: string;
-    onDismiss: Function;
+    onDismiss: () => void;
     transitionSeconds: number;
 };
 

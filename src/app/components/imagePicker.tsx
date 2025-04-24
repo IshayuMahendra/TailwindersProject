@@ -10,8 +10,13 @@ interface ImagePickerProps {
 
 const ImagePicker: React.FC<ImagePickerProps> = ({ onImage, onError, initialImageURL }) => {
   const [previewImgURL, setPreviewURL] = useState<string | undefined>(initialImageURL);
-  const fileUploadRef = useRef<any>(null);
+  const fileUploadRef = useRef<HTMLInputElement>(null);
   const handleImageChange = async () => {
+    if(!fileUploadRef.current || !fileUploadRef.current.files || !fileUploadRef.current.files[0]) {
+      onError("Error occured obtaining file upload");
+      return;
+    }
+
     const uploadedFile: File = fileUploadRef.current.files[0];
 
     if (!uploadedFile || !uploadedFile.type) {
@@ -30,10 +35,10 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ onImage, onError, initialImag
 
   return (
     <>
-      <div className="pol-img-preview-box" onClick={(e) => {
-        fileUploadRef.current.click();
+      <div className="pol-img-preview-box" onClick={() => {
+        fileUploadRef.current?.click();
       }}>
-        {previewImgURL && <img src={previewImgURL}></img>}
+        {previewImgURL && <img src={previewImgURL} alt="Preview of user uploaded image"></img>}
         <div className="selection-overlay">
         </div>
         <div className="selection-text" style={{ opacity: previewImgURL ? 0 : 1 }}>{previewImgURL ? <FontAwesomeIcon icon={faUpload} style={{ fontSize: "29px" }}></FontAwesomeIcon> : "Select An Image"}</div>
@@ -48,7 +53,9 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ onImage, onError, initialImag
         {previewImgURL && <button className="pol-button ml-auto mt-2" style={{ paddingTop: 10, paddingBottom: 10, fontSize: 12 }} onClick={() => {
           onImage(undefined);
           setPreviewURL(undefined);
-          fileUploadRef.current.value = "";
+          if(fileUploadRef.current) {
+            fileUploadRef.current.value = "";
+          }
         }}><FontAwesomeIcon icon={faX}></FontAwesomeIcon> Discard Image</button>}
       </div>
     </>

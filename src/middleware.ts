@@ -1,7 +1,7 @@
-import { NextResponse, NextRequest } from 'next/server'
+import { NextResponse } from 'next/server';
 import { getSession } from './app/lib/sessionManager';
 
-export async function middleware(request: NextRequest) {
+export async function middleware() {
     const session = await getSession();
     if (!session || !session._id) {
         return NextResponse.json({ message: "User is not logged in." }, { status: 401 });

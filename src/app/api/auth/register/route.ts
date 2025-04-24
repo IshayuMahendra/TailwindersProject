@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
 
         await dbConnect();
 
-        let foundUser = await User.findOne({username: username});
+        const foundUser = await User.findOne({username: username});
         if(foundUser) {
             return NextResponse.json({ message: "Username already exists" }, { status: 400 });
         }
@@ -31,8 +31,12 @@ export async function POST(request: NextRequest) {
         });
 
         return NextResponse.json({ message: "success" }, { status: 201 });
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.log(e);
-        return NextResponse.json({ message: e.message }, { status: 500 });
+        let message = "unknown error";
+        if(e instanceof Error) {
+            message = e.message;
+        }
+        return NextResponse.json({ message: message }, { status: 500 });
     }
 }

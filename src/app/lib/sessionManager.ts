@@ -46,6 +46,7 @@ export async function getSession(): Promise<UserSession|undefined> {
 
         return payload;
     } catch(e) {
+        console.log(e);
         return undefined;
     }
 }

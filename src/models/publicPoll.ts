@@ -20,7 +20,7 @@ export interface PublicPoll {
 }
 
 export async function pollHasVotes(poll: IPoll) {
-  for(let option of poll.options) {
+  for(const option of poll.options) {
     if(option.votes > 0) {
       return true;
     }
@@ -30,7 +30,7 @@ export async function pollHasVotes(poll: IPoll) {
 
 export async function publicPollFromPoll(poll: IPoll, session: UserSession|null|undefined) {
 
-    let publicPoll: PublicPoll = {
+    const publicPoll: PublicPoll = {
       id: poll._id,
       title: poll.title,
       options: poll.options.map((option) => option.text),

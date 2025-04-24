@@ -22,7 +22,7 @@ const PollList: React.FC<PollListProps> = ({collectionType}) => {
   ]);
   const user = useUser();
 
-  let updatePolls = () => {
+  const updatePolls = () => {
     let fetchURL = "http://localhost:3000/api/poll"
 
     if(collectionType == "profile") {

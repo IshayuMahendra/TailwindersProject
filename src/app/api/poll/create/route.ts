@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     
     let uploadedImage: BackblazeFile|null = null;
     if (formData.has('image')) {
-          let image = formData.get('image');
+          const image = formData.get('image');
           //If file is not an image
           if(!image) {
             return NextResponse.json(

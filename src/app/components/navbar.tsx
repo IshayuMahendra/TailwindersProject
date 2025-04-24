@@ -26,14 +26,13 @@ const NavBar: React.FC = () => {
         const [showSignupModal, setShowSignupModal] = useState(false);
         const [showLoginModal, setShowLoginModal] = useState(false);
 
-    let doLogout = () => {
+    const doLogout = () => {
         fetch("http://localhost:3000/api/auth/logout", {
             method: 'POST'
         }).then(async (response: Response) => {
-            let jsonData = await response.json();
             if (response.status == 200) {
                 router.push("/home");
-                userProvider.setUser(null);
+                userProvider.setUser(undefined);
                 userProvider.setIsLoggedIn(false);
             }
         })

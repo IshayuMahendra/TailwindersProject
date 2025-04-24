@@ -15,7 +15,7 @@ const LoginForm: React.FC<LoginFormProps> = ({onLogin, initialError}) => {
     const [password, setPassword] = useState("");
     const [alert, setAlert] = useState<string | null>(initialError ? initialError : "");
 
-    let handleFormSubmit = (e: FormEvent) => {
+    const handleFormSubmit = (e: FormEvent) => {
         e.preventDefault();
         setAlert(null);
         fetch("http://localhost:3000/api/auth/login", {
@@ -28,7 +28,7 @@ const LoginForm: React.FC<LoginFormProps> = ({onLogin, initialError}) => {
                 password
             })
         }).then(async (response: Response) => {
-            let jsonData = await response.json();
+            const jsonData = await response.json();
             if (response.status == 200) {
                 console.log(jsonData);
                 userContext.setUser({

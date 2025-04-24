@@ -50,7 +50,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
 
     let uploadedImage: BackblazeFile | null = null;
     if (formData.has('image')) {
-      let image = formData.get('image');
+      const image = formData.get('image');
       //If file is not an image
       if (!image) {
         return NextResponse.json(
@@ -98,7 +98,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     //Update the poll
     poll.title = title;
 
-    poll.options = options.map((optionString: string, index): { text: string; votes: number } => ({
+    poll.options = options.map((optionString: string): { text: string; votes: number } => ({
       text: optionString,
       votes: 0
     }));
