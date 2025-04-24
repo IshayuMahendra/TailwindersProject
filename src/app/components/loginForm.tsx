@@ -4,15 +4,16 @@ import { useUser } from '../provider/userProvider';
 import { useRouter } from 'next/navigation';
 
 interface LoginFormProps {
-    onLogin: () => void
+    onLogin: () => void;
+    initialError?: string|null;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({onLogin}) => {
+const LoginForm: React.FC<LoginFormProps> = ({onLogin, initialError}) => {
     const userContext = useUser();
     const router = useRouter();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [alert, setAlert] = useState<string | null>(null);
+    const [alert, setAlert] = useState<string | null>(initialError ? initialError : "");
 
     let handleFormSubmit = (e: FormEvent) => {
         e.preventDefault();

@@ -9,6 +9,8 @@ import UnvotedOptions from "./unvotedOptions";
 import VotedOptions from "./votedOptions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useUser } from "../provider/userProvider";
+import { useRouter } from "next/navigation";
 
 interface PollCardProps {
   poll: Poll;
@@ -21,6 +23,8 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
   const [hasVoted, setHasVoted] = useState(poll.hasVoted);
   const [hasVotes, setHasVotes] = useState<boolean>(poll.hasVotes);
   const [alertMsg, setAlertMsg] = useState<undefined | string>(undefined);
+  const user = useUser();
+  const router = useRouter();
 
   //Delete poll function 
   const handleDeletePoll = () => {
@@ -42,6 +46,13 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
 
   const submitVote = (index: number) => {
     setAlertMsg("");
+    if(!user.isLoggedIn) {
+      const errorParams = new URLSearchParams();
+      errorParams.set("login", "true");
+      errorParams.set("error", "You must be logged in to do that.")
+      router.push(`/home?${errorParams.toString()}`);
+      return;
+    }
     fetch(`http://localhost:3000/api/poll/${poll.id}/vote`, {
       method: 'POST',
       body: JSON.stringify({

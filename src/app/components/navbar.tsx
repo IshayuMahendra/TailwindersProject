@@ -10,12 +10,14 @@ import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./modal";
 import LoginForm from "./loginForm";
 import SignupForm from "./signupForm";
+import { usePathname } from 'next/navigation';
 
 //Nav bar, removes logout, user name and profile if use is not logged in
 const NavBar: React.FC = () => {
     const userProvider = useUser();
     const searchParams = useSearchParams()
     const router = useRouter();
+    const pathname = usePathname();
 
     useEffect(() => {
         if(searchParams.get('login') == 'true') {
@@ -60,8 +62,11 @@ const NavBar: React.FC = () => {
                     </>
                     }
                     {showLoginModal &&
-                <Modal onDismiss={() => setShowLoginModal(false)} transitionSeconds={0.3}>
-                    <LoginForm onLogin={() => setShowLoginModal(false)}></LoginForm>
+                <Modal onDismiss={() => {
+                    setShowLoginModal(false);
+                    router.push(pathname);
+                    }} transitionSeconds={0.3}>
+                    <LoginForm onLogin={() => setShowLoginModal(false)} initialError={searchParams.get('error')}></LoginForm>
                 </Modal>
             }
             {showSignupModal &&
