@@ -1,6 +1,5 @@
 "use client";
-import { useRouter } from 'next/navigation';
-import React, { createContext, useState, useContext, Dispatch, useEffect } from 'react';
+import React, { createContext, Dispatch, useContext, useEffect, useState } from 'react';
 
 interface User {
   username: string;

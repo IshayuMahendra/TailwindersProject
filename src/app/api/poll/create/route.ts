@@ -1,17 +1,14 @@
 "use server";
 
+import { BackblazeFile } from "@/app/lib/backblaze";
 import dbConnect from "@/app/lib/db_connection";
+import { processAndUploadImage } from "@/app/lib/imageManager";
 import { getSession } from "@/app/lib/sessionManager";
 import Poll, { IPoll } from "@/models/pollSchema";
-import User, { IUser } from "@/models/userSchema";
-import { Model, HydratedDocument } from "mongoose";
-import { NextRequest, NextResponse } from "next/server";
-import {v4 as uuidv4} from 'uuid';
-import path from "path";
-import { BackblazeFile, bb_uploadFile } from "@/app/lib/backblaze";
-import imageType from 'image-type';
 import { publicPollFromPoll } from "@/models/publicPoll";
-import { processAndUploadImage } from "@/app/lib/imageManager";
+import User, { IUser } from "@/models/userSchema";
+import { HydratedDocument, Model } from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
 
 //POST /api/poll/create
 //Create Poll

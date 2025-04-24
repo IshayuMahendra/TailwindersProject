@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import Modal from './modal';
-import AddPollForm, { LocalPoll } from "./addPollForm";
-import { Poll } from "./addPollForm";
-import PollCard from "./pollCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
 import { useUser } from "../provider/userProvider";
+import AddPollForm, { Poll } from "./addPollForm";
+import Modal from './modal';
+import PollCard from "./pollCard";
 
 interface PollListProps {
   collectionType: "profile"|"home"

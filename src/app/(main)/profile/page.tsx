@@ -1,10 +1,7 @@
 "use client";
 
-import React from 'react';
 import '@/app/styles/global_styles.css';
-import NavBar from '../../components/navbar';
-import RightSidebar from '../../components/RightBar';
-import LeftSidebar from '../../components/LeftBar';
+import React from 'react';
 import PollList from '../../components/pollList';
 import ProtectedRoute from '../../helper/protectedRoute';
 

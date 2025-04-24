@@ -1,7 +1,6 @@
 import LeftSidebar from "../components/LeftBar"
 import NavBar from "../components/navbar"
 import RightSidebar from "../components/RightBar"
-import { UserProvider } from "../provider/userProvider"
 
 export const metadata = {
   title: 'Pollster',

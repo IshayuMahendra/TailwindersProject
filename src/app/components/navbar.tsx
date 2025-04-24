@@ -1,16 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { UserProvider, useUser } from "../provider/userProvider";
-import { useRouter, useSearchParams } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import Modal from "./modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useUser } from "../provider/userProvider";
 import LoginForm from "./loginForm";
+import Modal from "./modal";
 import SignupForm from "./signupForm";
-import { usePathname } from 'next/navigation';
 
 //Nav bar, removes logout, user name and profile if use is not logged in
 const NavBar: React.FC = () => {

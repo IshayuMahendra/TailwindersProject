@@ -1,19 +1,15 @@
 "use server";
 
+import { BackblazeFile, bb_deleteFile } from "@/app/lib/backblaze";
 import dbConnect from "@/app/lib/db_connection";
-import { createSession, getSession } from "@/app/lib/sessionManager";
-import Poll, { IPoll } from "@/models/pollSchema";
-import User, { IUser } from "@/models/userSchema";
-import { NextRequest, NextResponse } from "next/server";
-import { isValidObjectId, Model, Types } from "mongoose";
-import { BackblazeFile, bb_deleteFile, bb_uploadFile } from "@/app/lib/backblaze";
-import imageType from "image-type";
-import path from "path";
-import { v4 as uuidv4 } from 'uuid';
-import { pollHasVotes, publicPollFromPoll } from "@/models/publicPoll";
-import sharp from "sharp";
 import { processAndUploadImage } from "@/app/lib/imageManager";
+import { getSession } from "@/app/lib/sessionManager";
+import Poll, { IPoll } from "@/models/pollSchema";
+import { pollHasVotes, publicPollFromPoll } from "@/models/publicPoll";
+import User, { IUser } from "@/models/userSchema";
 import Vote from "@/models/voteSchema";
+import { isValidObjectId, Model, Types } from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
 
 //Edit Poll
 //PUT /api/poll/:id

@@ -1,16 +1,14 @@
 "use client";
 
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import { useUser } from "../provider/userProvider";
+import AddPollForm, { Poll, PollOption } from "./addPollForm";
 import Modal from './modal';
-import AddPollForm, { LocalPoll, PollOption } from "./addPollForm";
-import { Poll } from "./addPollForm";
 import UnvotedOptions from "./unvotedOptions";
 import VotedOptions from "./votedOptions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useUser } from "../provider/userProvider";
-import { useRouter } from "next/navigation";
 
 interface PollCardProps {
   poll: Poll;

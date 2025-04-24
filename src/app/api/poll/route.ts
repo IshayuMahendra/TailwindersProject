@@ -3,9 +3,8 @@
 import dbConnect from "@/app/lib/db_connection";
 import { getSession } from "@/app/lib/sessionManager";
 import Poll from "@/models/pollSchema";
-import Vote, { IVote } from "@/models/voteSchema";
+import { publicPollFromPoll } from "@/models/publicPoll";
 import { NextRequest, NextResponse } from "next/server";
-import { PublicPoll, publicPollFromPoll } from "@/models/publicPoll";
 
 //GET /api/poll
 //List all polls ever created.

@@ -1,4 +1,4 @@
-import { faTrash, faUpload, faX } from "@fortawesome/free-solid-svg-icons";
+import { faUpload, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef, useState } from "react";
 

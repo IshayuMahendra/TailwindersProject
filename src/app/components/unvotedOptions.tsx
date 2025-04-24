@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import {PollOption } from "./addPollForm";
 
 interface UnvotedOptionsProps {
   options: string[];

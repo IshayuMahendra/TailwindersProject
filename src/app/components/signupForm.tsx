@@ -1,7 +1,7 @@
 "use client";
+import { useRouter } from 'next/navigation';
 import React, { FormEvent, useState } from 'react';
 import { useUser } from '../provider/userProvider';
-import { useRouter } from 'next/navigation';
 interface SignupFormProps {
 onNewUser: Function
 };

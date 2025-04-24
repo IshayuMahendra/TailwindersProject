@@ -1,17 +1,14 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from 'react';
-import Image from 'next/image';
 import '@/app/styles/global_styles.css';
 import '@/app/styles/splash.css';
-import CustomButton from './components/button';
+import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import Modal from './components/modal';
 import Typer from './components/typer';
-import { useRouter } from 'next/navigation';
 import { useUser } from './provider/userProvider';
-import LoginForm from './components/loginForm';
-import SignupForm from './components/signupForm';
 const bg = "/img/splashBG.jpg";
 
 const SplashPage: React.FC = () => {

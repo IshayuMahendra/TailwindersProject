@@ -1,6 +1,6 @@
 "use server";
 
-import { Schema, model, Document, Model, models, Types } from 'mongoose';
+import { Document, model, Model, models, Schema } from 'mongoose';
 
 interface IVote extends Document {
   pollId: Schema.Types.ObjectId;

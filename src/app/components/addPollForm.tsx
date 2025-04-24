@@ -1,9 +1,8 @@
 "use client";
-import { useRef, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHatWizard, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import ImagePicker from "./imagePicker";
-import { calculateJwkThumbprint } from "jose";
 
 export interface LocalPoll {
   title: string;
