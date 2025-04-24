@@ -211,12 +211,17 @@ h2 {
     .pol-modal-large {
         min-width: 0px;
     }
+
+    .pol-button-slim {
+        font-size: 12px;
+    }
 }
 
 /* POLL CARD */
 .pol-poll-header {
     background-color: #2b6068;
     background-size: cover;
+    background-position: center;
     height: 200px;
     width: 100%;
     z-index: 1;

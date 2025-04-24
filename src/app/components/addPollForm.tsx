@@ -87,7 +87,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onCompletion, pollToEdit }) =
     if (localPoll.image) {
       formData.append('image', localPoll.image);
     }
-    fetch(`${process.env.REACT_APP_API_ENDPOINT}/api/poll/${id}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/poll/${id}`, {
       method: "PUT",
       body: formData
     }).then(async (res: Response) => {
