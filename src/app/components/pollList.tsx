@@ -46,7 +46,16 @@ const PollList: React.FC<PollListProps> = ({ collectionType }) => {
     });
   };
 
+  let [intervalID, setIntervalID] = useState<ReturnType<typeof setInterval>|null>(null);
   useEffect(updatePolls, [user.isLoggedIn]);
+  useEffect(() => {
+    if(user.isLoggedIn) {
+      setIntervalID(setInterval(updatePolls, 5000));
+    } else if(intervalID != null) {
+      clearInterval(intervalID);
+      setIntervalID(null);
+    }
+  }, [user.isLoggedIn]);
 
   //Main central page
   return (
