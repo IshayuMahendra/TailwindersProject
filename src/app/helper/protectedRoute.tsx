@@ -11,19 +11,22 @@ interface ProtectedRouteProps {
 //ProtectedRoute: a way to verify that a user is authenticated client-side
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }: ProtectedRouteProps) => {
     const router = useRouter();
-    const {isLoggedIn} = useUser();
+    const { isLoggedIn } = useUser();
     useEffect(() => {
-        if(!isLoggedIn) {
-            router.push("/home?login=true");
+        if (!isLoggedIn) {
+            const errorParams = new URLSearchParams();
+            errorParams.set("login", "true");
+            errorParams.set("error", "You must be logged in to access that page.")
+            router.push(`/home?${errorParams.toString()}`);
         }
     }, []);
 
 
     return (
         <>
-{isLoggedIn && 
-<>{children}</>
-}
+            {isLoggedIn &&
+                <>{children}</>
+            }
         </>
     );
 };
