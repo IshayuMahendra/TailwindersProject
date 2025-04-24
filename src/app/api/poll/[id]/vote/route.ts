@@ -24,14 +24,8 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
 
     await dbConnect();
 
-    const poll: IPoll | null = await Poll.findById(pollId);
-    if (!poll) {
-      return NextResponse.json({ message: "Poll not found" }, { status: 404 });
-    }
-
-    if (!canVoteAnonymously) {
       const session = await getSession();
-      if (!session || !session._id) {
+      if ((!session || !session._id) && !canVoteAnonymously) {
         //Note: User's authentication will already be checked with middleware, so session should never be null.
         //hence, if session or session id is null, we have an odd error.
         return NextResponse.json(
@@ -40,16 +34,26 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
         );
       }
 
-      user = await User.findById(
-        session._id
-      );
+      //If the user session is passed
+      if(session) {
+        user = await User.findById(
+          session._id
+        );
+
       if (!user) {
         return NextResponse.json(
           { message: "User not found" },
           { status: 404 }
         );
       }
+    }
 
+    const poll: IPoll | null = await Poll.findById(pollId);
+    if (!poll) {
+      return NextResponse.json({ message: "Poll not found" }, { status: 404 });
+    }
+
+    if (user) {
       //Check to ensure the user has not already voted
       const potentialVote: IVote | null = await Vote.findOne({ pollId: poll._id, userId: user._id });
       if (potentialVote) {
