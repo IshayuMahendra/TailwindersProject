@@ -211,6 +211,10 @@ h2 {
     .pol-modal-large {
         min-width: 0px;
     }
+
+    .pol-button-slim {
+        font-size: 12px;
+    }
 }
 
 /* POLL CARD */
