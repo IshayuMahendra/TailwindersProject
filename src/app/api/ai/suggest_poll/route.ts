@@ -1,11 +1,13 @@
 import { generatePoll } from "@/app/lib/gemini";
 import { NextResponse } from "next/server";
-const targetDemographics = [
-    "university students of the University of Georgia in Athens, GA",
-    "american college students",
-    "students",
-    "Athens, GA, USA residents"
-]
+// const targetDemographics = [
+//     "university students of the University of Georgia in Athens, GA",
+//     "american college students",
+//     "students",
+//     "Athens, GA, USA residents"
+// ]
+
+const targetDemographics = ["tired students in an 8AM web programming class at the university of georgia", "students watching a product demo for an anonymous university poll service named Pollster"]
 
 //GET /api/api/suggest_poll
 export async function GET() {
