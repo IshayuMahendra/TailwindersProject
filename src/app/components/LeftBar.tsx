@@ -1,6 +1,5 @@
 "use client"
 import Link from "next/link";
-import { useState } from "react";
 import { useUser } from "../provider/userProvider";
 
 //Left side bar displaying all the contributors
@@ -14,7 +13,6 @@ const LeftSidebar: React.FC = () => {
     ];
 
     const user = useUser();
-    const [showQR, setShowQR] = useState(false);
     return (
         <aside className="pol-sidebar h-full w-full py-4 px-8 border-[#667753] border-r-0 lg:border-r-1">
             <ul className="space-y-3 mt-2">
