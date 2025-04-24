@@ -10,5 +10,5 @@ export async function middleware() {
 }
 
 export const config = {
-    matcher: ['/api/demo_protected_route', '/api/ai/:path*', '/api/poll/:id/:path*', '/api/profile'],
+    matcher: ['/api/demo_protected_route', '/api/ai/:path*', '/api/poll/:id', '/api/poll/create', '/api/profile'],
 }

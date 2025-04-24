@@ -44,7 +44,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
 
   const submitVote = (index: number) => {
     setAlertMsg("");
-    if(!user.isLoggedIn) {
+    if(process.env.NEXT_PUBLIC_CAN_VOTE_ANONYMOUSLY != "true" && !user.isLoggedIn) {
       const errorParams = new URLSearchParams();
       errorParams.set("login", "true");
       errorParams.set("error", "You must be logged in to do that.")
