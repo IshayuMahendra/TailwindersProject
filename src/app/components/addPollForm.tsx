@@ -63,7 +63,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onCompletion, pollToEdit }) =
     if (localPoll.image) {
       formData.append('image', localPoll.image);
     }
-    fetch("http://localhost:3000/api/poll/create", {
+    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/poll/create`, {
       method: "POST",
       body: formData
     }).then(async (res: Response) => {
@@ -87,7 +87,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onCompletion, pollToEdit }) =
     if (localPoll.image) {
       formData.append('image', localPoll.image);
     }
-    fetch(`http://localhost:3000/api/poll/${id}`, {
+    fetch(`${process.env.REACT_APP_API_ENDPOINT}/api/poll/${id}`, {
       method: "PUT",
       body: formData
     }).then(async (res: Response) => {
@@ -134,7 +134,7 @@ const AddPollForm: React.FC<AddPollFormProps> = ({ onCompletion, pollToEdit }) =
 
   const generatePoll = async () => {
     try {
-      const r = await fetch(`http://localhost:3000/api/ai/suggest_poll`, {
+      const r = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/ai/suggest_poll`, {
         method: 'GET'
       })
       const response = await r.json();

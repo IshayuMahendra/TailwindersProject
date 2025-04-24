@@ -14,7 +14,7 @@ const RightSidebar: React.FC = () => {
   const [topUsers, setTopUsers] = useState<TopUser[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/stats", {
+    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/stats`, {
       method: "GET"
     }).then(async (res: Response) => {
       const jsonData = await res.json();

@@ -27,7 +27,7 @@ const NavBar: React.FC = () => {
         const [showLoginModal, setShowLoginModal] = useState(false);
 
     const doLogout = () => {
-        fetch("http://localhost:3000/api/auth/logout", {
+        fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/auth/logout`, {
             method: 'POST'
         }).then(async (response: Response) => {
             if (response.status == 200) {

@@ -13,7 +13,7 @@ const SignupForm: React.FC<SignupFormProps> = ({onNewUser}) => {
     const handleFormSubmit = (e: FormEvent) => {
         e.preventDefault();
         setAlert(null);
-        fetch("http://localhost:3000/api/auth/register", {
+        fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

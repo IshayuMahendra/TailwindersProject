@@ -27,7 +27,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
   //Delete poll function 
   const handleDeletePoll = () => {
     setAlertMsg(undefined);
-    fetch(`http://localhost:3000/api/poll/${poll.id}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/poll/${poll.id}`, {
       method: 'DELETE'
     })
       .then(async (res: Response) => {
@@ -51,7 +51,7 @@ const PollCard: React.FC<PollCardProps> = ({ poll, onDelete}: PollCardProps) => 
       router.push(`/home?${errorParams.toString()}`);
       return;
     }
-    fetch(`http://localhost:3000/api/poll/${poll.id}/vote`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/poll/${poll.id}/vote`, {
       method: 'POST',
       body: JSON.stringify({
         optionIndex: index

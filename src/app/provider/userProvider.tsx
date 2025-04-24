@@ -27,7 +27,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   //Set initial state
   useEffect(() => {
-    fetch("http://localhost:3000/api/auth", {
+    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/auth`, {
       method: 'POST'
     }).then(async (response: Response) => {
       const jsonData = await response.json();
