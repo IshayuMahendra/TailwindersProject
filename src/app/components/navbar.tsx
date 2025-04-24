@@ -47,21 +47,21 @@ const NavBar: React.FC = () => {
             <div className="w-1/2 flex">
                 <div className="ml-auto space-x-3 md:space-x-6 flex items-center">
                     {userProvider.isLoggedIn ?
-                        <>
-                            <button className="pol-iconbtn" onClick={() => setShowQR(true)}>
+                    <>
+                    <button className="pol-iconbtn" onClick={() => setShowQR(true)}>
                                 <FontAwesomeIcon icon={faQrcode}></FontAwesomeIcon>
                             </button>
-                            <span className="hidden md:inline-block">Hello, {userProvider.user?.displayName}</span>
-                            <img className="inline-block rounded-full border-3 h-full" src="img/avatar.webp"></img>
-                            <button className="pol-iconbtn" onClick={doLogout}>
-                                <FontAwesomeIcon icon={faRightFromBracket}></FontAwesomeIcon>
-                            </button>
-                        </>
-                        :
-                        <>
-                            <button className="pol-button" onClick={() => setShowLoginModal(true)}>Login</button>
-                            <button className="pol-button" onClick={() => setShowSignupModal(true)}>Sign Up</button>
-                        </>
+                        <span className="hidden md:inline-block">Hello, {userProvider.user?.displayName}</span>
+                        <img className="inline-block rounded-full border-3 h-full" src="img/avatar.webp"></img>
+                        <button className="pol-iconbtn" onClick={doLogout}>
+                            <FontAwesomeIcon icon={faRightFromBracket}></FontAwesomeIcon>
+                        </button>
+                    </>
+                    :
+                    <>
+                    <button className="pol-button pol-button-slim" onClick={() => setShowLoginModal(true)}>Login</button>
+                    <button className="pol-button pol-button-slim" onClick={() => setShowSignupModal(true)}>Sign Up</button>
+                    </>
                     }
                     {showLoginModal &&
                         <Modal onDismiss={() => {
